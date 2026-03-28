@@ -29,6 +29,7 @@ Usage example:
 import json
 import re
 import time
+from tqdm import tqdm
 import warnings
 from typing import Literal, Optional
 
@@ -419,16 +420,17 @@ class LLMAnnotator:
         """
         results = []
         n = len(texts)
-        for i, text in enumerate(texts):
-            if verbose and (i % 10 == 0 or i == n - 1):
-                print(f"  Annotating {i+1}/{n}...", end="\r")
+        iterator = tqdm(enumerate(texts), total=n, desc=f"LLM [{self.backend}]", unit="text", disable=not verbose)
+        for i, text in iterator:
             result = self.annotate(text, dataset_name)
             results.append(result)
+            n_errors = sum(1 for r in results if r["parse_error"])
+            iterator.set_postfix(errors=n_errors)
             if delay > 0:
                 time.sleep(delay)
         if verbose:
             n_failed = sum(1 for r in results if r["parse_error"])
-            print(f"\n  Done. {n - n_failed}/{n} parsed successfully.")
+            print(f"  Done. {n - n_failed}/{n} parsed successfully.")
         return results
 
 
@@ -697,9 +699,23 @@ def run_llm_active_loop(
     # Step 9 — Evaluate on test set (ground-truth labels used here only)
     # ------------------------------------------------------------------
     test_scores = semisup_model.decision_function(X_test_sf)
+    train_scores = semisup_model.decision_function(X_train_sf)
 
-    # NOTE: y_test must be passed in externally for evaluation.
-    # Returned in the dict for the caller to compute metrics.
+    # ------------------------------------------------------------------
+    # Diagnostic: LLM label agreement with ground truth
+    # (ground truth used only for logging — not for training)
+    # ------------------------------------------------------------------
+    gt_selected = binary_labels[train_idx][selected_local_idx][train_mask]
+    llm_pred    = np.array(sf_labels)
+    n_agree     = int((gt_selected == llm_pred).sum())
+    n_disagree  = int((gt_selected != llm_pred).sum())
+    llm_precision = float((llm_pred[gt_selected == 1] == 1).sum()) / max(1, int((llm_pred == 1).sum()))
+    llm_recall    = float((llm_pred[gt_selected == 1] == 1).sum()) / max(1, int((gt_selected == 1).sum()))
+    llm_agreement = n_agree / max(1, len(gt_selected))
+
+    if verbose:
+        print(f"    LLM vs ground truth: {n_agree}/{len(gt_selected)} correct "
+              f"(agreement={llm_agreement:.1%}, precision={llm_precision:.1%}, recall={llm_recall:.1%})")
 
     llm_labels_df = pd.DataFrame({
         "dataset": dataset_name,
@@ -717,16 +733,21 @@ def run_llm_active_loop(
         print("[8] Done. Returning test scores for evaluation.")
 
     return {
-        "test_scores": test_scores,
-        "X_test_sf": X_test_sf,
-        "test_idx": test_idx,
-        "n_llm_labeled": n_valid,
+        "test_scores"     : test_scores,
+        "train_scores"    : train_scores,
+        "train_labels"    : binary_labels[train_idx],
+        "X_test_sf"       : X_test_sf,
+        "test_idx"        : test_idx,
+        "n_llm_labeled"   : n_valid,
         "n_anomalies_found": int(n_anomalies),
-        "n_normals_found": int(n_normals),
-        "n_parse_errors": int(n_errors),
-        "setfit_skipped": setfit_skipped,
-        "strategy": strategy,
-        "n_llm_calls": n_llm_calls,
-        "dataset": dataset_name,
-        "llm_labels_df": llm_labels_df,
+        "n_normals_found" : int(n_normals),
+        "n_parse_errors"  : int(n_errors),
+        "setfit_skipped"  : setfit_skipped,
+        "strategy"        : strategy,
+        "n_llm_calls"     : n_llm_calls,
+        "dataset"         : dataset_name,
+        "llm_agreement"   : round(llm_agreement, 4),
+        "llm_precision"   : round(llm_precision, 4),
+        "llm_recall"      : round(llm_recall, 4),
+        "llm_labels_df"   : llm_labels_df,
     }

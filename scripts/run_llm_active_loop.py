@@ -265,14 +265,23 @@ def main():
     y_test = binary_labels[test_idx]
     test_scores = loop_result["test_scores"]
 
-    roc_auc = roc_auc_score(y_test, test_scores)
-    pr_auc = average_precision_score(y_test, test_scores)
+    train_scores = loop_result["train_scores"]
+    y_train = loop_result["train_labels"]
+
+    roc_auc       = roc_auc_score(y_test, test_scores)
+    pr_auc        = average_precision_score(y_test, test_scores)
+    train_roc_auc = roc_auc_score(y_train, train_scores)
+    train_pr_auc  = average_precision_score(y_train, train_scores)
 
     print(f"\nResults — {args.dataset} | {args.strategy} | N={args.n_llm_calls}")
-    print(f"  ROC-AUC : {roc_auc:.4f}")
-    print(f"  PR-AUC  : {pr_auc:.4f}")
+    print(f"  ROC-AUC  (test) : {roc_auc:.4f}")
+    print(f"  PR-AUC   (test) : {pr_auc:.4f}")
+    print(f"  ROC-AUC  (train): {train_roc_auc:.4f}")
+    print(f"  PR-AUC   (train): {train_pr_auc:.4f}")
     print(f"  LLM labeled: {loop_result['n_llm_labeled']} valid "
           f"({loop_result['n_anomalies_found']} anomalies / {loop_result['n_normals_found']} normals)")
+    print(f"  LLM vs ground truth: agreement={loop_result['llm_agreement']:.1%}, "
+          f"precision={loop_result['llm_precision']:.1%}, recall={loop_result['llm_recall']:.1%}")
     print(f"  Parse errors: {loop_result['n_parse_errors']}")
 
     # ------------------------------------------------------------------
@@ -300,6 +309,11 @@ def main():
         "anomaly_threshold": args.anomaly_threshold,
         "roc_auc": round(roc_auc, 6),
         "pr_auc": round(pr_auc, 6),
+        "train_roc_auc": round(train_roc_auc, 6),
+        "train_pr_auc": round(train_pr_auc, 6),
+        "llm_agreement": loop_result["llm_agreement"],
+        "llm_precision": loop_result["llm_precision"],
+        "llm_recall": loop_result["llm_recall"],
         "backend": args.backend,
         "llm_model": annotator.model,
         "encoder": encoder_short,
