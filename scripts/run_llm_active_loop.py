@@ -127,6 +127,15 @@ def parse_args():
         choices=["cpu", "cuda"],
         help="Device for DeepSVDD/DeepSAD training. Use 'cuda' on Colab/GPU.",
     )
+    # Data
+    parser.add_argument(
+        "--data_dir", type=str, default=None,
+        help=(
+            "Directory containing the parquet files (texts_*, labels_*, embeddings_*). "
+            "Defaults to {project_path}/data/. "
+            "Use this when your parquets live elsewhere, e.g. a different Drive folder."
+        ),
+    )
     # Output
     parser.add_argument(
         "--results_dir", type=str, default="data/llm_results",
@@ -169,7 +178,7 @@ def main():
     # ------------------------------------------------------------------
     # Load data
     # ------------------------------------------------------------------
-    data_dir = os.path.join(project_path, "data")
+    data_dir = os.path.abspath(args.data_dir) if args.data_dir else os.path.join(project_path, "data")
     texts_path = os.path.join(data_dir, f"texts_{args.dataset}.parquet")
     labels_path = os.path.join(data_dir, f"labels_{args.dataset}.parquet")
     emb_path = os.path.join(data_dir, f"embeddings_{args.dataset}_{encoder_short}.parquet")

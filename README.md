@@ -133,7 +133,9 @@ from google.colab import drive
 drive.mount('/content/drive')
 
 import os, sys
-PROJECT_PATH = "/content/drive/MyDrive/Projeto ML/2026/Master/Code/Multilingual-Text-Anomaly-Detection"
+PROJECT_PATH = "/content/drive/MyDrive/Projeto ML/2026/Master/Multilingual-Text-Anomaly-Detection"
+DATA_DIR     = PROJECT_PATH + "/data"  # change if parquets live elsewhere, e.g.:
+# DATA_DIR   = "/content/drive/MyDrive/Projeto ML/2025/AD/third_setup/data"
 os.chdir(PROJECT_PATH)
 sys.path.insert(0, os.path.join(PROJECT_PATH, "src"))
 
@@ -150,6 +152,7 @@ os.environ["GROQ_API_KEY"] = "gsk_..."  # paste your Groq key here
 # Cell 3 — single run
 !python scripts/run_llm_active_loop.py \
     --project_path "{PROJECT_PATH}" \
+    --data_dir     "{DATA_DIR}" \
     --dataset told_br \
     --strategy score_guided \
     --n_llm_calls 50 \
@@ -164,6 +167,7 @@ for dataset in told_br tweets_hs 20_newsgroups wikinews pt_tweets tweeteval; do
       for seed in 42 0 1 2 3; do
         python scripts/run_llm_active_loop.py \
           --project_path "{PROJECT_PATH}" \
+          --data_dir     "{DATA_DIR}" \
           --dataset $dataset --strategy $strategy \
           --n_llm_calls $n --seed $seed --device cuda
       done
