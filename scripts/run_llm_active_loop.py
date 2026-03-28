@@ -90,12 +90,20 @@ def parse_args():
         help="Override default LLM model name (e.g. 'gemini-2.0-flash-lite' for even cheaper).",
     )
     parser.add_argument(
-        "--llamacpp_model_path", type=str, default=None,
-        help="Path to local GGUF model file (required for --backend llamacpp).",
+        "--llamacpp_model", type=str, default="qwen2.5-7b",
+        help=(
+            "Local model tag (e.g. 'qwen2.5-7b', 'qwen2.5-3b', 'mistral-7b') or "
+            "an explicit path to a .gguf file. Known tags are auto-resolved to "
+            "{project_path}/models/<filename>.gguf and printed at startup."
+        ),
     )
     parser.add_argument(
         "--llamacpp_threads", type=int, default=4,
         help="Number of CPU threads for llama-cpp-python inference.",
+    )
+    parser.add_argument(
+        "--llamacpp_n_gpu_layers", type=int, default=-1,
+        help="GPU layers for llama-cpp-python (-1 = all layers on GPU, 0 = CPU only).",
     )
     # Selection strategy
     parser.add_argument(
@@ -219,12 +227,37 @@ def main():
     # ------------------------------------------------------------------
     # Init LLM annotator
     # ------------------------------------------------------------------
+    # Known GGUF models: tag -> (hf_repo, filename)
+    LLAMACPP_MODEL_MAP = {
+        "qwen2.5-7b" : ("Qwen/Qwen2.5-7B-Instruct-GGUF",   "qwen2.5-7b-instruct-q4_k_m.gguf"),
+        "qwen2.5-3b" : ("Qwen/Qwen2.5-3B-Instruct-GGUF",   "qwen2.5-3b-instruct-q4_k_m.gguf"),
+        "qwen2.5-1.5b": ("Qwen/Qwen2.5-1.5B-Instruct-GGUF", "qwen2.5-1.5b-instruct-q4_k_m.gguf"),
+        "mistral-7b" : ("TheBloke/Mistral-7B-Instruct-v0.2-GGUF", "mistral-7b-instruct-v0.2.Q4_K_M.gguf"),
+    }
+
     llamacpp_kwargs = {}
     if args.backend == "llamacpp":
-        if not args.llamacpp_model_path:
-            raise ValueError("--llamacpp_model_path is required for --backend llamacpp")
-        llamacpp_kwargs = {"n_threads": args.llamacpp_threads}
-        model_arg = args.llamacpp_model_path
+        tag = args.llamacpp_model
+        if tag in LLAMACPP_MODEL_MAP:
+            hf_repo, gguf_filename = LLAMACPP_MODEL_MAP[tag]
+            models_dir = os.path.join(project_path, "models")
+            os.makedirs(models_dir, exist_ok=True)
+            resolved_path = os.path.join(models_dir, gguf_filename)
+            if not os.path.exists(resolved_path):
+                print(f"Model '{tag}' not found locally. Download it with:")
+                print(f"  wget https://huggingface.co/{hf_repo}/resolve/main/{gguf_filename} -O {resolved_path}")
+                raise FileNotFoundError(f"GGUF model not found: {resolved_path}")
+            print(f"Local model: {tag} -> {resolved_path}")
+            model_arg = resolved_path
+        else:
+            # Treat as explicit path
+            if not os.path.exists(tag):
+                raise FileNotFoundError(f"GGUF model not found: {tag}")
+            model_arg = tag
+        llamacpp_kwargs = {
+            "n_threads": args.llamacpp_threads,
+            "n_gpu_layers": args.llamacpp_n_gpu_layers,
+        }
     else:
         model_arg = args.llm_model  # None -> use default
 

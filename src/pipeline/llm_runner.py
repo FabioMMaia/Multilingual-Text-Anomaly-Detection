@@ -307,12 +307,13 @@ class LLMAnnotator:
         except ImportError:
             raise ImportError(
                 "Install llama-cpp-python: pip install llama-cpp-python\n"
-                "Recommended model: Qwen2.5-1.5B-Instruct-Q4_K_M.gguf (~1GB)\n"
-                "Download from: https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF"
+                "Recommended model: Qwen2.5-7B-Instruct-Q4_K_M.gguf (~4.7GB)\n"
+                "Download from: https://huggingface.co/Qwen/Qwen2.5-7B-Instruct-GGUF"
             )
         if not self.model:
             raise ValueError("Provide model path for llamacpp backend, e.g. model='/path/to/model.gguf'")
-        defaults = {"n_ctx": 2048, "n_threads": 4, "verbose": False}
+        # n_gpu_layers=-1 offloads all layers to GPU; set 0 for CPU-only
+        defaults = {"n_ctx": 2048, "n_threads": 4, "n_gpu_layers": -1, "verbose": False}
         defaults.update(llamacpp_kwargs)
         self._client = Llama(model_path=self.model, **defaults)
 
@@ -387,13 +388,22 @@ class LLMAnnotator:
             except Exception as exc:
                 warnings.warn(f"LLM call failed (attempt {attempt+1}/{self.max_retries}): {exc}")
                 if attempt < self.max_retries - 1:
-                    # Try to parse retryDelay hint from 429 responses (e.g. '17s')
+                    # Parse wait time from Groq 429 error messages
                     wait = self.retry_delay
                     exc_str = str(exc)
                     import re as _re
+                    # Format 1: 'retryDelay': '17s'
                     m = _re.search(r"'retryDelay':\s*'([0-9.]+)s'", exc_str)
                     if m:
-                        wait = float(m.group(1)) + 1.0
+                        wait = float(m.group(1)) + 2.0
+                    else:
+                        # Format 2: "try again in 1m56.64s" or "try again in 47.3s"
+                        m2 = _re.search(r"try again in (?:(\d+)m)?([0-9.]+)s", exc_str)
+                        if m2:
+                            mins = float(m2.group(1) or 0)
+                            secs = float(m2.group(2))
+                            wait = mins * 60 + secs + 2.0
+                    print(f"  [rate limit] waiting {wait:.0f}s before retry...", flush=True)
                     time.sleep(wait)
                 else:
                     return {"anomaly_score": None, "reason": str(exc)[:200], "parse_error": True}

@@ -148,8 +148,19 @@ os.environ["GROQ_API_KEY"] = "gsk_..."  # paste your Groq key here
 !pip install -q -r requirements.txt
 ```
 
+---
+
+#### Option A — Groq (cloud, free tier)
+
+Requires a free API key from [console.groq.com](https://console.groq.com). Limit: **100k tokens/day** (~3 datasets × N=50 per day).
+
 ```python
-# Cell 3 — single run
+# Cell 3a — set Groq key (Cell 1 already done)
+os.environ["GROQ_API_KEY"] = "gsk_..."  # paste your key
+```
+
+```python
+# Cell 4a — single run (Groq)
 !python scripts/run_llm_active_loop.py \
     --project_path "{PROJECT_PATH}" \
     --data_dir     "{DATA_DIR}" \
@@ -157,27 +168,90 @@ os.environ["GROQ_API_KEY"] = "gsk_..."  # paste your Groq key here
     --strategy score_guided \
     --n_llm_calls 50 \
     --device cuda
+# default backend is groq, default model is llama-3.3-70b-versatile
+```
+
+---
+
+#### Option B — Local model via llama-cpp-python (no API limits)
+
+Runs a quantized open-source model (GGUF) entirely on the Colab GPU. No token limits, no API key needed.
+
+**Recommended model:** `qwen2.5-7b` — multilingual (PT/EN/etc), ~4.7 GB VRAM on T4.
+
+```python
+# Cell 3b — install llama-cpp-python with CUDA (first run only, ~3 min)
+!CMAKE_ARGS="-DGGML_CUDA=on" pip install llama-cpp-python --no-cache-dir -q
 ```
 
 ```python
-# Cell 4 — full experiment matrix (bash loop)
-for dataset in told_br tweets_hs 20_newsgroups wikinews pt_tweets tweeteval; do
-  for strategy in random score_guided; do
-    for n in 50 100 200; do
-      for seed in 42 0 1 2 3; do
-        python scripts/run_llm_active_loop.py \
-          --project_path "{PROJECT_PATH}" \
-          --data_dir     "{DATA_DIR}" \
-          --dataset $dataset --strategy $strategy \
-          --n_llm_calls $n --seed $seed --device cuda
-      done
-    done
-  done
-done
+# Cell 4b — download model to Drive (first run only, ~5 min, saved permanently)
+MODEL_DIR = f"{PROJECT_PATH}/models"
+!mkdir -p "{MODEL_DIR}"
+!wget -q --show-progress \
+    "https://huggingface.co/Qwen/Qwen2.5-7B-Instruct-GGUF/resolve/main/qwen2.5-7b-instruct-q4_k_m.gguf" \
+    -O "{MODEL_DIR}/qwen2.5-7b-instruct-q4_k_m.gguf"
 ```
 
-> **Colab tip:** results are saved incrementally to `data/llm_results/` on Drive — if the runtime disconnects mid-run, already-completed seeds are preserved and the loop can be restarted from where it left off (CSV is in append mode).
+```python
+# Cell 5b — single run (local model)
+!python scripts/run_llm_active_loop.py \
+    --project_path "{PROJECT_PATH}" \
+    --data_dir     "{DATA_DIR}" \
+    --dataset told_br \
+    --strategy score_guided \
+    --n_llm_calls 50 \
+    --backend llamacpp \
+    --llamacpp_model qwen2.5-7b \
+    --device cuda
 ```
+
+**Available model tags** (auto-resolved to `{project_path}/models/`):
+
+| `--llamacpp_model` | Model | VRAM |
+|---|---|---|
+| `qwen2.5-7b` *(default)* | Qwen2.5-7B-Instruct Q4_K_M | ~4.7 GB |
+| `qwen2.5-3b` | Qwen2.5-3B-Instruct Q4_K_M | ~2.3 GB |
+| `qwen2.5-1.5b` | Qwen2.5-1.5B-Instruct Q4_K_M | ~1.1 GB |
+| `mistral-7b` | Mistral-7B-Instruct-v0.2 Q4_K_M | ~4.7 GB |
+
+> You can also pass an explicit path: `--llamacpp_model /path/to/model.gguf`
+
+---
+
+#### Full experiment sweep (Python loop — works with both backends)
+
+```python
+# Cell — full sweep
+import subprocess
+
+datasets   = ["told_br", "tweets_hs", "20_newsgroups", "wikinews", "pt_tweets", "tweeteval"]
+strategies = ["random", "score_guided"]
+
+for dataset in datasets:
+    for strategy in strategies:
+        cmd = [
+            "python", "-u", "scripts/run_llm_active_loop.py",
+            "--project_path", PROJECT_PATH,
+            "--data_dir",     DATA_DIR,
+            "--dataset",      dataset,
+            "--strategy",     strategy,
+            "--n_llm_calls",  "50",
+            "--seed",         "42",
+            "--device",       "cuda",
+            # --- local model (comment out to use Groq) ---
+            "--backend",      "llamacpp",
+            "--llamacpp_model", "qwen2.5-7b",
+        ]
+        print(f"\n>>> {dataset} | {strategy} | N=50", flush=True)
+        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1)
+        for line in proc.stdout:
+            print(line, end="", flush=True)
+        proc.wait()
+```
+
+> **Colab tip:** results are saved incrementally to `data/llm_results/` on Drive — if the runtime disconnects mid-run, already-completed runs are preserved (CSV append mode). Just re-run the loop; completed entries will be duplicated but are easy to deduplicate by `(dataset, strategy, n_llm_calls, seed)`.
+
 
 Results are saved incrementally to `data/llm_results/{strategy}/N_{n}/{dataset}.csv`.
 
