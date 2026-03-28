@@ -479,6 +479,7 @@ def select_samples(
 def run_llm_active_loop(
     texts: np.ndarray,
     embeddings: np.ndarray,
+    labels: np.ndarray,
     dataset_name: str,
     annotator: LLMAnnotator,
     unsup_model_cls,
@@ -511,6 +512,8 @@ def run_llm_active_loop(
     Args:
         texts: Raw text array (full dataset, pre-split).
         embeddings: Pre-computed embeddings (N x D).
+        labels: Ground-truth binary labels (0=normal, 1=anomaly). Used ONLY for
+                diagnostic metrics (LLM agreement, train AUC) — never for training.
         dataset_name: Key in TASK_CONTEXT (for prompt building).
         annotator: Initialized LLMAnnotator instance.
         unsup_model_cls: Class for the unsupervised AD model (e.g. deepod.models.DeepSVDD).
@@ -553,6 +556,7 @@ def run_llm_active_loop(
     X_test = embeddings[test_idx]
     texts_train = texts[train_idx]
     texts_test = texts[test_idx]
+    binary_labels = labels  # alias for clarity — used only in diagnostics
 
     if verbose:
         print(f"[1] Split: {len(train_idx)} train / {len(test_idx)} test")

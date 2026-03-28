@@ -243,6 +243,7 @@ def main():
     loop_result = run_llm_active_loop(
         texts=texts,
         embeddings=embeddings,
+        labels=binary_labels,
         dataset_name=args.dataset,
         annotator=annotator,
         unsup_model_cls=DeepSVDD,
