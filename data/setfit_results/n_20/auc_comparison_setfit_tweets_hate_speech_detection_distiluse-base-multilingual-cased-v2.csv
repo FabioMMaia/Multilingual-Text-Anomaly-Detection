@@ -1,0 +1,43 @@
+method,model,n_known_anomalies,roc_auc,pr_auc,representation,k_per_class,dataset,encoder,date
+DevNet (Original),DevNet,5,0.605344728473408,0.10726251296053088,Original,0,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+DevNet (Original),DevNet,10,0.5562991847264345,0.061881103245132234,Original,0,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+DevNet (Original),DevNet,20,0.5639880724826056,0.06308105776996645,Original,0,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+DevNet (Original),DevNet,50,0.6218133111320665,0.10453849988942984,Original,0,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+DevNet (Original),DevNet,100,0.622208629609807,0.1078189743473787,Original,0,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+DevNet (Original),DevNet,200,0.6294925707877768,0.09849447535893066,Original,0,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+DevNet (Original),DevNet,500,0.6819611874279662,0.14602634708256643,Original,0,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+"DevNet (SetFit, k=20)",DevNet,5,0.7518577986197834,0.32807041276041166,SetFit,20,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+"DevNet (SetFit, k=20)",DevNet,10,0.7324900250047433,0.2820085803637453,SetFit,20,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+"DevNet (SetFit, k=20)",DevNet,20,0.7929278770321664,0.31503767511743386,SetFit,20,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+"DevNet (SetFit, k=20)",DevNet,50,0.7785780428337199,0.3500549265017001,SetFit,20,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+"DevNet (SetFit, k=20)",DevNet,100,0.6593612038523731,0.08635477024904754,SetFit,20,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+"DevNet (SetFit, k=20)",DevNet,200,0.7696250421229396,0.3352240068466125,SetFit,20,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+"DevNet (SetFit, k=20)",DevNet,500,0.795974887648563,0.3587208743783668,SetFit,20,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+DeepSAD (Original),DeepSAD,5,0.5545859492032746,0.07152754866581072,Original,0,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+DeepSAD (Original),DeepSAD,10,0.6098620066660437,0.09196923432885257,Original,0,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+DeepSAD (Original),DeepSAD,20,0.5703584768345071,0.07542499247859288,Original,0,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+DeepSAD (Original),DeepSAD,50,0.666933421685314,0.1845148850812115,Original,0,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+DeepSAD (Original),DeepSAD,100,0.725936686744088,0.25358744976082187,Original,0,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+DeepSAD (Original),DeepSAD,200,0.7899414668127873,0.3358738780381757,Original,0,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+DeepSAD (Original),DeepSAD,500,0.8188518207021152,0.49047460528305276,Original,0,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+"DeepSAD (SetFit, k=20)",DeepSAD,5,0.8297134507395231,0.43208234367476184,SetFit,20,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+"DeepSAD (SetFit, k=20)",DeepSAD,10,0.8070857155802489,0.3314978047340273,SetFit,20,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+"DeepSAD (SetFit, k=20)",DeepSAD,20,0.8505605536724123,0.39903993723362213,SetFit,20,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+"DeepSAD (SetFit, k=20)",DeepSAD,50,0.8569694704261567,0.26718169991616464,SetFit,20,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+"DeepSAD (SetFit, k=20)",DeepSAD,100,0.8356630504654055,0.26007827536832573,SetFit,20,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+"DeepSAD (SetFit, k=20)",DeepSAD,200,0.8906598930148131,0.44027143621731596,SetFit,20,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+"DeepSAD (SetFit, k=20)",DeepSAD,500,0.9017237131618965,0.3935773638325406,SetFit,20,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+MLP (Original),MLP,5,0.7624243556960125,0.1947257460696747,Original,0,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+MLP (Original),MLP,10,0.7405912220041742,0.19483182226633036,Original,0,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+MLP (Original),MLP,20,0.8073468070103899,0.2319452734893705,Original,0,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+MLP (Original),MLP,50,0.8072816757425672,0.2628694863607674,Original,0,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+MLP (Original),MLP,100,0.8791950908014827,0.391930654059509,Original,0,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+MLP (Original),MLP,200,0.909169632971147,0.4586419402531896,Original,0,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+MLP (Original),MLP,500,0.9293076546230457,0.557366852209801,Original,0,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+"MLP (SetFit, k=20)",MLP,5,0.846603404383051,0.318812828641795,SetFit,20,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+"MLP (SetFit, k=20)",MLP,10,0.8585660360260865,0.31781834066043924,SetFit,20,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+"MLP (SetFit, k=20)",MLP,20,0.8682507723718826,0.31918930850792493,SetFit,20,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+"MLP (SetFit, k=20)",MLP,50,0.863155808151603,0.3266526750565058,SetFit,20,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+"MLP (SetFit, k=20)",MLP,100,0.8893068617206549,0.46696399859219395,SetFit,20,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+"MLP (SetFit, k=20)",MLP,200,0.8904780918237605,0.4381978368066542,SetFit,20,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715
+"MLP (SetFit, k=20)",MLP,500,0.9172408129514942,0.5096048802256794,SetFit,20,tweets_hate_speech_detection,distiluse-base-multilingual-cased-v2,20260122_215715

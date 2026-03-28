@@ -1,0 +1,37 @@
+method,model,n_known_anomalies,roc_auc,pr_auc,representation,k_per_class,dataset,encoder,date
+DevNet (Original),DevNet,5,0.3572189034127876,0.034793244708789986,Original,0,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+DevNet (Original),DevNet,10,0.3288578695215,0.03339975916289824,Original,0,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+DevNet (Original),DevNet,20,0.38583131247412317,0.03805923444034642,Original,0,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+DevNet (Original),DevNet,50,0.42927485656828535,0.040579374102027235,Original,0,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+DevNet (Original),DevNet,100,0.4018897498077719,0.038348371179515395,Original,0,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+DevNet (Original),DevNet,200,0.41987046785355175,0.04366000512536522,Original,0,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+"DevNet (SetFit, k=20)",DevNet,5,0.8922783462471167,0.4298652304804906,SetFit,20,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+"DevNet (SetFit, k=20)",DevNet,10,0.7399449931980836,0.3366334557448759,SetFit,20,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+"DevNet (SetFit, k=20)",DevNet,20,0.9168687525876855,0.42550244545505334,SetFit,20,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+"DevNet (SetFit, k=20)",DevNet,50,0.9181256284379251,0.448221673273817,SetFit,20,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+"DevNet (SetFit, k=20)",DevNet,100,0.723339445200213,0.17700859057370216,SetFit,20,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+"DevNet (SetFit, k=20)",DevNet,200,0.728662684095345,0.15309576042356376,SetFit,20,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+DeepSAD (Original),DeepSAD,5,0.6096735080144319,0.08929970928750605,Original,0,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+DeepSAD (Original),DeepSAD,10,0.681566806648134,0.15750549514102594,Original,0,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+DeepSAD (Original),DeepSAD,20,0.721609392559295,0.16838014094761228,Original,0,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+DeepSAD (Original),DeepSAD,50,0.7348287691488732,0.2960780166013602,Original,0,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+DeepSAD (Original),DeepSAD,100,0.800555982729047,0.3541001072311386,Original,0,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+DeepSAD (Original),DeepSAD,200,0.8622168332643284,0.5312081449041358,Original,0,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+"DeepSAD (SetFit, k=20)",DeepSAD,5,0.88973502099722,0.39764519353215655,SetFit,20,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+"DeepSAD (SetFit, k=20)",DeepSAD,10,0.8138492931921689,0.2696007740924827,SetFit,20,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+"DeepSAD (SetFit, k=20)",DeepSAD,20,0.6827349618501214,0.09627083426337424,SetFit,20,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+"DeepSAD (SetFit, k=20)",DeepSAD,50,0.9427308215532029,0.521343997424994,SetFit,20,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+"DeepSAD (SetFit, k=20)",DeepSAD,100,0.9521352102679363,0.5294116618679706,SetFit,20,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+"DeepSAD (SetFit, k=20)",DeepSAD,200,0.9579168391790382,0.5504315124850474,SetFit,20,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+MLP (Original),MLP,5,0.8461140356065536,0.2687636661980879,Original,0,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+MLP (Original),MLP,10,0.8176051339681788,0.19240951364055847,Original,0,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+MLP (Original),MLP,20,0.8228544389897675,0.27471429097168515,Original,0,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+MLP (Original),MLP,50,0.8910658307210032,0.367315930308106,Original,0,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+MLP (Original),MLP,100,0.9137931034482759,0.3681308427893463,Original,0,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+MLP (Original),MLP,200,0.9307683208138641,0.49503960619604576,Original,0,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+"MLP (SetFit, k=20)",MLP,5,0.9452297864789732,0.4990388081269235,SetFit,20,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+"MLP (SetFit, k=20)",MLP,10,0.9445200212929556,0.49255775030819915,SetFit,20,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+"MLP (SetFit, k=20)",MLP,20,0.9456290293961082,0.5051588788426093,SetFit,20,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+"MLP (SetFit, k=20)",MLP,50,0.9473886555864435,0.5389096302091405,SetFit,20,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+"MLP (SetFit, k=20)",MLP,100,0.9527266812562843,0.5317593624254855,SetFit,20,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856
+"MLP (SetFit, k=20)",MLP,200,0.9623824451410657,0.5798616594327258,SetFit,20,wikinews,distiluse-base-multilingual-cased-v2,20260122_223856

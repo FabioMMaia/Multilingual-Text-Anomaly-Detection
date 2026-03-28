@@ -1,0 +1,37 @@
+method,model,n_known_anomalies,roc_auc,pr_auc,representation,k_per_class,dataset,encoder,date
+DevNet (Original),DevNet,5,0.5169303509729042,0.05188177450337407,Original,0,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+DevNet (Original),DevNet,10,0.5287543189670849,0.05359130308597227,Original,0,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+DevNet (Original),DevNet,20,0.5172722313147844,0.05109044412864018,Original,0,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+DevNet (Original),DevNet,50,0.520661938534279,0.051121585157605114,Original,0,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+DevNet (Original),DevNet,100,0.5222222222222223,0.05199818253674125,Original,0,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+DevNet (Original),DevNet,200,0.5369339879978177,0.053833276199268934,Original,0,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+"DevNet (SetFit, k=20)",DevNet,5,0.4685797417712311,0.048070814641133025,SetFit,20,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+"DevNet (SetFit, k=20)",DevNet,10,0.46685942898708854,0.04687864115014667,SetFit,20,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+"DevNet (SetFit, k=20)",DevNet,20,0.47044917257683216,0.04727720984306907,SetFit,20,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+"DevNet (SetFit, k=20)",DevNet,50,0.4600436442989635,0.04498740421006041,SetFit,20,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+"DevNet (SetFit, k=20)",DevNet,100,0.4722785961083833,0.04483462636717378,SetFit,20,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+"DevNet (SetFit, k=20)",DevNet,200,0.4965848336061102,0.049556966545113046,SetFit,20,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+DeepSAD (Original),DeepSAD,5,0.5212875068194217,0.04790907728547862,Original,0,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+DeepSAD (Original),DeepSAD,10,0.46810692853246044,0.04293618447238342,Original,0,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+DeepSAD (Original),DeepSAD,20,0.5256883069649027,0.05022834474779979,Original,0,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+DeepSAD (Original),DeepSAD,50,0.5137588652482269,0.05798986710779362,Original,0,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+DeepSAD (Original),DeepSAD,100,0.5586652118567013,0.06097594728081643,Original,0,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+DeepSAD (Original),DeepSAD,200,0.6086961265684669,0.09122635614601642,Original,0,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+"DeepSAD (SetFit, k=20)",DeepSAD,5,0.5731332969630842,0.06380277871252277,SetFit,20,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+"DeepSAD (SetFit, k=20)",DeepSAD,10,0.510354609929078,0.05498358526692071,SetFit,20,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+"DeepSAD (SetFit, k=20)",DeepSAD,20,0.5709347154028005,0.06217154507606494,SetFit,20,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+"DeepSAD (SetFit, k=20)",DeepSAD,50,0.4788870703764321,0.05047331811970726,SetFit,20,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+"DeepSAD (SetFit, k=20)",DeepSAD,100,0.6059610838334242,0.08644778428881401,SetFit,20,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+"DeepSAD (SetFit, k=20)",DeepSAD,200,0.634275322785961,0.08330643176538523,SetFit,20,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+MLP (Original),MLP,5,0.5296708492453174,0.04911279958270959,Original,0,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+MLP (Original),MLP,10,0.6189670849245317,0.07963052242467251,Original,0,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+MLP (Original),MLP,20,0.5767321331151118,0.07072770530706177,Original,0,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+MLP (Original),MLP,50,0.5743844335333698,0.06079263760054096,Original,0,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+MLP (Original),MLP,100,0.6655682851427533,0.09500647158837491,Original,0,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+MLP (Original),MLP,200,0.6462302236770322,0.08022064074567542,Original,0,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+"MLP (SetFit, k=20)",MLP,5,0.5362065830150936,0.053085381373701904,SetFit,20,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+"MLP (SetFit, k=20)",MLP,10,0.6152136752136752,0.07730414601134075,SetFit,20,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+"MLP (SetFit, k=20)",MLP,20,0.5821785779232588,0.07230918497939252,SetFit,20,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+"MLP (SetFit, k=20)",MLP,50,0.5874995453718858,0.08234753264368086,SetFit,20,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+"MLP (SetFit, k=20)",MLP,100,0.6915839243498818,0.1055831712325438,SetFit,20,told-br,distiluse-base-multilingual-cased-v2,20260122_223157
+"MLP (SetFit, k=20)",MLP,200,0.6891653027823242,0.11339059759084576,SetFit,20,told-br,distiluse-base-multilingual-cased-v2,20260122_223157

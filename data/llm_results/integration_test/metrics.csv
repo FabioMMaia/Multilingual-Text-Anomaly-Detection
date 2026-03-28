@@ -1,0 +1,3 @@
+dataset,strategy,n_llm_calls,seed,n_llm_labeled,n_anomalies_found,n_normals_found,n_parse_errors,anomaly_threshold,roc_auc,pr_auc,backend,llm_model,device
+told_br_SYNTHETIC,score_guided,10,42,10,10,0,0,0.6,1.0,1.0,groq,llama-3.3-70b-versatile,cpu
+told_br_SYNTHETIC,score_guided,20,42,20,16,4,0,0.6,1.0,1.0,groq,llama-3.3-70b-versatile,cpu

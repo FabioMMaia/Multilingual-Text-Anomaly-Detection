@@ -6,20 +6,30 @@ scipy>=1.2.0
 statsmodels>=0.9.0
 tqdm>=4.66.1
 scikit-learn>=1.3.2
-transformers>=4.44.2
+# SetFit requires pinned versions (tested in experiments)
+transformers==4.40.2
+sentence-transformers==2.6.1
+setfit==0.7.0
+datasets==2.18.0
 keras>=2.3.0
 tensorflow>=2.0.0
+tf-keras
 torch>=2.5.0
 kagglehub>=0.3.3
-datasets==2.19.1
-sentence-transformers>=2.2.2
 accelerate>=0.21.0
 safetensors>=0.3.1
 fsspec==2023.6.0
 mwparserfromhell
 unidecode
 huggingface_hub>=0.14.0
-fsspec==2023.6.0 
-tf-keras
 seaborn
+python-dotenv
 pyod
+deepod
+# LLM backends (install only what you use)
+groq                  # Groq API — FREE tier, no credit card (recommended)
+# google-genai          # Gemini API (free tier geo-restricted in some regions e.g. Brazil)
+# openai                # OpenAI gpt-4o-mini
+# llama-cpp-python      # Local GGUF inference (CPU, no GPU needed)
+#   Recommended model: Qwen2.5-1.5B-Instruct-Q4_K_M.gguf (~1GB)
+#   https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF

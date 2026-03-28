@@ -1,0 +1,43 @@
+method,model,n_known_anomalies,roc_auc,pr_auc,representation,k_per_class,dataset,encoder,date
+DevNet (Original),DevNet,5,0.4767590402788883,0.04389752874869171,Original,0,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+DevNet (Original),DevNet,10,0.4816014105161438,0.04801149123883763,Original,0,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+DevNet (Original),DevNet,20,0.47867413742925524,0.04611298797666642,Original,0,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+DevNet (Original),DevNet,50,0.4848776394198574,0.04733735855654094,Original,0,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+DevNet (Original),DevNet,100,0.47037956911569917,0.043351933511230005,Original,0,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+DevNet (Original),DevNet,200,0.4675015862341561,0.043895920077978386,Original,0,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+DevNet (Original),DevNet,500,0.47586035739480226,0.046070586539007516,Original,0,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+"DevNet (SetFit, k=20)",DevNet,5,0.9817145896182269,0.9777184278621341,SetFit,20,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+"DevNet (SetFit, k=20)",DevNet,10,0.3035633051060571,0.09962258341321628,SetFit,20,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+"DevNet (SetFit, k=20)",DevNet,20,0.9639632087860889,0.9453559817155462,SetFit,20,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+"DevNet (SetFit, k=20)",DevNet,50,0.9554735203284423,0.9310640157153759,SetFit,20,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+"DevNet (SetFit, k=20)",DevNet,100,0.968291956246623,0.9597476596895667,SetFit,20,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+"DevNet (SetFit, k=20)",DevNet,200,0.9903874681065686,0.9859804165470174,SetFit,20,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+"DevNet (SetFit, k=20)",DevNet,500,0.7973246406759729,0.6147291472348353,SetFit,20,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+DeepSAD (Original),DeepSAD,5,0.5743461120545319,0.07692968450863014,Original,0,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+DeepSAD (Original),DeepSAD,10,0.5815478191909687,0.07567418211232071,Original,0,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+DeepSAD (Original),DeepSAD,20,0.6218951487449678,0.1069183696426132,Original,0,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+DeepSAD (Original),DeepSAD,50,0.7153534594346319,0.22479943721282689,Original,0,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+DeepSAD (Original),DeepSAD,100,0.7522231609337762,0.2722065605683115,Original,0,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+DeepSAD (Original),DeepSAD,200,0.8287689661332336,0.4022090374566263,Original,0,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+DeepSAD (Original),DeepSAD,500,0.8434737727445257,0.48667712380309125,Original,0,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+"DeepSAD (SetFit, k=20)",DeepSAD,5,0.9998574665399563,0.9965253151589414,SetFit,20,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+"DeepSAD (SetFit, k=20)",DeepSAD,10,0.9986854898740023,0.9289402911760505,SetFit,20,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+"DeepSAD (SetFit, k=20)",DeepSAD,20,0.9994380288689907,0.9740844291805815,SetFit,20,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+"DeepSAD (SetFit, k=20)",DeepSAD,50,0.9998427108733879,0.9966758735372241,SetFit,20,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+"DeepSAD (SetFit, k=20)",DeepSAD,100,0.9996336199386102,0.9943966110922725,SetFit,20,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+"DeepSAD (SetFit, k=20)",DeepSAD,200,0.9995968877473654,0.9933034570141698,SetFit,20,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+"DeepSAD (SetFit, k=20)",DeepSAD,500,0.9999438028868991,0.9987554999229713,SetFit,20,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+MLP (Original),MLP,5,0.7259707894313008,0.1263860929609388,Original,0,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+MLP (Original),MLP,10,0.7406795204219995,0.1813687402812766,Original,0,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+MLP (Original),MLP,20,0.7532554296928593,0.21576713754034677,Original,0,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+MLP (Original),MLP,50,0.8319543064098928,0.31421490463487056,Original,0,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+MLP (Original),MLP,100,0.8477488346947791,0.3332034397819283,Original,0,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+MLP (Original),MLP,200,0.8629575316218642,0.4156846067140957,Original,0,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+MLP (Original),MLP,500,0.9081858473064784,0.5356282830716755,Original,0,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+"MLP (SetFit, k=20)",MLP,5,0.9998458503769132,0.9975003332340617,SetFit,20,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+"MLP (SetFit, k=20)",MLP,10,0.9998471061783232,0.9894683168103788,SetFit,20,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+"MLP (SetFit, k=20)",MLP,20,0.999476330811998,0.9663012931357307,SetFit,20,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+"MLP (SetFit, k=20)",MLP,50,0.9998894894759133,0.9963018830322405,SetFit,20,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+"MLP (SetFit, k=20)",MLP,100,0.999860919993834,0.99601199063617,SetFit,20,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+"MLP (SetFit, k=20)",MLP,200,0.9999102101991795,0.997455065874526,SetFit,20,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
+"MLP (SetFit, k=20)",MLP,500,0.9999720584186258,0.9994370223769038,SetFit,20,portuguese-tweets-for-sentiment-analysis,distiluse-base-multilingual-cased-v2,20260122_230820
