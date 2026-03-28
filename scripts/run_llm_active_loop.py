@@ -175,13 +175,24 @@ def main():
     # ------------------------------------------------------------------
     encoder_short = args.encoder.split("/")[-1]
 
+    # Mapping from short dataset arg -> actual parquet filename prefix
+    DATASET_FILE_MAP = {
+        "told_br"        : "told-br",
+        "tweets_hs"      : "tweets_hate_speech_detection",
+        "pt_tweets"      : "portuguese-tweets-for-sentiment-analysis",
+        "tweeteval"      : "tweet_eval",
+        "20_newsgroups"  : "20_newsgroups",
+        "wikinews"       : "wikinews",
+    }
+    dataset_file = DATASET_FILE_MAP.get(args.dataset, args.dataset)
+
     # ------------------------------------------------------------------
     # Load data
     # ------------------------------------------------------------------
     data_dir = os.path.abspath(args.data_dir) if args.data_dir else os.path.join(project_path, "data")
-    texts_path = os.path.join(data_dir, f"texts_{args.dataset}.parquet")
-    labels_path = os.path.join(data_dir, f"labels_{args.dataset}.parquet")
-    emb_path = os.path.join(data_dir, f"embeddings_{args.dataset}_{encoder_short}.parquet")
+    texts_path = os.path.join(data_dir, f"texts_{dataset_file}.parquet")
+    labels_path = os.path.join(data_dir, f"labels_{dataset_file}.parquet")
+    emb_path = os.path.join(data_dir, f"embeddings_{dataset_file}_{encoder_short}.parquet")
 
     print(f"Loading data for '{args.dataset}'...")
     texts_df = pd.read_parquet(texts_path)
