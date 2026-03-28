@@ -420,7 +420,9 @@ class LLMAnnotator:
         """
         results = []
         n = len(texts)
-        iterator = tqdm(enumerate(texts), total=n, desc=f"LLM [{self.backend}]", unit="text", disable=not verbose)
+        import sys as _sys
+        _tqdm_disable = not (verbose and _sys.stderr.isatty())
+        iterator = tqdm(enumerate(texts), total=n, desc=f"LLM [{self.backend}]", unit="text", disable=_tqdm_disable)
         for i, text in iterator:
             result = self.annotate(text, dataset_name)
             results.append(result)
