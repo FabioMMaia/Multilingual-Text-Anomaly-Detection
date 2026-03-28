@@ -27,9 +27,13 @@ python-dotenv
 pyod
 deepod
 # LLM backends (install only what you use)
-groq                  # Groq API — FREE tier, no credit card (recommended)
+groq                  # Groq API — FREE tier, 100k tokens/day (default backend)
 # google-genai          # Gemini API (free tier geo-restricted in some regions e.g. Brazil)
 # openai                # OpenAI gpt-4o-mini
-# llama-cpp-python      # Local GGUF inference (CPU, no GPU needed)
-#   Recommended model: Qwen2.5-1.5B-Instruct-Q4_K_M.gguf (~1GB)
-#   https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF
+#
+# Local GGUF inference via llama-cpp-python (no API key, no token limits):
+#   CPU-only:  pip install llama-cpp-python
+#   GPU/CUDA:  CMAKE_ARGS="-DGGML_CUDA=on" pip install llama-cpp-python --no-cache-dir
+#   Recommended model: Qwen2.5-7B-Instruct Q4_K_M (~4.7 GB, multilingual PT/EN)
+#   Download:  wget https://huggingface.co/Qwen/Qwen2.5-7B-Instruct-GGUF/resolve/main/qwen2.5-7b-instruct-q4_k_m.gguf
+#   Usage:     --backend llamacpp --llamacpp_model qwen2.5-7b
