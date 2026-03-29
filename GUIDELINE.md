@@ -205,7 +205,24 @@ This is a key design difference from the SetFit experiment.
 - AD models: **MLP** (most stable) + **DevNet** (most sensitive to label quality)
 - N per condition: 50, 100, 200 LLM calls
 - Seeds: 5 per condition
-- LLM: GPT-4o or Llama 3 (AD-LLM Setting 2 prompt — includes anomaly description)
+- LLM: **Qwen 2.5 7B Instruct** (see model selection rationale below)
+
+### LLM annotator model selection
+
+The LLM annotator is a **fixed parameter** across all experiments — model choice is a design decision, not a variable of interest. The selection criterion was: best multilingual performance in the ~7B parameter class (VRAM-constrained to ≤ 5 GB for local inference on Colab T4).
+
+| Model | Multilingual coverage | Portuguese quality | JSON instruction-following | VRAM (Q4_K_M) | Notes |
+|---|---|---|---|---|---|
+| **Qwen 2.5 7B Instruct** ✅ | 29 languages incl. PT | ★★★★ | ★★★★ | ~4.7 GB | Best multilingual 7B on Open LLM Leaderboard (2024) |
+| Llama 3.1 8B Instruct | EN/DE/FR/IT/PT/HI/ES/TH | ★★★☆ | ★★★☆ | ~5.0 GB | Official PT support; weaker than Qwen on non-EN benchmarks |
+| Mistral 7B Instruct v0.2 | EN-focused | ★★☆☆ | ★★★☆ | ~4.7 GB | No explicit multilingual training; poor PT performance |
+
+**Rationale:** Qwen 2.5 7B was selected because it demonstrates the strongest performance on multilingual benchmarks (including Portuguese) among open-source models in the 7B parameter class, as evaluated by the HuggingFace Open LLM Leaderboard. Its training includes explicit multilingual data across 29 languages, with Portuguese represented. Llama 3.1 8B officially supports Portuguese but ranks lower on multilingual classification tasks in this parameter range. Mistral 7B was excluded due to predominantly English training.
+
+> **Citation:** HuggingFace Open LLM Leaderboard. Available at: https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard. Accessed March 2026.
+
+Comparing LLM model variants (1.5B vs 3B vs 7B vs 70B) is outside the scope of this work and is noted as future work.
+
 
 ### Success criteria
 - **Positive:** LLM-labeled semi-supervised > unsupervised baseline on TOLD-Br and/or Tweets HS

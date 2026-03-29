@@ -228,24 +228,45 @@ def main():
     # Init LLM annotator
     # ------------------------------------------------------------------
     # Known GGUF models: tag -> (hf_repo, filename)
+    # (hf_repo, first_shard_filename, all_shard_filenames)
+    # llama-cpp-python loads sharded models by passing the first shard path
     LLAMACPP_MODEL_MAP = {
-        "qwen2.5-7b" : ("Qwen/Qwen2.5-7B-Instruct-GGUF",   "qwen2.5-7b-instruct-q4_k_m.gguf"),
-        "qwen2.5-3b" : ("Qwen/Qwen2.5-3B-Instruct-GGUF",   "qwen2.5-3b-instruct-q4_k_m.gguf"),
-        "qwen2.5-1.5b": ("Qwen/Qwen2.5-1.5B-Instruct-GGUF", "qwen2.5-1.5b-instruct-q4_k_m.gguf"),
-        "mistral-7b" : ("TheBloke/Mistral-7B-Instruct-v0.2-GGUF", "mistral-7b-instruct-v0.2.Q4_K_M.gguf"),
+        "qwen2.5-7b" : (
+            "Qwen/Qwen2.5-7B-Instruct-GGUF",
+            "qwen2.5-7b-instruct-q4_k_m-00001-of-00002.gguf",
+            ["qwen2.5-7b-instruct-q4_k_m-00001-of-00002.gguf",
+             "qwen2.5-7b-instruct-q4_k_m-00002-of-00002.gguf"],
+        ),
+        "qwen2.5-3b" : (
+            "Qwen/Qwen2.5-3B-Instruct-GGUF",
+            "qwen2.5-3b-instruct-q4_k_m.gguf",
+            ["qwen2.5-3b-instruct-q4_k_m.gguf"],
+        ),
+        "qwen2.5-1.5b": (
+            "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
+            "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+            ["qwen2.5-1.5b-instruct-q4_k_m.gguf"],
+        ),
+        "mistral-7b" : (
+            "TheBloke/Mistral-7B-Instruct-v0.2-GGUF",
+            "mistral-7b-instruct-v0.2.Q4_K_M.gguf",
+            ["mistral-7b-instruct-v0.2.Q4_K_M.gguf"],
+        ),
     }
 
     llamacpp_kwargs = {}
     if args.backend == "llamacpp":
         tag = args.llamacpp_model
         if tag in LLAMACPP_MODEL_MAP:
-            hf_repo, gguf_filename = LLAMACPP_MODEL_MAP[tag]
+            hf_repo, first_shard, all_shards = LLAMACPP_MODEL_MAP[tag]
             models_dir = os.path.join(project_path, "models")
             os.makedirs(models_dir, exist_ok=True)
-            resolved_path = os.path.join(models_dir, gguf_filename)
+            resolved_path = os.path.join(models_dir, first_shard)
             if not os.path.exists(resolved_path):
-                print(f"Model '{tag}' not found locally. Download it with:")
-                print(f"  wget https://huggingface.co/{hf_repo}/resolve/main/{gguf_filename} -O {resolved_path}")
+                print(f"Model '{tag}' not found locally. Download with:")
+                for shard in all_shards:
+                    dst = os.path.join(models_dir, shard)
+                    print(f"  wget https://huggingface.co/{hf_repo}/resolve/main/{shard} -O {dst}")
                 raise FileNotFoundError(f"GGUF model not found: {resolved_path}")
             print(f"Local model: {tag} -> {resolved_path}")
             model_arg = resolved_path
