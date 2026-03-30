@@ -28,7 +28,9 @@ src/codigos_exemplo/
 *.obj
 *.xlsx
 
-# CSV: blanket rule removed — experiment results (data/llm_results/, data/setfit_results/) ARE versioned
+# CSV results — ignored (large, generated)
+data/llm_results/**/*.csv
+data/setfit_results/**/*.csv
 
 # Distribution / packaging
 .Python

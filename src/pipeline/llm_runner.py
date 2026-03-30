@@ -90,16 +90,18 @@ TASK_CONTEXT = {
     "tweeteval": {
         "description": (
             "English tweets labeled for sentiment analysis (negative / neutral / positive). "
-            "In this dataset, NEGATIVE sentiment is the MINORITY class and is treated as anomalous."
+            "In this dataset, NEUTRAL sentiment is the MAJORITY class and is treated as normal. "
+            "Both NEGATIVE and POSITIVE sentiment are minority classes and are treated as anomalous."
         ),
         "normal_description": (
-            "Tweets expressing neutral or positive sentiment."
+            "Tweets expressing neutral sentiment — neither clearly positive nor clearly negative."
         ),
         "anomaly_criterion": (
-            "Tweets expressing NEGATIVE sentiment, including sarcasm and implicit negativity. "
-            "This is a frequency-based anomaly criterion: negative tweets are the minority class. "
-            "Score as anomalous (1.0) any tweet that expresses negativity, and as normal (0.0) "
-            "neutral or positive tweets."
+            "Tweets expressing STRONG sentiment in either direction: clearly NEGATIVE (criticism, anger, sadness, "
+            "sarcasm, complaints) OR clearly POSITIVE (enthusiasm, praise, excitement, strong approval). "
+            "This is a frequency-based anomaly: only neutral tweets are the majority (normal) class. "
+            "Score as anomalous (1.0) any tweet with clear emotional polarity (positive or negative), "
+            "and as normal (0.0) only tweets that are genuinely neutral or ambiguous."
         ),
     },
     "20_newsgroups": {
@@ -313,7 +315,7 @@ class LLMAnnotator:
         if not self.model:
             raise ValueError("Provide model path for llamacpp backend, e.g. model='/path/to/model.gguf'")
         # n_gpu_layers=-1 offloads all layers to GPU; set 0 for CPU-only
-        defaults = {"n_ctx": 2048, "n_threads": 4, "n_gpu_layers": -1, "verbose": False}
+        defaults = {"n_ctx": 8192, "n_threads": 4, "n_gpu_layers": -1, "verbose": False}
         defaults.update(llamacpp_kwargs)
         self._client = Llama(model_path=self.model, **defaults)
 
@@ -349,6 +351,26 @@ class LLMAnnotator:
         )
         return response.choices[0].message.content
 
+    def _truncate_for_llamacpp(self, text: str, dataset_name: str) -> tuple:
+        """Truncate text so the full prompt fits within n_ctx - 300 tokens.
+        Returns (text, truncated: bool).
+        """
+        max_prompt_tokens = self._client.n_ctx() - 300  # reserve 300 for response
+        full_prompt = build_prompt(text, dataset_name)
+        tokens = self._client.tokenize(full_prompt.encode())
+        if len(tokens) <= max_prompt_tokens:
+            return text, False
+        # Measure overhead from the template (empty text)
+        template_tokens = self._client.tokenize(build_prompt("", dataset_name).encode())
+        text_budget = max_prompt_tokens - len(template_tokens)
+        if text_budget <= 0:
+            return text[:200], True  # safety fallback
+        text_tokens = self._client.tokenize(text.encode())
+        if len(text_tokens) > text_budget:
+            text_tokens = text_tokens[:text_budget]
+            text = self._client.detokenize(text_tokens).decode("utf-8", errors="replace")
+        return text, True
+
     def _call_llamacpp(self, prompt: str) -> str:
         response = self._client.create_chat_completion(
             messages=[{"role": "user", "content": prompt}],
@@ -367,6 +389,9 @@ class LLMAnnotator:
                 'reason'        : str (LLM's explanation)
                 'parse_error'   : bool
         """
+        truncated = False
+        if self.backend == "llamacpp":
+            text, truncated = self._truncate_for_llamacpp(text, dataset_name)
         prompt = build_prompt(text, dataset_name)
         raw = None
         for attempt in range(self.max_retries):
@@ -401,10 +426,11 @@ class LLMAnnotator:
                     print(f"  [rate limit] waiting {wait:.0f}s before retry...", flush=True)
                     time.sleep(wait)
                 else:
-                    return {"anomaly_score": None, "reason": str(exc)[:200], "parse_error": True}
+                    return {"anomaly_score": None, "reason": str(exc)[:200], "parse_error": True, "truncated": truncated}
 
         result = parse_llm_response(raw)
         result["parse_error"] = result["anomaly_score"] is None
+        result["truncated"] = truncated
         return result
 
     def annotate_batch(
@@ -624,6 +650,12 @@ def run_llm_active_loop(
             f"(min required: {min_anomalies_required}). "
             f"Results may be unreliable."
         )
+    anomaly_rate = n_anomalies / max(1, n_valid)
+    if anomaly_rate > 0.5:
+        warnings.warn(
+            f"LLM labeled {n_anomalies}/{n_valid} ({anomaly_rate:.0%}) as anomaly — suspiciously high. "
+            f"The LLM may have ignored the prompt (check backend/model format)."
+        )
 
     # Keep only valid-labeled samples for training
     train_mask = valid_mask
@@ -714,7 +746,8 @@ def run_llm_active_loop(
     # Diagnostic: LLM label agreement with ground truth
     # (ground truth used only for logging — not for training)
     # ------------------------------------------------------------------
-    gt_selected = binary_labels[train_idx][selected_local_idx][train_mask]
+    gt_all      = binary_labels[train_idx][selected_local_idx]     # all N (for DataFrame)
+    gt_selected = gt_all[train_mask]                               # valid only (for metrics)
     llm_pred    = np.array(sf_labels)
     n_agree     = int((gt_selected == llm_pred).sum())
     n_disagree  = int((gt_selected != llm_pred).sum())
@@ -732,11 +765,12 @@ def run_llm_active_loop(
         "n_llm_calls": n_llm_calls,
         "seed": random_state,
         "text": selected_texts,
-        "ground_truth": gt_selected,
+        "ground_truth": gt_all,
         "llm_score": llm_scores,
         "llm_label": llm_labels,
         "reason": [r["reason"] for r in llm_results],
         "parse_error": [r["parse_error"] for r in llm_results],
+        "truncated": [r.get("truncated", False) for r in llm_results],
     })
 
     if verbose:
