@@ -1,3 +1,0 @@
-dataset,strategy,n_llm_calls,seed,n_llm_labeled,n_anomalies_found,n_normals_found,n_parse_errors,setfit_skipped,anomaly_threshold,roc_auc,pr_auc,train_roc_auc,train_pr_auc,llm_agreement,llm_precision,llm_recall,backend,llm_model,encoder,device
-told_br,random,50,42,44,6,38,6,False,0.6,0.537522,0.057541,0.557079,0.061749,0.9091,0.3333,1.0,groq,llama-3.3-70b-versatile,distiluse-base-multilingual-cased-v2,cuda
-told_br,random,50,42,50,12,38,0,False,0.6,0.521511,0.04962,0.503057,0.053055,0.8,0.1667,1.0,llamacpp,/content/drive/MyDrive/Projeto ML/2026/Master/Multilingual-Text-Anomaly-Detection/models/qwen2.5-7b-instruct-q4_k_m-00001-of-00002.gguf,distiluse-base-multilingual-cased-v2,cuda
