@@ -1,0 +1,51 @@
+dataset,strategy,n_llm_calls,seed,text,llm_score,llm_label,reason,parse_error
+pt_tweets,score_guided,50,42,@injiaer VOCE NAO ME DECEPCIONA :((((((((((,0.0,0,The text expresses negative sentiment.,False
+pt_tweets,score_guided,50,42,Dai vc marca a @ em um vídeo tao fofo e ela nem liga :((,0.0,0,The text expresses negative sentiment about the recipient not noticing the mention.,False
+pt_tweets,score_guided,50,42,@oalessandrof EU FUI GROSSO CONTIGO? desculpa desculpa desculpa aquele dia eu tava muito puto e chateado com umas coisas devo ter soltado sem querer :(,0.0,0,The text expresses negative sentiment.,False
+pt_tweets,score_guided,50,42,Pandia: 🌗🌗 :-) 🏮 🍺 🎁 🐶 ▶ 😛 ♐,1.0,1,The text contains clear positive emojis and emoticons.,False
+pt_tweets,score_guided,50,42,@ErickAlves77 Só faltou vc pra ficar perfeito :(,0.0,0,The text expresses negative sentiment.,False
+pt_tweets,score_guided,50,42,@SF9official daria tudo pra poder ir ver vcs :(,0.0,0,The tweet expresses negative sentiment about not being able to see the performers.,False
+pt_tweets,score_guided,50,42,mó ruim n poder usar o direct do insta no trampo :(,0.0,0,The text expresses negative sentiment about not being able to use Instagram's direct feature at work.,False
+pt_tweets,score_guided,50,42,"@ArthurAlvares1 @frasesdebebada Vai se foder, meu mindinho n vai :(",0.0,0,The text expresses a negative sentiment.,False
+pt_tweets,score_guided,50,42,"chega de debate por hoje, o cansaço venceu. me desculpe, Brasil :(",0.0,0,The text expresses negative sentiment.,False
+pt_tweets,score_guided,50,42,@SADigaoz Eu não sei :(,0.0,0,The tweet expresses negative sentiment.,False
+pt_tweets,score_guided,50,42,@tarjaprtx mas aniga vc já namora :(,0.0,0,The text expresses negative sentiment about a relationship.,False
+pt_tweets,score_guided,50,42,meu amor mto lindo :( https://t.co/WjYkuIuf1V,0.0,0,The text expresses negative sentiment.,False
+pt_tweets,score_guided,50,42,"@liivabg era só modo d dizer IEJRKSJRKWJS mas ta ventando muito aqui, to sozinho :(",0.0,0,The text expresses a negative sentiment about the weather conditions.,False
+pt_tweets,score_guided,50,42,@nelinho1999 Amanhã n falhes :(,0.0,0,"The tweet expresses negative sentiment, specifically a request for the recipient not to fail tomorrow.",False
+pt_tweets,score_guided,50,42,quwria ver a apresentação de favOriTe de pertinho :(,0.0,0,The text expresses a negative sentiment due to the sad face emoji at the end.,False
+pt_tweets,score_guided,50,42,n acredito q cheguei no ultimo ep de liv e maddie eu to muito triste :(((,0.0,0,The text expresses negative sentiment about the show ending.,False
+pt_tweets,score_guided,50,42,"@vj_junior04 @philosopop Imagina! Se eu coloquei na TL, não é nada privado. É pra se meter mesmo :-)",0.0,0,The tweet does not express positive sentiment.,False
+pt_tweets,score_guided,50,42,@MartaP1899 @AnaLeonorFerre2 E eu fico sem elogio? A Marta apoderou se dele :(,0.0,0,The text expresses a negative sentiment towards receiving an elogio.,False
+pt_tweets,score_guided,50,42,cade o wes :(,0.0,0,The text expresses a negative sentiment.,False
+pt_tweets,score_guided,50,42,@rs1921_ Keita é cabuloso :(,0.0,0,The text expresses a negative sentiment.,False
+pt_tweets,score_guided,50,42,@allybs96 @rrrrrivera :( força pros recem formado,0.0,0,"The text expresses sympathy and support, which is negative sentiment.",False
+pt_tweets,score_guided,50,42,"Alguém salva a comida pf, não tem nada no ifood :(",0.0,0,The text expresses a negative sentiment about not having food options.,False
+pt_tweets,score_guided,50,42,bye tnc :(,0.0,0,The text expresses a negative sentiment.,False
+pt_tweets,score_guided,50,42,ter que se despedir do meu bb é horrível :(,0.0,0,The text clearly expresses negative sentiment.,False
+pt_tweets,score_guided,50,42,"saímos agora, vamos chegar super tarde :(",0.0,0,The text expresses negative sentiment.,False
+pt_tweets,score_guided,50,42,"- Quero sair , nao creio que irei dormi !:-(",0.0,0,The text expresses negative sentiment.,False
+pt_tweets,score_guided,50,42,"Parece que eu não vou ficar bem nunca. Minha garganta melhorou, mas agr coisou minha sinusite :( e gripe e etc",0.0,0,The text expresses negative sentiment about health issues.,False
+pt_tweets,score_guided,50,42,@michellefport se apresentou?? foi bom?? nao pude assistir :(,0.0,0,The text expresses a negative sentiment as it shows disappointment for not being able to watch the presentation.,False
+pt_tweets,score_guided,50,42,ia xingar o luis ricardo no insta mas lembrei q ele ja me bloqueou faz tempo :(((,0.0,0,The text expresses negative sentiment about blocking someone on Instagram.,False
+pt_tweets,score_guided,50,42,"@smcp2000 Parabéns linda, v ter saudades tuas minha louca :((",0.8,1,"The text expresses a positive sentiment with 'Parabéns' and 'v ter saudades tuas', indicating a clear anomaly according to the given criterion.",False
+pt_tweets,score_guided,50,42,@LaraDia03634588 queria mt miga :((((((((,0.0,0,The text expresses a negative sentiment.,False
+pt_tweets,score_guided,50,42,@Lucas_Mazza2000 ksksks não li o mangá ainda :(,0.0,0,The text expresses a negative sentiment about not having read the manga yet.,False
+pt_tweets,score_guided,50,42,queria dar mais atenção pra fromis :(( sinto que não sou uma boa stan,0.0,0,The text expresses negative sentiment about not being a good stan.,False
+pt_tweets,score_guided,50,42,"@k4kaaa Tenho mesmo não :( Tipo, medo tbm tenho, mas de ser assaltado. E NEM SE COMPARA, né?",0.0,0,The text expresses negative sentiment about fear and being assailed.,False
+pt_tweets,score_guided,50,42,FLACASSO :(,0.0,0,The text expresses negative sentiment.,False
+pt_tweets,score_guided,50,42,cara eu não tenho @ :(,0.0,0,The text expresses a negative sentiment.,False
+pt_tweets,score_guided,50,42,@jajajaritos Manda pra mim :(,0.0,0,The text expresses a negative sentiment.,False
+pt_tweets,score_guided,50,42,dá pra ver que o nadal tá mal :(,0.0,0,The text expresses negative sentiment.,False
+pt_tweets,score_guided,50,42,@Lucas1Viado ja tomei 15mil :( :( :( isso é horrivel,0.0,0,"The text expresses a negative sentiment about taking a large amount of something, which is clearly normal according to the anomaly criterion.",False
+pt_tweets,score_guided,50,42,vc merece tudo de bom ❤️ — obrigada meu anjo :((( te amo https://t.co/zDZvKvgUx0,1.0,1,The text expresses clear positive sentiment.,False
+pt_tweets,score_guided,50,42,"@798HS Sério!??? Foram quantos gatinhos? Me dá uuuummmm... Amo demais gatinho, mas não posso ter porque tem gente em casa alérgico. Mas cuida dos pituchinhos com muito amor &amp; carinho. :(",1.0,1,The text expresses a positive sentiment about taking care of kittens.,False
+pt_tweets,score_guided,50,42,eu hoje :( https://t.co/3m5GSxPqrc,0.0,0,The text expresses a negative sentiment with the use of :(.,False
+pt_tweets,score_guided,50,42,ia canta despacito na call mas meu pai chego na hora :(,0.0,0,The text expresses negative sentiment about missing a part of the performance.,False
+pt_tweets,score_guided,50,42,@bemailoca Me falta companhia :(,0.0,0,The text expresses negative sentiment.,False
+pt_tweets,score_guided,50,42,Ese sponsor :(,0.0,0,The text expresses negative sentiment.,False
+pt_tweets,score_guided,50,42,não consigo dormir sem ter algo pra abraçar :(,0.0,0,The text expresses negative sentiment about not being able to sleep without something to hug.,False
+pt_tweets,score_guided,50,42,"@FeeR_BN AAAAAH BRIGADO FEEER! Sou péssimo com datas e sempre me esqueço do teu :( mas saiba que sinto um carinho mto grande por ti! Muito obrigado mesmo, Fer!",1.0,1,The text expresses clear positive sentiment.,False
+pt_tweets,score_guided,50,42,"@OM0MR mando sim, ati ó :( https://t.co/lSXXdlmMPa",0.0,0,The text expresses a negative sentiment.,False
+pt_tweets,score_guided,50,42,eu jogo ff com meus bbs eh lindo :((,0.0,0,The text expresses a negative sentiment.,False
+pt_tweets,score_guided,50,42,Essa semana mesmo :( https://t.co/g7A0RIVj9z,0.0,0,The text expresses negative sentiment.,False

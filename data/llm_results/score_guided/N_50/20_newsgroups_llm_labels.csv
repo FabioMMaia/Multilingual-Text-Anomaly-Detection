@@ -1,0 +1,899 @@
+dataset,strategy,n_llm_calls,seed,text,llm_score,llm_label,reason,parse_error
+20_newsgroups,score_guided,50,42,"
+Don't you Americans study history...the French settled in North America
+as early or before the British...Lemieux can probably trace back his
+North American heritage back a lot further than most of us.",1.0,1,"The text discusses history and heritage, which is not related to computer graphics.",False
+20_newsgroups,score_guided,50,42,"It's only test message.
+
+",0.0,0,The text is a test message and does not discuss any topic other than computer graphics.,False
+20_newsgroups,score_guided,50,42,"%>I dunno, Lemieux?  Hmmm...sounds like he
+%>has *French* blood in him!!!  Hey!  France is part of Europe!  Send that
+%>Euro-blooded boy back!!!
+%
+% Don't you Americans study history...the French settled in North America
+% as early or before the British...Lemieux can probably trace back his
+% North American heritage back a lot further than most of us.
+
+
+<friendly-jibe mode on>
+
+Don't you Canadians understand sarcasm?  Sometimes the reader must
+decide that what he's reading is so ludicrous that it must mean
+the opposite of what it said...
+
+Kinda like the ""Toronto's going to win the Cup"" posts.  Yeah.  Right.
+And cows can fly...
+
+<friendly-jibe mode off>
+
+Geez, Gerald.  Like anyone reading rec.flamefest.hockey.pens.are.great
+didn't know that Le-Mow was from Quebec.",1.0,1,"The text discusses hockey and Canadian history, which is not related to computer graphics.",False
+20_newsgroups,score_guided,50,42,Sorry Mike! What defensemen would the Wings be willing to give up for Beezer?,1.0,1,"The text discusses sports, specifically ice hockey, which is outside the comp.graphics topic.",False
+20_newsgroups,score_guided,50,42,"1993 World Championships in Germany:
+ ====================================
+
+  Group A standings (Munich)            Group B standings (Dortmund)
+  --------------------------            ----------------------------
+
+             GP  W T L  GF-GA +/-  P                  GP  W T L  GF-GA +/-  P
+
+  Canada      5  5 0 0  31- 4 +27 10    Czech republic 5  4 1 0  17- 4 +13  9
+  Sweden      5  3 0 2  17-14  +3  6    Germany        5  4 0 1  20-12  +8  8
+  Russia      5  2 1 2  15-12  +3  5    USA            5  2 2 1  14-10  +4  6
+  Switzerland 5  2 0 3  11-14  -3  4    Finland        5  2 1 2   7- 7   0  5
+  ----------------------------------    -------------------------------------
+  Italy       4  1 1 2   7-19 -12  3    Norway         4  0 0 4   1-13 -12  0
+  Austria     4  0 0 4   3-21 -18  0    France         4  0 0 4   6-19 -13  0
+
+ 
+ April 18:  Italy - Russia        2-2       Norway - Germany          0-6
+            Sweden - Austria      1-0       USA - Czech republic      1-1
+
+ April 19:  Canada - Switzerland  2-0
+            Russia - Austria      4-2       Finland - France          2-0
+
+ April 20:  Sweden - Canada       1-4       Czech republic - Germany  5-0
+            Switzerland - Italy   0-1       Finland - USA             1-1
+
+ April 21:                                  Germany - France          5-3
+            Italy - Sweden        2-6       Czech republic - Norway   2-0
+
+ April 22:  Switzerland - Russia  0-6       USA - France              6-1
+            Austria - Canada      0-11      Norway - Finland          0-2
+
+ April 23:  Switzerland - Austria 5-1       Germany - Finland         3-1
+
+ April 24:  Russia - Sweden       2-5       Czech republic - France   6-2
+            Canada - Italy       11-2       USA - Norway              3-1
+
+ April 25:  Sweden - Switzerland  4-6       Finland- Czech republic   1-3
+            Russia - Canada       1-3       Germany - USA             6-3
+
+ April 26:  Austria - Italy                 France - Norway		20:00
+
+ 
+ PLAYOFFS:
+ =========
+
+ April 27:	Quarterfinals
+		Sweden - USA						15:30
+		Russia - Germany					20:00
+
+ April 28:	Quarterfinals
+		Canada - Finland					15:30
+		Italy/Switzerland - Czech republic			20:00
+
+ April 29:	Relegation
+		A #5 - B #6						15:30
+		A #6 - B #5						20:00
+
+ April 30:	Semifinals
+		A #1/B #4 - A #3/B #2					15:30
+		A #4/B #1 - A #2/B #3					20:00
+
+ May 1:		Relegation						14:30
+		Bronze medal game 					19:00
+
+ May 2:		FINAL							15:00
+",1.0,1,"The text is about sports (World Championships), which is clearly outside the comp.graphics topic.",False
+20_newsgroups,score_guided,50,42,"1993 World Championships in Germany:
+ ====================================
+
+  Group A standings (Munich)            Group B standings (Dortmund)
+  --------------------------            ----------------------------
+
+             GP  W T L  GF-GA +/-  P                  GP  W T L  GF-GA +/-  P
+
+  Canada      3  3 0 0  17- 1 +16  6    Czech republic 3  2 1 0   8- 1  +7  5
+  Russia      3  2 1 0  12- 4  +8  5    Finland        3  2 1 0   5- 1  +4  5
+  Sweden      3  2 0 1   8- 6  +2  4    USA            3  1 2 0   8- 3  +5  4
+  Italy       3  1 1 1   5- 8  -3  3    Germany        3  2 0 1  11- 8  +3  4
+  ----------------------------------    -------------------------------------
+  Switzerland 3  0 0 3   0- 9  -9  0    France         3  0 0 3   4-13  -9  0
+  Austria     3  0 0 3   2-16 -14  0    Norway         3  0 0 3   0-10 -10  0
+
+ 
+ April 18:  Italy - Russia        2-2       Norway - Germany          0-6
+            Sweden - Austria      1-0       USA - Czech republic      1-1
+
+ April 19:  Canada - Switzerland  2-0
+            Russia - Austria      4-2       Finland - France          2-0
+
+ April 20:  Sweden - Canada       1-4       Czech republic - Germany  5-0
+            Switzerland - Italy   0-1       Finland - USA             1-1
+
+ April 21:                                  Germany - France          5-3
+            Italy - Sweden        2-6       Czech republic - Norway   2-0
+
+ April 22:  Switzerland - Russia  0-6       USA - France              6-1
+            Austria - Canada      0-11      Norway - Finland          0-2
+
+ April 23:  Switzerland - Austria           Germany - Finland		20:00
+
+ April 24:  Russia - Sweden                 Czech republic - France	15:30
+            Canada - Italy                  USA - Norway		20:00
+
+ April 25:  Sweden - Switzerland            Finland- Czech republic  	15:30
+            Russia - Canada                 Germany - USA		20:00
+
+ April 26:  Austria - Italy                 France - Norway		20:00
+
+ 
+ PLAYOFFS:
+ =========
+
+ April 27:	Quarterfinals
+		A #2 - B #3						15:30
+		A #3 - B #2						20:00
+
+ April 28:	Quarterfinals
+		A #1 - B #4						15:30
+		A #4 - B #1						20:00
+
+ April 29:	Relegation
+		A #5 - B #6						15:30
+		A #6 - B #5						20:00
+
+ April 30:	Semifinals
+		A #1/B #4 - A #3/B #2					15:30
+		A #4/B #1 - A #2/B #3					20:00
+
+ May 1:		Relegation						14:30
+		Bronze medal game 					19:00
+
+ May 2:		FINAL							15:00
+",1.0,1,"The text discusses sports events, specifically the 1993 World Championships in Germany, which is clearly not about computer graphics.",False
+20_newsgroups,score_guided,50,42,"
+
+If anybody is having problems following the thread be sure to ask the
+origonal poster to rectify your misunderstanding.",1.0,1,"The text is about following a thread and asking the original poster, which is not related to computer graphics.",False
+20_newsgroups,score_guided,50,42,"
+Xenophobic trash deleted.
+
+
+If you're going to go to those extremes, I guess you'd better start 
+packing.  Because unless you're a Native North American, this isn't
+your continent either.  ",1.0,1,"The text discusses politics and xenophobia, which is outside the comp.graphics topic.",False
+20_newsgroups,score_guided,50,42,"Sorry to everyone for wasting space.  Matt, the other day you posted that
+you were doing a mailing list of playoff stats.  I lost your address. 
+Please put me on that list.  Thanks.",1.0,1,"The text is about sports and mailing lists, which is not related to computer graphics.",False
+20_newsgroups,score_guided,50,42,"
+and guess which game ESPN is showing in my area on Thursday - yep,
+Pens-Devils.  There are so many other interesting series, who cares
+about Mario???",1.0,1,"The text discusses sports, specifically hockey, which is outside the comp.graphics topic.",False
+20_newsgroups,score_guided,50,42,"
+Such as?",0.0,0,"The text is too short and vague to determine any topic, thus it's normal.",False
+20_newsgroups,score_guided,50,42,"Which GERMAN satellite channels will show the World Championship action
+from Dusseldorf & Munich?
+Someone please tell me (must be able to root for the Red Machine)!
+
+Thank you",1.0,1,The text discusses sports (World Championship) and is not related to computer graphics.,False
+20_newsgroups,score_guided,50,42,"1993 World Championships in Germany:
+ ====================================
+
+	Group A standings (Munich)	Group B	standings (Dortmund)
+	--------------------------	----------------------------
+
+	           GP  W T L GF-GA P	              GP  W T L GF-GA P
+
+	Sweden      1  1 0 0  1-0  2	Germany        1  1 0 0  6-0  2
+	Italy       1  0 1 0  2-2  1 	Czech republic 1  0 1 0  1-1  1
+	Russia      1  0 1 0  2-2  1	USA            1  0 1 0  1-1  1
+	Canada      0  0 0 0  0-0  0	Finland        0  0 0 0  0-0  0
+	Switzerland 0  0 0 0  0-0  0	France         0  0 0 0  0-0  0
+	Austria     1  0 0 1  0-1  0	Norway         1  0 0 1  0-6  0
+
+ 
+ April 18:  Italy - Russia    2-2           Norway - Germany      0-6
+            Sweden - Austria  1-0           USA - Czech republic  1-1
+
+ April 19:  Canada - Switzerland					15:30
+            Russia - Austria                Finland - France		20:00
+
+ April 20:  Sweden - Canada                 Czech republic - Germany	15:30
+            Switzerland - Italy             Finland - USA		20:00
+
+ April 21:                                  Germany - France		15:30
+            Italy - Sweden                  Czech republic - Norway	20:00
+
+ April 22:  Switzerland - Russia            USA - France		15:30
+            Austria - Canada                Norway - Finland		20:00
+
+ April 23:  Switzerland - Austria           Germany - Finland		20:00
+
+ April 24:  Russia - Sweden                 Czech republic - France	15:30
+            Canada - Italy                  USA - Norway		20:00
+
+ April 25:  Sweden - Switzerland            Finland- Czech republic  	15:30
+            Russia - Canada                 Germany - USA		20:00
+
+ April 26:  Austria - Italy                 France - Norway		20:00
+
+ 
+ PLAYOFFS:
+ =========
+
+ April 27:	Quarterfinals
+		A #2 - B #3						15:30
+		A #3 - B #2						20:00
+
+ April 28:	Quarterfinals
+		A #1 - B #4						15:30
+		A #4 - B #1						20:00
+
+ April 29:	Relegation
+		A #5 - B #6						15:30
+		A #6 - B #5						20:00
+
+ April 30:	Semifinals
+		A #1/B #4 - A #3/B #2					15:30
+		A #4/B #1 - A #2/B #3					20:00
+
+ May 1:		Relegation						14:30
+		Bronze medal game 					19:00
+
+ May 2:		FINAL							15:00
+",1.0,1,"The text is about sports, specifically the 1993 World Championships in Germany, which is outside the comp.graphics topic.",False
+20_newsgroups,score_guided,50,42,"Well, I'm glad that there's plenty of NT stuff at Xhibition.
+Not because I want to use it instead of X, but because I want to 
+find out what the chances are that some time in the future I may 
+not have any choice.
+",1.0,1,"The text discusses NT stuff and Xhibition, which are unrelated to computer graphics.",False
+20_newsgroups,score_guided,50,42,"
+You know, you're absolutely right.  I think we should round up all those
+players of European descent and ship 'em back to where they came from.  Let's
+see, with whom should we start?  I dunno, Lemieux?  Hmmm...sounds like he
+has *French* blood in him!!!  Hey!  France is part of Europe!  Send that
+Euro-blooded boy back!!!
+
+Sheesh.
+
+
+I don't think it would be hard to find some Native Americans (or Native
+Canadians, for that matter) who would dispute your claim to this great 
+continent of *ours.*  Ya see, if you believe the anthropologists, we're *all*
+immigrants of some sort.  If you really don't think that Mogilny, Bure,
+Selanne, et al have improved the NHL, then I'm not sure you understand the
+game.",1.0,1,"The text discusses politics and sports, which are outside the comp.graphics topic.",False
+20_newsgroups,score_guided,50,42,"
+I saw Messier and Leetch shooting at a camera on Letterman(?).  I
+could have been any show though, since I watch NONE of those late
+night shows very regularly.
+					-John Santore
+
+Philadelphia Flyers in '93-'94! 
+
+=============================================================================
+ ____________________                                
+/                    \                   ""We break the surface tension 
+\_________     ____   \                   with our wild kinetic dreams""
+/             /    \   \                        -Rush, Grand Designs
+\_______     /  (*) )   )
+/           / /\___/   /                 Go Philadelphia Flyers!
+\_____     / /        /
+/         /  \_______/                   John Santore (jsbh@andrew.cmu.edu)
+\________/   ",1.0,1,"The text discusses sports, specifically the Philadelphia Flyers, which is outside the comp.graphics topic.",False
+20_newsgroups,score_guided,50,42,"DALLAS HELPS HAWKS STAY IN MONCTON
+After announcing that they would pull their affiliation out
+of Moncton, the Winnipeg Jets changed their mind. 
+
+The Jets announced the move when they said that they would be slashing
+their minor league roster from 20-something to around a dozen; and they
+wanted to share with an existing AHL or IHL franchise.
+
+Enter the Dallas Lone Stars. Dallas agreed to supply the remaining
+6 or 8 players to the Moncton franchise. Thus keeping the Hawks
+in the New Brunswick city.
+
+The deal is for one year and will be extended to three years if
+the season ticket base increases to over 3000. The Hawks only sold
+1400 for this year.
+
+SAINT JOHN FLAMES OFFICIAL
+The Calgary Flames have officially signed a deal with the city of
+Saint John, NB. The Saint John Blue Flames will play in the 6200
+Exhibition Center. The Flames still have to apply for an expansion
+frnachise from the AHL but are expected to have no trouble.
+
+CAPS FOLLOW JACKS TO MAINE
+Despite rumors to the contrary, the Capitals will follow the Baltimore
+Skipjacks to Maine. The Caps' current farm team, the Baltimore Skipjacks,
+announced that they would move to Maine and become the Portland Pirates.
+There was much doubt as to if the Caps would follow but they announced
+a limited deal with Portland. They would supply a dozen or so players
+including 2 goalies. They become the third team to announce a limited
+farm team along with Moncton and the Capital District Islanders.",1.0,1,"The text discusses sports and hockey teams, which is not related to computer graphics.",False
+20_newsgroups,score_guided,50,42,"
+Kevin Todd is an Oiler and has been one for months. How closely do you follow
+the Devils, anyway? Jeez....",1.0,1,"The text discusses sports, specifically ice hockey teams, which is outside the comp.graphics topic.",False
+20_newsgroups,score_guided,50,42,"1993 World Championships in Germany:
+ ====================================
+
+ Group A results:
+
+ SWEDEN - CANADA  1-4 (0-0,1-1,0-3)
+
+ 1st:
+ 2nd: CAN 0-1 Geoff Sanderson      (Kevin Dineen)                  7:24
+      SWE 1-1 Patrik Juhlin        (Jan Larsson)                  15:23 (pp)
+ 3rd: CAN 1-2 Geoff Sanderson                                      5:54 (ps)
+      CAN 1-3 Mike Gartner         (Greg Johnson,Adam Graves)     10:44 
+      CAN 1-4 Rod Brind'Amour      (Shayne Corson)                19:59
+
+            Shots on goal:    Penalties:    Attendance:     Referee:
+ Sweden     10 15 12 - 37     4*2min        6,500           Rob Hearn (USA)
+ Canada     10 13  6 - 29     6*2min
+
+ Bill Ranford stopped 36 shots to lead Canada to a 4-1 victory in a very well
+ played game.
+
+ The first period started with a give away from a Canadian defenseman and
+ Rundqvist came in alone on Ranford but couldn't put the puck over a sliding
+ Ranford. Later on, Kevin Dineen had a great opportunity but Soderstrom 
+ played very well too. Stefan Nilsson had a couple of great dekes and set up
+ Jan Larsson but again Ranford came up big. Period ended scoreless but the edge
+ to Sweden in creating more opportunities.
+ Second period action saw Tommy Soderstrom making a GREAT save. Mark Recchi
+ made a backhanded cross ice pass to Lindros, Eric one timed the puck but
+ Soderstrom was there to make a glove hand save. At the 7-minute mark, Canada
+ started applying pressure on the Swedes. Sanderson-Dineen-Brind'Amour worked
+ hard and kept the puck in the Swedes' zone. Dineen gave the puck to Sanderson
+ who skated around a screened Swedish defenseman, came in on Soderstrom and
+ made a wrist shot that went it by Soderstrom's far post, 1-0 Canada.
+ The Swedes picked up their game after that, and Peter Forsberg had a shot
+ that hit Ranford's post (the inside), went parallel to the goal line and out.
+ Then Gartner got a penalty and the Swedes a power play. Jan Larsson took
+ a shot from the slot, Ranford gave a rebound to Larsson who saw Juhlin by
+ the far post, passed the puck and Ranford was beat, 1-1.
+ Third period started as the other periods, Swedes having most of the pressure
+ but the Canadians always dangerous once they were close to the Swede goal.
+ At 5:54, Canada created some great chances and Arto Blomsten was forced to
+ cover the puck in the Swede goal crease since Soderstrom lost sight of it.
+ That resulted in a penalty shot, since a defenseman can't cover the puck in 
+ the goal crease. Geoff Sanderson took the penalty shot (his first ever, he
+ explained afterwards), and he put it low on Soderstrom's stick side, close
+ to the post. Excellent penalty shot to give Canada a go ahead goal.
+ Canada increased the lead on a very suspect offside, Gartner volleyed a
+ bouncing puck past Soderstrom to make it 3-1. The Swedes ran out of gas
+ then and couldn't produce as good scoring chances as they had for 2,5 periods.
+ The 4-1 goal came with only 1 second left, Rod Brind'Amour scoring on a
+ rebound from Soderstrom, where the Swedish defense already had their minds
+ in the dressing room.
+
+ A very good game (the best in the WC so far?), with both goalies playing
+ great. Soderstrom best player in Sweden, but Ranford even played better
+ than Soderstrom, that tells you something about Ranford. Probably the best
+ goalie in the world, were some comments after the game.
+ Canada played a very disciplined defense, Ranford pointed out that it is
+ easy to play well with a good defense. Lindros played A LOT and played well,
+ Sanderson naturally game hero with two goals.
+
+ The Forsberg-Naslund-Bergqvist line Sweden's best along with Larsson-Juhlin-
+ Nilsson. Swedish defense played well, 197 cm 104 kg Peter Popovic had the
+ task of neutralizing 192 cm 107 kg Eric Lindros, and managed this very well.
+ Ranger defenseman Peter Andersson finally got to go to the WC, and considering
+ that he landed in Germany just a few hours before the game, he played very
+ well. Swedish coach Curt Lundmark was irritated after the game, partly because
+ of the Swedes inability to score, and partly because of the linesman's mistake
+ on the 1-3 goal.
+
+ Lines information follows further below.
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+ ITALY - SWITZERLAND  1-0 (0-0,1-0,0-0)
+
+ 1st:
+ 2nd: ITA 1-0 Orlando          15:47
+ 3rd:
+
+ Penalties: ITA 10*2min, SWI 8*2min
+ Referee: Anton Danko, Slovakia
+ Attendance: 3,500
+
+-------------------------------------------------------------------------------
+
+ Group B results:
+
+ CZECH REPUBLIC - GERMANY  5-0 (0-0,3-0,2-0)
+
+ 1st:
+ 2nd: CZE 1-0 Kamil Kastak        1:51
+      CZE 2-0 Jiri Dolezal       12:26
+      CZE 3-0 Petr Hrbek         19:10
+ 3rd: CZE 4-0 Radek Toupal        8:28
+      CZE 5-0 Josef Beranek      17:07
+
+ Penalties: CZE 7*2min, GER 6*2min 1*5min 1*10min game penalty
+ Referee: Darren Loraas, Canada
+ Attendance: 10,200
+
+ The Czechs were clearly better than the Germans, and the German crowd
+ showed their discontent by throwing in stuff on the ice after a while.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+ FINLAND - USA  1-1 (0-0,1-0,0-1)
+
+ 1st:
+ 2nd: FIN 1-0 Jarkko Varvio      4:00
+ 3rd: USA 1-1 Ed Olczyk          4:26
+
+ Penalties: FIN 7*2min, USA 6*2min
+ Referee: Valeri Bokarev, Russia
+ Attendance: 2,800
+
+ I hope some Finns can provide information from this game (I didn't see the
+ whole game). The Finns took the lead on a Jarkko Varvio slap shot from the
+ blue line, and a soft goal for an unscreened Mike Richter.
+ As far as the play in the second period goes, the Finns seemed to have the
+ most control, so a 1-0 lead was warranted as I saw it.
+
+-------------------------------------------------------------------------------
+
+		   SWEDEN			   CANADA
+
+ Goaltender:	30 Tommy Soderstrom		30 Bill Ranford
+
+ Defense:	 8 Kenneth Kennholt		 5 Norm Maciver
+		14 Fredrik Stillman		24 Dave Manson
+
+		 3 Peter Popovic		25 Geoff Smith
+		55 Peter Andersson		19 Brian Benning
+
+		 7 Arto Blomsten		 6 Terry Carkner
+		28 Roger Akerstrom		 3 Garry Galley
+
+						 4 Derek Mayer
+
+ Forwards:	29 Mikael Renberg		15 Dave Gagner
+		 9 Thomas Rundqvist		27 Adam Graves
+		34 Mikael Andersson		22 Mike Gartner
+
+		19 Markus Naslund		20 Paul Kariya
+		21 Peter Forsberg		88 Eric Lindros
+		18 Jonas Bergqvist		 8 Mark Recchi
+
+		 5 Patrik Juhlin		17 Rod Brind'Amour
+		20 Jan Larsson			 9 Shayne Corson
+		 4 Stefan Nilsson		11 Kevin Dineen
+
+		22 Charles Berglund		10 Geoff Sanderson
+		26 Michael Nylander		12 Greg Johnson
+		(34 Andersson/18 Bergqvist)	14 Brian Savage
+
+						16 Kelly Buchberger
+",-1.0,-1,Requested tokens (2227) exceed context window of 2048,True
+20_newsgroups,score_guided,50,42,"I am looking for all the 84 boxscores of any NHL team for 
+some personal research.  Can someone help me ?",1.0,1,"The text is about sports, specifically NHL boxscores, which is outside the comp.graphics topic.",False
+20_newsgroups,score_guided,50,42,"
+Since everybody wants to see Pittsburgh players not playing, the
+Stanley cup would be devaluated.
+
+-- 
+_____________________________________________________
+
+  Iskander AYARI",1.0,1,"The text discusses sports, specifically the Stanley Cup and Pittsburgh players, which is outside the comp.graphics topic.",False
+20_newsgroups,score_guided,50,42,"Has anyone heard what game ESPN is showing tonight.  They said they will
+show whatever game means the most playoff-wise. I would assume this would
+be the Blues-Tampa game or the Minnesota-Red Wings game...  Anyone heard for
+sure???
+",1.0,1,"The text discusses sports, which is outside the comp.graphics topic.",False
+20_newsgroups,score_guided,50,42,"
+Did your boyfriend comment on the fact that Clement looks like a
+walking ad for Brillo pad hair replacement therapy? The guy's just a
+stuffed shirt who thinks he's the greatest hockey analyst since Howie
+Meeker (for gosh sakes). I'll take Schoenie any day.
+
+George
+",1.0,1,"The text discusses sports and entertainment, which are clearly outside the comp.graphics topic.",False
+20_newsgroups,score_guided,50,42,"
+Speaking of spelling errors on the Cup, I wonder if the ""h"" in
+Pittsburgh made it to the Cup.  You know how funny people can
+be about spelling Pittsburgh.",1.0,1,"The text discusses sports, specifically the NHL, which is outside the comp.graphics topic.",False
+20_newsgroups,score_guided,50,42,"
+I thought it was 1) wins 2) goals for.",1.0,1,"The text discusses sports, specifically wins and goals, which is outside the comp.graphics topic.",False
+20_newsgroups,score_guided,50,42,"Does anybody know the details of the Shriners All-Star game that featured the
+best seniors in college hockey in a game in Orono, Maine?  If you do, please
+reply.
+",1.0,1,"The text discusses a sports event, which is outside the comp.graphics topic.",False
+20_newsgroups,score_guided,50,42,"
+
+And you can bet that I wouldn't be the only one not belonging to the
+moderated group if it was moderated by an anally-retentive little
+dullard like yourself. 
+
+
+I hardly need you to presume to lecture me on how to communicate my points
+of view.  This ""posting"" that you have made is the second on the subject of
+the NHL letter and you have yet to communicate your opinion on the matter.
+Instead you content yourself with flaming me.
+
+
+Result:
+Moronic little busy bodies like yourself take advantage of a perceived
+opportunity to post rules for others to live by. 
+
+
+Well if using it ""against"" me means you are going to post something of
+significance then by all means go ahead.  I insist.  Otherwise why don't
+you just go back to sleep or do whatever it is that you do when you are 
+all by yourself...
+
+-- ",1.0,1,"The text discusses sports (NHL) and contains personal attacks, which are not related to computer graphics.",False
+20_newsgroups,score_guided,50,42,"I knew, despite the lack of a full game telecast last week, it was still
+too much hockey for Atlanta. Atlanta's ABC has declined to pick up any
+playoff games till May9. And even when they show the games on MAy9 and May16,
+they will continue to skip the first half hour of the telecast. I know this
+is still a better situation compared to rest of Georgia, Alabama, etc., but
+it is still pretty annoying. At least in PIttsburgh, we had a network preemptionchannel which showed all netwoork shows prempted by the local affiliate.
+
+
+I asked them what their problem was. I told them that a local 1.9 rating was
+not that bad considering it was the first NHL game shown after a long time
+without much promotion. Besides, their syndicated programming in the afternoon
+is usually low rated. So what did they have to lose by showing NHL playoffs.
+She told me that they had contractual obligations. I asked her if golf
+was shown oin ABC, would contractual obligations come in the way. And how come
+contractual obligations didn't come in the way of last week's telecast? She
+then couldn't give me a coherent answer.
+
+
+Also, I added that Atlanta had one of the highest neutral site game
+attendances and that the demographics were good. I think ABC and other networks
+should begin to tie their high rated programs like Roseanne in with
+ thier sports programming.
+I hope that everyone in Atlanta who reads this bboard calls WSB 2 and complain
+bitterlyt about this. Tell them you will stop watching their news telecasts
+since they seem to be very unprofessional in handling this situation.",1.0,1,"The text discusses sports, specifically hockey and TV broadcasting, which is outside the comp.graphics topic.",False
+20_newsgroups,score_guided,50,42,"Not to mention, Mr. Francis is an incredibly nice person.  Over Christmas
+break, a friend of mine had a little Xmas gathering.  The two of us drove
+to Ron's house.  While I stayed in the car out of shyness, my friend went
+to the door and rang the bell.  Ron answered and my friend introduced
+himself.  He then proceeded to invite Francis to the party.  Ron declined
+because he ""had to watch his daughter.""  He then reached out and shook my
+friend's hand!  I know this isn't r.s.b., but I don't think Barry Bonds
+would be this polite in this situation.",1.0,1,The text discusses personal interactions and does not relate to computer graphics.,False
+20_newsgroups,score_guided,50,42,"Showing a meaningless (relatively) baseball game over the overtime of
+game that was tied up with less than 3 seconds left on the clock?
+Gimme a break!  Where does ESPN get these BRILLIANT decisions from?",1.0,1,"The text discusses baseball, which is not related to computer graphics.",False
+20_newsgroups,score_guided,50,42,"Again I assume this is not just flame bait by Roger, but actually a
+truly held opinion.  
+
+
+Thanks.  For speaking for all those who didn't feel it was important
+enough to say something themselves.  
+
+I wouldn't say that the letter clearly implies representation of the
+views of a group that you belong to.  It represents a subset (that you
+don't belong to) of a larger group (which you do, if only because this
+isn't a moderated group).
+
+Look, there are several ways to state an opposing viewpoint.  Three
+that come to mind are as follows:
+
+1) Say it subtly.  Result: it may not be clear.
+2) Say it directly yet politely.  Result: probably it will spark some 
+   interesting conversation.
+3) Say it directly and obnoxiously.  Result: validity goes right out
+   the window.
+
+
+You realize that anything you say can, and most certainly will, be
+used against you.
+",1.0,1,"The text discusses political and social topics, which are outside the comp.graphics topic.",False
+20_newsgroups,score_guided,50,42,"
+
+
+
+
+
+
+How can you assume it was a sarcastic remark?",1.0,1,"The text does not discuss computer graphics, making it clearly anomalous.",False
+20_newsgroups,score_guided,50,42,"Quebec dominated Habs for first 2 periods and only Roy kept
+this one from being rout, although he did blow 2nd goal.
+Canadians showed up in third but Nords were playing dump &
+pull back most of the time. Hextall made some good saves but
+really this one was lost in first period when nords scored 3
+& could have had 5, plus another 4 in 2nd. Canadians are dead
+meat, they may take one or 2 but this one is over. Tee it up
+Jacques, next time you might rest players & forget about 1st
+place, welcome to the Adams division.",1.0,1,"The text discusses sports, specifically a hockey game, which is outside the comp.graphics topic.",False
+20_newsgroups,score_guided,50,42,"I hear Daigle will eb the first pick next year. What is the word on Kariya???
+Anybody ever seen him play on TV???? Is he also entering the draft???
+",1.0,1,"The text discusses sports, specifically the draft of hockey players, which is outside the comp.graphics topic.",False
+20_newsgroups,score_guided,50,42,"
+Is there any games being shown here in the US from the WC???
+
+Thanks",1.0,1,"The text is about sports (World Cup games), which is outside the comp.graphics topic.",False
+20_newsgroups,score_guided,50,42,"
+I can't let this pass.
+*If* the Islanders get past Pitts. (Assuming the Isles beat the Caps, God 
+Willing), them I'm sorry, the Isles will crush the Leafs.
+Flame shields up.
+
+********************************************************************************
+Of course no one asked me I always interject my opinions on matters I have no 
+concern over 
+--------------------------------------------------------------------------------
+Go Islanders!!!!!! (3 down, 1 to go)
+Go Jets for '93
+********************************************************************************
+",1.0,1,"The text discusses sports, specifically hockey, which is outside the comp.graphics topic.",False
+20_newsgroups,score_guided,50,42,"1993 World Championships in Germany:
+ ====================================
+
+ Group A results:
+
+ SWEDEN - SWITZERLAND  4-6 (0-3,3-1,1-2)
+
+ 1st: SWI 0-1 Manuele Celio 1                                         3:21
+      SWI 0-2 Patrick Howald 1                                       11:37
+      SWI 0-3 Patrick Howald 2   (Sven Leuenberger)                  16:00
+ 2nd: SWE 1-3 Peter Andersson 1  (Michael Nylander)                   2:47 (pp)
+      SWI 1-4 Roman Waeger 1     (Martin Rauch,Sven Leuenberger)      8:53 (pp)
+      SWE 2-4 Jonas Bergqvist 3  (Markus Naslund)                     9:08
+      SWE 3-4 Jan Larsson 1      (Patrik Juhlin)                     18:50
+ 3rd: SWE 4-4 Mikael Renberg 2   (Thomas Rundqvist,Peter Andersson)   7:49
+      SWI 4-5 Roman Waeger 2                                          9:07
+      SWI 4-6 Felix Hollenstein 1 (Sven Leuenberger,Thomas Vrabec)   11:29
+
+              Shots on goal:   Penalties:   Attendance:   Referee:
+ Sweden        5 20 18 - 43    4*2min       6,000         Rob Hearn, USA
+ Switzerland  10  6  7 - 23    5*2min
+
+ Switzerland beat Sweden in a WC for the first time since 1950, and the Swiss
+ now have a small chance of reaching the quarterfinals (if Austria beats
+ Italy tonight).
+
+ The Swiss took the lead after Hakan Ahlund made an incredibly stupid drop
+ pass at his own blue line, and Celio came in alone with Soderstrom and beat
+ Tommy to the stick side. The Swedes continued to make mistakes as Howald
+ was allowed to skate in between the Swedish D and put the puck past Tommy
+ to make it 0-2. 0-3 was a nice one, Howald entered the Swedish zone, slammed
+ on the breaks, and his shot went in by Tommy's far post. One of the lousiest
+ periods I've seen Sweden play this year.
+ Second period saw a new Swedish team, and the Swiss had to ice the puck many
+ times. On a pp, Nylander skated in from the boards, Pavoni made the initial
+ save, but Peter Andersson scored on the rebound.  Then a power play goal
+ from the Swiss, a slap shot from the blue line hit two players on the way
+ to the goal and past Soderstrom also. Jonas Bergqvist made it 2-4 after a
+ nice pass from Naslund behind the goal. Jan Larsson reduced the lead to 3-4
+ just before the end of 2nd period, on a pp skated in unattacked in front of
+ the goal, and put the puck through Pavoni's 5-hole. 
+ Third period, Sweden equalized on a slap shot from Renberg that trickled
+ through Pavoni's 5-hole. Then, another defensive mistake by the Swedes,
+ Waeger was allowed to skate around the Swedish goal unattacked and from close
+ range could make it 4-5. Hollenstein then scored 4-6 on a 2-on-1 break away,
+ and put it top shelf with no chance for Soderstrom.
+
+ Switzerland:
+
+ Goaltender:  20 Reto Pavoni  (28 Renatio Tosio)
+ Defense:     26 Rick Tschumi, 2 Martin Steinegger
+              16 Sven Leuenberger, 5 Martin Rauch
+               7 Sandro Bertaggia, 17 Patrick Sutter
+              31 Samuel Balmer
+ Forwards:    22 Alfred Luthi, 11 Felix Hollenstein, 25 Roman Waeger
+              23 Gil Montandon, 12 Roberto Triulzi, 10 Patrick Howald
+              35 Christian Weber, 18 Andreas Ton, 24 Joerg Eberle
+              15 Bruno Erni, 13 Thomas Vrabec, 29 Manuele Celio
+ 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+ RUSSIA - CANADA  1-3 (0-2,1-1,0-0)
+
+ 1st: CAN 0-1 Kevin Dineen 1     (Garry Galley)                       4:28
+      CAN 0-2 Paul Kariya 2      (Eric Lindros)                      12:20 (pp)
+ 2nd: CAN 0-3 Eric Lindros 10    (Paul Kariya,Shayne Corson)          9:40
+      RUS 1-3 Valeri Karpov 2    (?)                                 16:24
+ 3rd:
+
+ Penalties: RUS 2*2min 1*5min, CAN 5*2min
+ Referee: Anton Danko, Czech republic
+ Attendance: 8,600
+
+ Russia probably made their best game of the tourney, but yet there wasn't
+ enough to win against the effective Canadians.
+
+ Galley took a slap shot that found Dineen by the far post, and Dineen just
+ deflected the puck past Trefilov in the Russian goal. Then a power play
+ goal, after a couple of deflections Eric Lindros found Kariya alone by the
+ far post, and Kariya put the puck high over a sliding Trefilov.
+ Russia won the shots in the first period 12-5, and they had the most of
+ the scoring opportunities, but they just couldn't score.
+ Second period saw Lindros scoring his 10th (!!) goal of the WC. Kariya
+ entered the Russian zone, slammed on the break to get past his defenseman,
+ then made a nice pass to Corson who just got the stick on the puck to
+ deflect it to Lindros who one-timed the puck.
+ The Russians then finally got their goal, Karpov broke in from the side
+ and made a slap shot in Tugnutt's top right hand corner.
+ 
+ Player of the game in Canada was voted Paul Kariya, and for Russia Valeri
+ Karpov. I agree, the difference in this game was Lindros and Kariya, and
+ in part also Tugnutt. Kariya had a far better game now than vs the Swedes,
+ and he was very impressive. Kariya got the place in the line with Lindros
+ after Mike Gartner went out with a rib-injury early in the first period.
+
+ Lindros, BTW, lead the point scoring with 14 pts (9+5) before this game,
+ 7 pts ahead of the next player! i.e. double as much as the next player
+ (among those Kariya with 1+6). Amazing!
+
+-------------------------------------------------------------------------------
+
+ Group B results:
+
+ FINLAND - CZECH REPUBLIC  1-3 (0-0,1-1,0-2)
+
+ 1st:
+ 2nd: CZE 0-1  Petr Hrbek 2           11:04
+      FIN 1-1  Mika Alatalo 1         17:51
+ 3rd: CZE 1-2  Jiri Dolezal 3          5:04
+      CZE 1-3  Martin Hostak 2        19:45 (en)
+
+ Penalties: FIN 8*2min, CZE 9*2min
+ Referee: Vincent Moreno, Switzerland
+ Attendance: 4,300
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+ GERMANY - USA  6-3 (5-0,0-0,1-3)
+
+ 1st: GER 1-0  Raimond Hilger 2        7:12
+      GER 2-0  Gerd Truntschka 3      11:16
+      GER 3-0  Ernst Kopf 3           11:55
+      GER 4-0  Michael Rumrich 3      16:06
+      GER 5-0  Benoit Doucet 1        18:45
+ 2nd:
+ 3rd: USA 5-1  Derek Plante 1          4:06
+      GER 6-1  Dieter Hegen 5          6:57
+      USA 6-2  Craig Johnson 1         7:30
+      USA 6-3  Rob Gaudreau 3         13:07
+
+ Penalties: GER 7*2min, USA 10*2min
+ Referee: Valeri Bokarev, Russia
+ Attendance: 11,000
+",-1.0,-1,Requested tokens (2275) exceed context window of 2048,True
+20_newsgroups,score_guided,50,42,"
+	Well, if SHIT means going to the Stanley Cup finals a couple years
+ago, I'd rather be shit than a leaf fan.
+",1.0,1,"The text discusses sports, specifically the Stanley Cup, which is outside the comp.graphics topic.",False
+20_newsgroups,score_guided,50,42,"...
+...
+
+Yeah...I've seen you're grand mother...I bet she could.",1.0,1,"The text discusses family relations, which is not related to computer graphics.",False
+20_newsgroups,score_guided,50,42,".
+.
+.
+
+ESPN had the Houston Astros @ Chicago Cubs game scheduled for last night on the
+west coast. 
+
+Since the game was rained out, they showed the Toronto Maple Leafs at the
+Detroit Red Wings game instead.",1.0,1,"The text discusses sports, specifically baseball and hockey games, which is outside the comp.graphics topic.",False
+20_newsgroups,score_guided,50,42,"With the recent demise of the Chicago Blawkhawks (much to my delight) I
+noticed their 8 (?) game playoff losing streak (4 to the Pens last year, and
+now 4 to the Blues) and I am wondering what the NHL record for consecutive
+losses is, if there even is one...
+
+I'm pretty sure that the Hawks have at least a 9 game losing  streak, since
+they've had to have lost a series since their last championship (whenever that
+was)
+
+Basically, I need something else to rag on my Hawks-fan friend with :)
+
+Mike, the insomniaced",1.0,1,"The text discusses sports, specifically the Chicago Blackhawks, which is outside the comp.graphics topic.",False
+20_newsgroups,score_guided,50,42,"
+
+Does anyone know if there will be alternate games in cities where local
+broadcast rights are being protected?  I'd really love to see the Bruins a
+couple times, and with this pro-Patrick bias shown by ESPN something tells me
+that I will have to wait until the conference finals to see them :-}.
+
+-JPC
+ 
+-- ",1.0,1,"The text discusses sports, specifically hockey, which is outside the comp.graphics topic.",False
+20_newsgroups,score_guided,50,42,"
+Gee, they lost to St. Louis twice this year. Maybe you should have your
+eyes checked. 8^)
+
+
+Go Blues....the Rodney Dangerfield team....They get no respect....except
+in Chicago mabee...",1.0,1,"The text discusses sports, specifically hockey, which is clearly outside the comp.graphics topic.",False
+20_newsgroups,score_guided,50,42," 
+ 
+ 
+ 
+ The answer is in the FAQ for this group.  nough said.
+ 
+ ",1.0,1,The text does not discuss computer graphics and is therefore clearly anomalous.,False
+20_newsgroups,score_guided,50,42,"
+You must be kidding, right? In losing Stevens the Blues got Shanahan and
+kept
+Joseph. Then they traded Oates for Janney. As a Hawks fan you have got to
+respect those ""hapless"" names. 8^) Lets see, who scored the game winning
+overtime goal in the 4th game???
+
+",1.0,1,"The text discusses sports, specifically hockey, which is outside the comp.graphics topic.",False
+20_newsgroups,score_guided,50,42,"Believe it or not, we DO have phone books, but the current information does
+not include an area code for Edmonton Alberta.
+
+I would not be so hostile towards others for asking simple questions...
+
+""I would rather appear stupid than open my moutha nd remove all doubt.""
+							-Mark Twain
+
+-- 
+	""If you assult someone you get 5 years--In hockey, 5 minutes.
+			Is this a great sport or what?!""",1.0,1,"The text discusses phone books, simple questions, and hockey, which are not related to computer graphics.",False
+20_newsgroups,score_guided,50,42,"
+The overhead replay pretty clearly showed that it was the Quebec 
+defender who deflected the puck.  The re-play officials did not 
+take nearly as much time to make this call as they did for the first 
+non-goal, so it seemed pretty non-controversial.
+
+I agree that it was a great game; good to see Roy and Damphousse back
+into form.  Hopefully the sign of good things to come...",1.0,1,"The text discusses sports, specifically hockey, which is outside the comp.graphics topic.",False
+20_newsgroups,score_guided,50,42,"
+
+And last year the Capitals had the Pens number up until about game 3 of the playoffs.
+
+
+",1.0,1,"The text discusses sports, specifically hockey, which is outside the comp.graphics topic.",False
+20_newsgroups,score_guided,50,42,"I am curious to known if there are any professional sports teams whose
+games are regularly broadcast on an FM station.  The only one I am
+aware of is WYSP in Philadelphia who carries the Eagles' games.
+
+If you respond to me I will summarize for the list.",1.0,1,"The text discusses sports and broadcasting, which is outside the comp.graphics topic.",False
+20_newsgroups,score_guided,50,42,"Well, since someone probably wanted to know, here's this year's playoff
+matchups on the left, and what the matchups would be next year under the
+new alignment and playoff-matchup rules.  The same 16 teams make the playoffs
+under next year's rules, and three of the first round matchups are the same
+(QUE-MTL, CHI-STL, VAN-WIN).
+
+PIT --+                      +-- CHI | PIT --+                      +-- CHI
+      +---+              +---+       |       +---+              +---+
+NJ  --+   |              |   +-- STL | BUF --+   |              |   +-- STL
+          +---+      +---+           |           +---+      +---+
+WAS --+   |   |      |   |   +-- DET | QUE --+   |   |      |   |   +-- TOR
+      +---+   |      |   +---+       |       +---+   |      |   +---+
+NYI --+       |      |       +-- TOR | MTL --+       |      |       +-- CAL
+              +------+               |               +------+
+BOS --+       |      |       +-- VAN | WAS --+       |      |       +-- VAN
+      +---+   |      |   +---+       |       +---+   |      |   +---+
+BUF --+   |   |      |   |   +-- WIN | NJ  --+   |   |      |   |   +-- WIN
+          +---+      +---+           |           +---+      +---+
+QUE --+   |              |   +-- CAL | BOS --+   |              |   +-- DET
+      +---+              +---+       |       +---+              +---+
+MTL --+                      +-- LA  | NYI --+                      +-- LA
+
+
+====================================================================
+    Jim Murawski
+    Sr. Software Engineer               (412) 268-2650  [office]
+    Administrative Computing and        (412) 268-6868  [fax]
+         Information Services           jjm+@andrew.cmu.edu
+    Carnegie Mellon University          Office: UCC 155
+    4910 Forbes Avenue
+    Pittsburgh, PA 15213-3890
+
+    ""Le Mieux!  Le Magnifique!  Soixante Six!  Claude...NON!""",1.0,1,"The text discusses sports playoff matchups, which is not related to computer graphics.",False

@@ -1,0 +1,51 @@
+dataset,strategy,n_llm_calls,seed,text,llm_score,llm_label,reason,parse_error
+tweets_hs,score_guided,50,42,jumat ma pple....eyan ytinny ,0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,Ã...no me compares con nadien...Ã *good nightâ #photooftheday #instagood   #loveâ¦ ,0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,sharks crowd cheering loudly for a simple zone entry.  ,0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,obv he had to be in pic too ððð ,0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,omg ð¨ so sad ð  ,0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,shit guys ó¾´ó¾´ is lie ó¾ó¾  ,0.8,1,The text contains offensive language and appears to be a distorted or encoded form of hate speech.,False
+tweets_hs,score_guided,50,42,#my   #bihday #ÑÐ¾ÑÐ¾Ð¸Ð»Ð¾Ð½Ð°ÑÑÐºÐ¾Ð±ÑÐ°ÑÑÐºÐ°Ñ #Ð´ÐµÐ½ÑÑÐ¾Ð¶Ð´ÐµÐ½Ð¸Ñ #ÑÐ±Ð¸Ð»ÐµÐ¹ #Ð¿ÑÐ°Ð·Ð´Ð½Ð¸Ðº @ muza production byâ¦ ,0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,jessica want christmas bdsm  âï¸  â®   #ÑÐ»ÑÐ±ÐºÐ°  #cam,0.8,1,"The text contains explicit sexual content and a cultural slur, which could be considered hate speech or discriminatory language.",False
+tweets_hs,score_guided,50,42,we are thrilled to offer these superb solutions to our customers in noh america. ,0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,i hate rere  ,0.8,1,"The text contains the word 'hate' and a derogatory term 'rere', which targets an individual or group in a discriminatory manner.",False
+tweets_hs,score_guided,50,42,"yes,   #saturday people ð ",0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,i have 1 homegirl ðð   i,0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,i adore amy sedaris!!! ð #oddmomout  ,0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,prayers to all victims and their families that were affected by the orlando shooting. violence must stop.  ,0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,i have 1 homegirl ðð  ,0.0,0,The text does not contain hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,happy bihday to mayuko!!!  #ìì¼ãã #0612   #bihday #mayukoday ,0.0,0,The text contains no hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,bts day pay ð ,0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,why? because the repo the nof/phc placed in the public domain is an incoherent mess. ,0.0,0,The text does not contain hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,ð em so excited en i just can't hide it ð¶    ,0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,que mandan a decir....   7ather's day to #chile! lol,0.0,0,The text does not contain hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,ððððfruit aðððð #æé£ãããã§ãã¯ãã  æå¾¡é£¯ ,0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,date went very well tonight.  ,0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,always be   #erenromasadiyor ,0.1,0,The text does not contain any explicit or implicit hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,america first before all others we should be ashamed of our selves. ,0.8,1,The text expresses a nationalist sentiment that could be seen as xenophobic and thus potentially hate speech.,False
+tweets_hs,score_guided,50,42,deah of data in the nigerian health system. ð ,0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,"all these years, while misplacing our priorities, others are showing  us.    ",0.0,0,The text does not contain hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,happy gloday ðððð½ð°emani ,0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,"'acche din' for flyers: cap on airfares, lower fee on excess baggage pls put a cap first on essential commodities.  ",0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,im done this gurl betta get my faceððð ,0.85,1,"The text contains derogatory language and a facial emoji, which could be interpreted as targeting someone based on appearance.",False
+tweets_hs,score_guided,50,42,"when??????? when????? jack Ã again, major lazer, main garrix, zedd #dwp16wishlist ",0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,as relevant as ever ,0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,just   from the hill:  ,0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,get to see ma boo tomorrow after 2 months apa ð  ,0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,"despite my prior worries, i am so grateful that my work lets me give back to my family. even a little bit.   ",0.0,0,The text expresses gratitude and does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,ð. very impoant. ,0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,@user omggggg ateeee. imyyyyð iloveyou so  muchã ã    nationalbestfriendday ,0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,i believe â°#music   #love #celinedion #justinbieber #rihanna #drake #arianegrandeâ¦ ,0.0,0,The text contains no hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,@user #ããã  #6æ18æ¥   bihday ,0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,"name the news channel else, shut up. ",0.6,1,"The text contains a command to 'shut up' which can be considered as a form of verbal aggression, though not explicitly targeting a specific identity characteristic.",False
+tweets_hs,score_guided,50,42,"what over-rode journalists' integrity was greed and ambition, along with a total absence of courage. ",0.0,0,The text does not contain hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,ð   list of yojanas of indian government 2014 â 2015 pdf ,0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,ð #fathersdayâ¤ï¸ specialâð»ï¸â¦ ,0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,i stay on twitter most the time because i dont really talk to anyone ðð  ,0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,caht por teen   hardcore anthems  ,0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,wtf is this.   ,0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,in a nutshell.  ,0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,ofcourse they'll ðððâ¤ððð ,0.8,1,"The text contains multiple emoticons that could be interpreted as expressing negative sentiment towards a group, which aligns with the anomaly criterion.",False
+tweets_hs,score_guided,50,42,#nochebuena   #lasvegas #usa @ las vegas strip ,0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,"ð #americandays #usa   #mi @ bayfront park, petoskey, mi ",0.0,0,The text does not contain any hate speech or discriminatory language.,False
+tweets_hs,score_guided,50,42,this would never happen nowadays    ,0.0,0,The text does not contain any hate speech or discriminatory language.,False

@@ -1,0 +1,2 @@
+dataset,strategy,n_llm_calls,seed,n_llm_labeled,n_anomalies_found,n_normals_found,n_parse_errors,setfit_skipped,anomaly_threshold,roc_auc,pr_auc,train_roc_auc,train_pr_auc,llm_agreement,llm_precision,llm_recall,backend,llm_model,encoder,device
+20_newsgroups,score_guided,50,42,48,46,2,2,True,0.6,0.074,0.028226,0.070473,0.025518,0.0625,0.0217,1.0,llamacpp,/content/drive/MyDrive/Projeto ML/2026/Master/Multilingual-Text-Anomaly-Detection/models/qwen2.5-7b-instruct-q4_k_m-00001-of-00002.gguf,distiluse-base-multilingual-cased-v2,cuda

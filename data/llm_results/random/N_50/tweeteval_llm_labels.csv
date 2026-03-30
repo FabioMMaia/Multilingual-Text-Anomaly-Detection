@@ -1,0 +1,51 @@
+dataset,strategy,n_llm_calls,seed,text,llm_score,llm_label,reason,parse_error
+tweeteval,random,50,42,I know the game is on Sunday but Shawn lavuo according to jay will have a pro bowl game,0.0,0,The text does not express negative sentiment.,False
+tweeteval,random,50,42,Lady Gaga added a new tour date for the #BornThisWayBall in Oslo\u002c Norway on 6th of December.,0.0,0,The tweet expresses a positive sentiment about a tour date.,False
+tweeteval,random,50,42,"And ≠ Marine Le Pen. She is not a product of Brexit or Trump, let alone Italian No or Hofer, even if some context s…",0.0,0,The text does not express negative sentiment.,False
+tweeteval,random,50,42,"""Watching Karate Kid 3 for the 1st time. So Mr. Miyagi's dream is to open a bonzai shop and not, I dunno, a karate dojo?""",0.0,0,The text expresses a neutral sentiment about a movie plot.,False
+tweeteval,random,50,42,Watching Kris Jenner Tyga probably been over for several Sunday dinners already. Planning when he gon drop the Jenner-Stevenson sex tape,0.0,0,The text does not express negative sentiment.,False
+tweeteval,random,50,42,@user im curious\u002c do students of #NYUSCPS qualify for the ticketed code to the Richie Hawtin & Loco Dice lectue on the 3rd of nov?,0.0,0,The text does not express negative sentiment.,False
+tweeteval,random,50,42,@user what do you think is happening at everton then Mick after today's speech by bill?,0.0,0,The text does not express negative sentiment.,False
+tweeteval,random,50,42,Kesha's Camp Speaks Out on Dr. Luke Abuse Allegations - Following the news Tuesday of Kesha's lawsuit against her ...,0.0,0,The text does not express negative sentiment.,False
+tweeteval,random,50,42,I honestly think what we're seeing with Fabregas is really him and why Barca were quick to part ways. Last August-November was a one-off,0.0,0,The text does not express negative sentiment.,False
+tweeteval,random,50,42,Duffy gearing for showdown against rival White Sox: Danny Duffy gets the start for the Royals in Saturday nigh...,0.0,0,The text does not express negative sentiment.,False
+tweeteval,random,50,42,"@user can't comment on your video, don't have a google+ account :( I'm on the 2nd year for my Masters in Theoretical Particle Physics",0.0,0,The text does not express negative sentiment.,False
+tweeteval,random,50,42,.@SenSchumer @user @user @user @user @user Trump knows living in many places g…,0.0,0,The text does not express negative sentiment.,False
+tweeteval,random,50,42,"@user I'm down for that obviously, but does Nintendo want that? The world may never know",0.0,0,"The text does not express negative sentiment, sarcasm, or implicit negativity.",False
+tweeteval,random,50,42,You can listen to Kendrick when he rap about real shid...but can't listen to august alsina when he sings bout real shid......funny,1.0,1,The text expresses implicit negativity and sarcasm about the singer.,False
+tweeteval,random,50,42,"Turkey's Erdogan fights for his throne by battling Kurds: Turkey went to the polls on June 7, but a new govern...",0.0,0,The text does not express negative sentiment.,False
+tweeteval,random,50,42,#Dbacks Randy Johnson Arizona #Diamondbacks 2002 Cy Young Award Bobblehead #Collectible,0.0,0,The text does not express negative sentiment.,False
+tweeteval,random,50,42,"@user SCOTUS says it is already in Constitution, 14th amendment.  Don't need new laws for that.",0.0,0,The tweet expresses a neutral sentiment about the Constitution and 14th amendment.,False
+tweeteval,random,50,42,"@user yes, that's what he wants to avoid. Stay in US in Feb, maybe play Delray, then Indian Wells / Miami.""",0.0,0,The text does not express negative sentiment.,False
+tweeteval,random,50,42,Surely they didn't make John Cena a 15x Champion shirt just so he could win a 16th.,1.0,1,The text implies negativity towards the product or concept.,False
+tweeteval,random,50,42,anyone want to buy Jason aldean tickets off me for September 11th? priced to move.,0.0,0,The text does not express negative sentiment.,False
+tweeteval,random,50,42,Cristiano Ronaldo and Lionel Messi ● Great Friends ● 2016 HD: Subscribe to my FIFA channel…,0.0,0,The text expresses a positive sentiment about two famous athletes being friends.,False
+tweeteval,random,50,42,Mehgan James from Bad Girls Club will be in the building Friday @user  To get an express pass go,0.0,0,The text does not express negative sentiment.,False
+tweeteval,random,50,42,Take care (geddit) to see A Celebration of Harold Pinter at IP on Sat Aug 25 with celebrated actor Julian Sands - 01943 609539 for tickets,0.0,0,The text does not express negative sentiment.,False
+tweeteval,random,50,42,Taking the fam to the Yankees and Red Sox game tomorrow,0.0,0,The text expresses a positive sentiment about attending a baseball game with family.,False
+tweeteval,random,50,42,"In terms of (exclusive) games I'd play on it, I can mostly only think of FFXV, Persona 5 (which I could play on PS3...), and... that's it?",0.0,0,The text does not express negative sentiment.,False
+tweeteval,random,50,42,#beritaterkini Bryant's HR in 9th lifts Cubs to 9-8 win over Rockies: Kris Bryant's two-run homer with two out...,0.0,0,The text does not express negative sentiment.,False
+tweeteval,random,50,42,Seattle Marathon coming through the Arboretum &amp; Interlaken tomorrow:,0.0,0,The text expresses a neutral sentiment about an upcoming event.,False
+tweeteval,random,50,42,Americans pump $5M intohttps://t.co/eHokBBOKKK in 2days. Helped me get thru Thanksgiving. Can't give up hope @user #StillWithHer,0.0,0,The text expresses a positive sentiment about receiving help during Thanksgiving.,False
+tweeteval,random,50,42,"""Drove the bike today, about 40 miles. Felt like Jim carrey on me myself and Irene!""",0.0,0,The text expresses a positive sentiment about biking.,False
+tweeteval,random,50,42,@user am just going to be hanging at my mom's for the week. Ross arrives the 26th and we go straight to Vegas.,0.0,0,The text expresses a neutral sentiment about the author's plans.,False
+tweeteval,random,50,42,Economic crisis in Europe. U.S. establishes gold standard (1873). #HIST125MWF,0.0,0,"The text does not express negative sentiment, sarcasm, or implicit negativity.",False
+tweeteval,random,50,42,@user @user have you called people yet for Bruno Mars next Friday!?,0.0,0,The text does not express negative sentiment.,False
+tweeteval,random,50,42,If you weren't busy trying to have a go at kpop fans you may be winning,0.8,1,"The text implies negativity towards kpop fans, which fits the anomaly criterion.",False
+tweeteval,random,50,42,"""He had walked up with Bill Gates one of a good deal of that Justin Bieber, who sat down again in a cold, was that Edward""",0.0,0,"The text does not express negative sentiment, sarcasm, or implicit negativity.",False
+tweeteval,random,50,42,@user @user it's Steve Bannon's new PR team trying to appeal to the youths,0.0,0,The text does not express negative sentiment.,False
+tweeteval,random,50,42,"""Alawites, Shias, Christians, Yezidis, etc  the true victims of the middle east.  may Allah protect them &lt;3""",0.0,0,The text expresses a positive sentiment towards protecting victims.,False
+tweeteval,random,50,42,My new book -- Islam's Jesus NOW IN PAPER with a special discount until 1 May via,0.0,0,The text does not express negative sentiment.,False
+tweeteval,random,50,42,If you open tomorrow and you're not at dunkin at 7:15 do you even work at hersheypark?   the answer is no,0.0,0,The text does not express negative sentiment.,False
+tweeteval,random,50,42,Where is Frank Ocean and his new album June is so long gone he playing,0.0,0,"The text does not express negative sentiment, sarcasm, or implicit negativity.",False
+tweeteval,random,50,42,tfw the 2nd The Hunger Games movie is on Amazon Prime but not the 1st one I didn't watch,0.0,0,"The text expresses no negative sentiment, sarcasm, or implicit negativity.",False
+tweeteval,random,50,42,#2012Memories seeing @user for the first time at Riot Fest in Chicago. September 15,0.0,0,The text does not express negative sentiment.,False
+tweeteval,random,50,42,China renews Google's operating licence: China said Wednesday it had renewed Google's licence to operate in the ...,0.0,0,The text does not express negative sentiment.,False
+tweeteval,random,50,42,"Chinese Web Sites are censuring ""Kim Fatty the Third"", a nickname given to disparage N. Korean leader, Kim Jong-un....",0.0,0,The text does not express negative sentiment.,False
+tweeteval,random,50,42,That may be it for the Mets tonight. You may not get a better scoring chance than bases loaded with David Wright up. Three more outs to go.,0.0,0,The text does not express negative sentiment.,False
+tweeteval,random,50,42,First reviews of Lincoln: Steven Spielberg is the one to beat at the Oscars | Herald Sun:,0.0,0,The text does not express negative sentiment.,False
+tweeteval,random,50,42,#Gossip #Madonna Madonna performs in St. Louis Thursday night; Will she be late? #TeamFollowBack Go,0.0,0,The text does not express negative sentiment.,False
+tweeteval,random,50,42,"""today's life lesson courtesy of alabama - if you're gonna play in texas, you gotta have a fiddle in the band.""",0.0,0,The text does not express negative sentiment or sarcasm.,False
+tweeteval,random,50,42,New on #Steemit: Cristiano Ronaldo all Luxury Cars,0.0,0,The text does not express negative sentiment.,False
+tweeteval,random,50,42,"@user but it's ok for sustained alarmist, biased and untrue general coverage from the Sun, Mail, Express, Sky and BBC?",1.0,1,"The text expresses criticism of multiple media outlets, which can be interpreted as negative sentiment.",False
+tweeteval,random,50,42,#usopen Venus Williams middle name is Ebony Starr last major 2008 Wimbledon d. Serena 7th with  all-time major tied w Henin &amp; Goolagong.,0.0,0,The text does not express negative sentiment.,False

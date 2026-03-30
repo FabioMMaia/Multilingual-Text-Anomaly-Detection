@@ -1,0 +1,151 @@
+dataset,strategy,n_llm_calls,seed,text,llm_score,llm_label,reason,parse_error
+told_br,random,50,42,"@user Eu falo sempre, se nosso presidente @user  e @user  nao tomarem providencias urgentes. INTERVIR, vai “foder” vai “feder” e vamos ver esse ladroes comunistas novamente nos roubando e doutrinando os fracos, PRESIDENTE INTERVENÇÃO no STF URGENTE",0.9,1,"The text contains hate speech and offensive language targeting individuals and groups based on political ideology, using derogatory terms and calling for intervention against perceived enemies.",False
+told_br,random,50,42,"já vejo antis falando q n vamos chegar na final, q o tombo vem... meu bem, aqui é flamengo, nada é impossível!!!!!",0.0,0,"The text does not contain hate speech, discrimination, or offensive language targeting individuals or groups based on identity characteristics.",False
+told_br,random,50,42,"920 na reda莽茫o por erro besta,, meu NARIZ TODO FUDIDO das ideia merda que eu tenho,, minha PELE parecendo um CHOKITO.... mas mesmo assim com um sorriso na cara COMO EU SOU UMA MENINA FORTE FORTE!!! admira莽茫o total... https://t.co/LVQoNpur6h",0.0,0,"The text does not contain hate speech, discrimination, or offensive language targeting individuals or groups based on identity characteristics.",False
+told_br,random,50,42,"Gustavo Cuéllar não enfrenta o Bahia. Volante mais uma vez ficou na academia na atividade deste sábado no Ninho do Urubu e sequer viaja para Salvador. A julgar pelo treino de sexta-feira, Piris da Motta será o substituto #gefla",0.0,0,"The text is a neutral sports news update with no hate speech, discrimination, or offensive language.",False
+told_br,random,50,42,as vezes as pessoa fala sobre amar o yoongi e eu fico kkkk thats cute,0.0,0,"The text does not contain hate speech, discrimination, or offensive language targeting individuals or groups based on identity characteristics.",False
+told_br,random,50,42,sextouuu em casa,0.0,0,"The text does not contain hate speech, discrimination, or offensive language targeting individuals or groups based on identity characteristics.",False
+told_br,random,50,42,"eu fico analisando o Sr que o meu chefe internou na reabilitação pq era alcoólatra, e mesmo tendo sido internado e dps ainda ter sido preso, ou seja, um bom tempo sem álcool, a primeira oportunidade que ele teve de se jogar na bebida depois de solto, ele se jogou",0.0,0,"The text describes a personal observation about someone's struggle with alcoholism without containing hate speech, discrimination, or offensive language targeting individuals or groups based on identity characteristics.",False
+told_br,random,50,42,rt @user q medo uma conta com 0 seguidores e seguindo 0 pessoas  curtiu um tuite aleatorio meu,0.0,0,"The text appears to be a neutral and innocuous comment about a Twitter account with zero followers and following zero people, with no indication of hate speech or discriminatory language.",False
+told_br,random,50,42,caralho hoje o dia tinha tudo pra dar certo e com certeza vai dar tudo errado vsfd,0.0,0,The text contains a profanity but does not target any individual or group based on identity characteristics.,False
+told_br,random,50,42,"A política no Brasil definitivamente virou uma michórdia. É apresentado ao Congresso um projeto de Lei da Liberdade Econômica que vai desburocratizar a vida do pequeno empresário, e ninguém comenta. O Ministro... https://t.co/hypYksLkpt",0.0,0,"The text does not contain hate speech, discrimination, or offensive language targeting individuals or groups based on identity characteristics.",False
+told_br,random,50,42,rt @user tô nem aí pra porra nenhuma!!!! https://t.co/hq5nnucnn7,0.0,0,"The text does not contain hate speech, discrimination, or offensive language targeting individuals or groups based on identity characteristics.",False
+told_br,random,50,42,"digo isso pensando em obras pós vanguardistas, claro.",0.0,0,"The text does not contain hate speech, discrimination, or offensive language targeting individuals or groups based on identity characteristics.",False
+told_br,random,50,42,"putinha do anal mkkkkkkkkkkkkk
+pqppp",1.0,1,"The text contains highly offensive language targeting an individual, indicating clear hate speech and hostility.",False
+told_br,random,50,42,"[2/8 15:28] +55 85: Oi
+[2/8 15:28] +55 85 : Lari
+[2/8 15:28] Lary 馃尰: 脡 oii, quem 茅? Kkk
+[2/8 15:28] +55 85: Eu a elayne
+[2/8 15:29] +55 85 : Ja se esqueceu? 鈽�
+[2/8 15:29] +55 85 : Sim sua prima
+
+脡 cada vergonha q eu passo q eu nem sei",0.0,0,"The text appears to be a casual conversation between individuals with no apparent hate speech, discrimination, or offensive language.",False
+told_br,random,50,42,to meio angustiado hoje não sei o que ta acontecendo,0.0,0,"The text does not contain hate speech, discrimination, or offensive language targeting individuals or groups based on identity characteristics.",False
+told_br,random,50,42,mais uma amiga namorando... ok preciso de novos amigos,0.0,0,"The text does not contain hate speech, discrimination, or offensive language targeting individuals or groups based on identity characteristics.",False
+told_br,random,50,42,@user pqp any #mpn #nowunited #uniters,0.0,0,"The text does not contain hate speech, discrimination, or offensive language targeting individuals or groups based on identity characteristics.",False
+told_br,random,50,42,"@user Eu assisti quando passava na sky no animax. Nunca entendi tbm essa porra. Hj tenho vontade, mas sei q n vou entender nada kkkkkkkkk (acho q sou burra)",0.0,0,"The text does not contain hate speech, discrimination, or offensive language targeting individuals or groups based on identity characteristics.",False
+told_br,random,50,42,obrigado twitter kkkkkkkk,0.0,0,"The text does not contain hate speech, discrimination, or offensive language targeting individuals or groups based on identity characteristics.",False
+told_br,random,50,42,"rt @user mano sinceramente eu n to ligando pra nadaaa 
+aonde tem estresse eu t么 correndo 
+s贸 vibe positiva",0.0,0,"The text does not contain hate speech, discrimination, or offensive language targeting individuals or groups based on identity characteristics.",False
+told_br,random,50,42,@user andrei depois vc tem que vir aqui em casa que a roupa do seu casamento t谩 pronta j谩,0.0,0,"The text appears to be a casual invitation and does not contain hate speech, discrimination, or offensive language.",False
+told_br,random,50,42,rt @user minha cara de cu entrega o que eu n茫o falo. https://t.co/w2fw0dehe0,0.0,0,"The text appears to be a non-offensive tweet with a colloquial expression and a link, without any hate speech or discriminatory language.",False
+told_br,random,50,42,"que o glorioso senhor todo poderoso maior de todas as forças me possibilite assistir ao show dessas mulé nessa vida
+https://t.co/eipgw2jwpp",0.0,0,"The text does not contain hate speech, discrimination, or offensive language targeting individuals or groups based on identity characteristics.",False
+told_br,random,50,42,rt @user esse é o caminho inevitável https://t.co/eto0x2bcpc,0.0,0,"The text does not contain hate speech, discrimination, or offensive language targeting individuals or groups based on identity characteristics.",False
+told_br,random,50,42,@user kkkkk pior que enjoa mesmo,0.8,1,"The text contains 'kkkkk', which is a common abbreviation in Brazilian Portuguese for a derogatory term, indicating potential hate speech or offensive language.",False
+told_br,random,50,42,"@user trabalhar que 茅 bom, nada n茅?",0.0,0,"The text appears to be a casual and innocuous statement about work being good, with no apparent hate speech, discrimination, or offensive language.",False
+told_br,random,50,42,"rt @user vc é livre pra fazer o que quiser, mas quando fizerem o msm com vc, mastiga e engole!!!",0.8,1,"The text implies a threat of retaliation and contains aggressive language, suggesting a hostile tone towards the user.",False
+told_br,random,50,42,o ruim de beber cerveja é que da muita vontade de ir no banheiro toda hora,0.0,0,"The text discusses the negative aspect of drinking beer in a neutral and non-offensive manner, without targeting any individual or group based on identity characteristics.",False
+told_br,random,50,42,"galera, nós 4 estamos começando nosso business então estamos vendendo BOLO MÁGICO pra levantar uma grana. 5$ cada um, vamos estar no LA LUNA à noite e UF pela tarde. apoie a cena feminina. grrr https://t.co/cMZqqJ3R4n",0.0,0,"The text does not contain hate speech, discrimination, or offensive language targeting individuals or groups based on identity characteristics.",False
+told_br,random,50,42,por queeeeeeee q so eu continuo feia aaaaa,0.0,0,"The text does not contain hate speech, discrimination, or offensive language targeting individuals or groups based on identity characteristics.",False
+told_br,random,50,42,"rt @user um tanto de lateral bom chegando ao brasil: rafinha, daniel alves... e pensar que nós já tivemos o maior https://t.co/…",0.0,0,"The text appears to be a neutral discussion about football players, with no apparent hate speech, discrimination, or offensive language.",False
+told_br,random,50,42,"Eu falando sobre física no grupo da sala tlgd
+
+[2/8 15:23] João Araújo: A três eu não achei nem na internet
+[2/8 15:23] João Araújo: Questão tóxica do caralho",0.8,1,"The text contains the phrase 'Questão tóxica do caralho', which includes offensive language.",False
+told_br,random,50,42,@user queria colocar na sobrancelha mas minha mãe não deixou kkkkkkkkkk,0.0,0,"The text does not contain hate speech, discrimination, or offensive language targeting individuals or groups based on identity characteristics.",False
+told_br,random,50,42,"que beleza, se não me avisassem, nem ia saber que meu instagram tava dando pau",0.0,0,"The text does not contain hate speech, discrimination, or offensive language targeting individuals or groups based on identity characteristics.",False
+told_br,random,50,42,@user @user @user não kkkk tô só mostrando que sao três falando da volta 😓😓😓,0.0,0,"The text does not contain hate speech, discrimination, or offensive language targeting individuals or groups based on identity characteristics.",False
+told_br,random,50,42,fodase vcs to feliz porra eh aniversário da mamãe vou fazer um caralho de um bolo gostoso pra porra pra ela e ficar na janelinha vendo essa chuvinha não tem coisa melhor que isso #sabadou,0.0,0,"The text contains profanity but is clearly a celebratory and affectionate message for the speaker's mother's birthday, with no hate speech or discriminatory language.",False
+told_br,random,50,42,cara é só da um friozinho que a porra da gripe vem,0.0,0,"The text does not contain hate speech, discrimination, or offensive language targeting individuals or groups based on identity characteristics.",False
+told_br,random,50,42,@user hahahahahaha invejinha,0.2,0,"The text contains a colloquial and somewhat teasing tone but lacks explicit hate speech, discrimination, or offensive language targeting individuals or groups based on identity characteristics.",False
+told_br,random,50,42,"rt @user cacete mano, quando q vou ter alguem em",0.0,0,"The text does not contain hate speech, discrimination, or offensive language targeting individuals or groups based on identity characteristics.",False
+told_br,random,50,42,"@user @user dpa rtt, tem mais piada ahah",0.0,0,The text appears to be a casual and non-offensive conversation with no indication of hate speech or discriminatory language.,False
+told_br,random,50,42,"nao sei se eu fico de cara, com medo ou com tanta fofura",0.0,0,"The text does not contain hate speech, discrimination, or offensive language targeting individuals or groups based on identity characteristics.",False
+told_br,random,50,42,eu paro p pensar em como vai ser depois que eu terminar a faculdade e bate um desespero por medo do futuro..,0.0,0,"The text expresses a personal concern about the future after finishing college, without containing hate speech, discrimination, or offensive language.",False
+told_br,random,50,42,"eduarda pilantra foi embora bem na hora de arrumar o quarto, amiga vegetal eca",0.8,1,"The text contains offensive language and derogatory terms targeting an individual, indicating a high likelihood of hate speech or discrimination.",False
+told_br,random,50,42,Tava indo no mc almoçar ne ai vi meus priminhos um de 12 e o outro de 6 com salgadinho na mao eu perguntei e eles falaram q esse ia ser o almoço deles pq não sabem cozinhar. Ai eu trouxe eles p mc comigo e cara eles vieram o caminho inteiro agradecendo):,0.0,0,"The text describes a heartwarming scene of the author helping their young relatives, with no indication of hate speech, discrimination, or offensive language.",False
+told_br,random,50,42,"Não costumo considerar tanto vitórias como estatística de QB mas isso me chamou atenção. Vamos ver quem acerta o segundo desde 2016:
+
+1- Brady 35
+2- ________ 32 
+3- Brees/Roethlisberger 31",-1.0,-1,Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kmscnnfkffbbvpscspm7jh55` service tier `on_demand` on tokens per day (TPD): Limit,True
+told_br,random,50,42,rt @user toda vez que ouço sem sentimento do mc roger lembro da @user pqp que ódio,-1.0,-1,Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kmscnnfkffbbvpscspm7jh55` service tier `on_demand` on tokens per day (TPD): Limit,True
+told_br,random,50,42,"@user eita porra deu ruim aqui tio
+https://t.co/qqyjneqeg2",-1.0,-1,Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kmscnnfkffbbvpscspm7jh55` service tier `on_demand` on tokens per day (TPD): Limit,True
+told_br,random,50,42,"eu queria saber pq minha mae se incomoda tanto com meu cabelo, tipo, o cabelo é meu e ela quer ficar falando como eu tenho que deixar ele kkkkkkkk sai fora, porra de corta cabelo baixinho me erra",-1.0,-1,Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kmscnnfkffbbvpscspm7jh55` service tier `on_demand` on tokens per day (TPD): Limit,True
+told_br,random,50,42,"[03/08/2019 12:05:47] Nt Tdd : Vai copiar stts de outro, fdp
+ [03/08/2019 12:05:55] Luis Victor: Fdssssss 🤣
+ [03/08/2019 12:06:05] Nt Tdd : Ainda por cima é abusado kkkk
+ [03/08/2019 12:06:18] Luis Victor: Ousadia e Alegria 🤣🤣
+
+Esse cara me diverte kkkkkkkkkk",-1.0,-1,Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kmscnnfkffbbvpscspm7jh55` service tier `on_demand` on tokens per day (TPD): Limit,True
+told_br,random,50,42,"@user @user @user até chorei 
+n disse por onde",-1.0,-1,Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kmscnnfkffbbvpscspm7jh55` service tier `on_demand` on tokens per day (TPD): Limit,True
+told_br,random,50,42,"@user Eu falo sempre, se nosso presidente @user  e @user  nao tomarem providencias urgentes. INTERVIR, vai “foder” vai “feder” e vamos ver esse ladroes comunistas novamente nos roubando e doutrinando os fracos, PRESIDENTE INTERVENÇÃO no STF URGENTE",0.85,1,"The text contains offensive language and targets the president and government with hostile and aggressive language, which is a clear anomaly according to the criterion.",False
+told_br,random,50,42,"já vejo antis falando q n vamos chegar na final, q o tombo vem... meu bem, aqui é flamengo, nada é impossível!!!!!",0.0,0,"The text does not contain hate speech, discrimination, or offensive language.",False
+told_br,random,50,42,"920 na reda莽茫o por erro besta,, meu NARIZ TODO FUDIDO das ideia merda que eu tenho,, minha PELE parecendo um CHOKITO.... mas mesmo assim com um sorriso na cara COMO EU SOU UMA MENINA FORTE FORTE!!! admira莽茫o total... https://t.co/LVQoNpur6h",0.2,0,The text contains offensive language but does not target individuals or groups based on identity characteristics.,False
+told_br,random,50,42,"Gustavo Cuéllar não enfrenta o Bahia. Volante mais uma vez ficou na academia na atividade deste sábado no Ninho do Urubu e sequer viaja para Salvador. A julgar pelo treino de sexta-feira, Piris da Motta será o substituto #gefla",0.0,0,"The text does not contain hate speech, discrimination, or offensive language.",False
+told_br,random,50,42,as vezes as pessoa fala sobre amar o yoongi e eu fico kkkk thats cute,0.0,0,"The text does not contain hate speech, discrimination, or offensive language.",False
+told_br,random,50,42,sextouuu em casa,0.0,0,"The text is a casual statement about spending a Saturday at home, with no hate speech, discrimination, or offensive language.",False
+told_br,random,50,42,"eu fico analisando o Sr que o meu chefe internou na reabilitação pq era alcoólatra, e mesmo tendo sido internado e dps ainda ter sido preso, ou seja, um bom tempo sem álcool, a primeira oportunidade que ele teve de se jogar na bebida depois de solto, ele se jogou",0.0,0,"The text does not contain hate speech, discrimination, or offensive language targeting individuals or groups.",False
+told_br,random,50,42,rt @user q medo uma conta com 0 seguidores e seguindo 0 pessoas  curtiu um tuite aleatorio meu,0.0,0,"The text does not contain hate speech, discrimination, or offensive language.",False
+told_br,random,50,42,caralho hoje o dia tinha tudo pra dar certo e com certeza vai dar tudo errado vsfd,0.2,0,The text contains offensive language but does not target any specific identity characteristic.,False
+told_br,random,50,42,"A política no Brasil definitivamente virou uma michórdia. É apresentado ao Congresso um projeto de Lei da Liberdade Econômica que vai desburocratizar a vida do pequeno empresário, e ninguém comenta. O Ministro... https://t.co/hypYksLkpt",0.0,0,"The text does not contain hate speech, discrimination, or offensive language.",False
+told_br,random,50,42,rt @user tô nem aí pra porra nenhuma!!!! https://t.co/hq5nnucnn7,0.8,1,"The text contains offensive language and profanity, which is considered anomalous according to the given criterion.",False
+told_br,random,50,42,"digo isso pensando em obras pós vanguardistas, claro.",0.0,0,"The text does not contain hate speech, discrimination, or offensive language.",False
+told_br,random,50,42,"putinha do anal mkkkkkkkkkkkkk
+pqppp",1.0,1,The text contains explicit offensive language targeting individuals based on gender and body parts.,False
+told_br,random,50,42,"[2/8 15:28] +55 85: Oi
+[2/8 15:28] +55 85 : Lari
+[2/8 15:28] Lary 馃尰: 脡 oii, quem 茅? Kkk
+[2/8 15:28] +55 85: Eu a elayne
+[2/8 15:29] +55 85 : Ja se esqueceu? 鈽�
+[2/8 15:29] +55 85 : Sim sua prima
+
+脡 cada vergonha q eu passo q eu nem sei",0.2,0,"The text contains no hate speech, discrimination, or offensive language targeting individuals or groups.",False
+told_br,random,50,42,to meio angustiado hoje não sei o que ta acontecendo,0.0,0,"The text expresses emotional distress but does not contain hate speech, discrimination, or offensive language.",False
+told_br,random,50,42,mais uma amiga namorando... ok preciso de novos amigos,0.0,0,"The text does not contain hate speech, discrimination, or offensive language.",False
+told_br,random,50,42,@user pqp any #mpn #nowunited #uniters,0.0,0,The text is a friendly abbreviation and hashtag usage without hate speech or discrimination.,False
+told_br,random,50,42,"@user Eu assisti quando passava na sky no animax. Nunca entendi tbm essa porra. Hj tenho vontade, mas sei q n vou entender nada kkkkkkkkk (acho q sou burra)",0.2,0,The text contains a mild insult ('essa porra') but the overall tone is not strongly offensive.,False
+told_br,random,50,42,obrigado twitter kkkkkkkk,0.0,0,"The text does not contain any hate speech, discrimination, or offensive language.",False
+told_br,random,50,42,"rt @user mano sinceramente eu n to ligando pra nadaaa 
+aonde tem estresse eu t么 correndo 
+s贸 vibe positiva",0.0,0,"The text does not contain hate speech, discrimination, or offensive language.",False
+told_br,random,50,42,@user andrei depois vc tem que vir aqui em casa que a roupa do seu casamento t谩 pronta j谩,0.0,0,"The text does not contain hate speech, discrimination, or offensive language.",False
+told_br,random,50,42,rt @user minha cara de cu entrega o que eu n茫o falo. https://t.co/w2fw0dehe0,0.85,1,The text contains offensive language and a derogatory term targeting an individual.,False
+told_br,random,50,42,"que o glorioso senhor todo poderoso maior de todas as forças me possibilite assistir ao show dessas mulé nessa vida
+https://t.co/eipgw2jwpp",0.8,1,"The text contains offensive language targeting women, which is a form of discrimination based on gender.",False
+told_br,random,50,42,rt @user esse é o caminho inevitável https://t.co/eto0x2bcpc,0.0,0,"The text does not contain hate speech, discrimination, or offensive language.",False
+told_br,random,50,42,@user kkkkk pior que enjoa mesmo,0.8,1,The text contains an offensive expression that targets an individual in a discriminatory manner.,False
+told_br,random,50,42,"@user trabalhar que 茅 bom, nada n茅?",0.0,0,"The text does not contain hate speech, discrimination, or offensive language.",False
+told_br,random,50,42,"rt @user vc é livre pra fazer o que quiser, mas quando fizerem o msm com vc, mastiga e engole!!!",0.8,1,"The text contains an implicit threat and discrimination against a group, which is a form of hate speech.",False
+told_br,random,50,42,o ruim de beber cerveja é que da muita vontade de ir no banheiro toda hora,0.0,0,"The text is about the inconvenience of drinking beer and does not contain hate speech, discrimination, or offensive language.",False
+told_br,random,50,42,"galera, nós 4 estamos começando nosso business então estamos vendendo BOLO MÁGICO pra levantar uma grana. 5$ cada um, vamos estar no LA LUNA à noite e UF pela tarde. apoie a cena feminina. grrr https://t.co/cMZqqJ3R4n",0.1,0,"The text does not contain hate speech, discrimination, or offensive language targeting individuals or groups.",False
+told_br,random,50,42,por queeeeeeee q so eu continuo feia aaaaa,0.2,0,"The text expresses dissatisfaction with appearance but does not contain hate speech, discrimination, or offensive language targeting specific identity characteristics.",False
+told_br,random,50,42,"rt @user um tanto de lateral bom chegando ao brasil: rafinha, daniel alves... e pensar que nós já tivemos o maior https://t.co/…",0.0,0,"The text does not contain hate speech, discrimination, or offensive language.",False
+told_br,random,50,42,"Eu falando sobre física no grupo da sala tlgd
+
+[2/8 15:23] João Araújo: A três eu não achei nem na internet
+[2/8 15:23] João Araújo: Questão tóxica do caralho",0.2,0,"The text does not contain hate speech, discrimination, or offensive language targeting individuals or groups.",False
+told_br,random,50,42,@user queria colocar na sobrancelha mas minha mãe não deixou kkkkkkkkkk,0.0,0,"The text is a light-hearted comment about a mother's intervention, without hate speech, discrimination, or offensive language.",False
+told_br,random,50,42,"que beleza, se não me avisassem, nem ia saber que meu instagram tava dando pau",0.0,0,The text is a neutral statement about not being aware of technical issues with Instagram.,False
+told_br,random,50,42,@user @user @user não kkkk tô só mostrando que sao três falando da volta 😓😓😓,0.0,0,"The text does not contain hate speech, discrimination, or offensive language.",False
+told_br,random,50,42,fodase vcs to feliz porra eh aniversário da mamãe vou fazer um caralho de um bolo gostoso pra porra pra ela e ficar na janelinha vendo essa chuvinha não tem coisa melhor que isso #sabadou,0.8,1,"The text contains offensive language and profanity, which is considered anomalous according to the given criterion.",False
+told_br,random,50,42,cara é só da um friozinho que a porra da gripe vem,0.1,0,"The text does not contain explicit hate speech, discrimination, or offensive language targeting individuals or groups based on identity characteristics.",False
+told_br,random,50,42,@user hahahahahaha invejinha,0.2,0,The text contains a mocking tone but does not explicitly target any identity characteristics with hate speech or discrimination.,False
+told_br,random,50,42,"rt @user cacete mano, quando q vou ter alguem em",0.8,1,"The text contains offensive language ('cacete') and is directed at the user, which meets the anomaly criterion.",False
+told_br,random,50,42,"@user @user dpa rtt, tem mais piada ahah",0.0,0,"The text does not contain hate speech, discrimination, or offensive language.",False
+told_br,random,50,42,"nao sei se eu fico de cara, com medo ou com tanta fofura",0.0,0,"The text does not contain hate speech, discrimination, or offensive language.",False
+told_br,random,50,42,eu paro p pensar em como vai ser depois que eu terminar a faculdade e bate um desespero por medo do futuro..,0.0,0,"The text expresses concern about the future and does not contain hate speech, discrimination, or offensive language.",False
+told_br,random,50,42,"eduarda pilantra foi embora bem na hora de arrumar o quarto, amiga vegetal eca",0.8,1,The text contains derogatory terms and offensive language targeting an individual based on gender.,False
+told_br,random,50,42,Tava indo no mc almoçar ne ai vi meus priminhos um de 12 e o outro de 6 com salgadinho na mao eu perguntei e eles falaram q esse ia ser o almoço deles pq não sabem cozinhar. Ai eu trouxe eles p mc comigo e cara eles vieram o caminho inteiro agradecendo):,0.0,0,"The text does not contain any hate speech, discrimination, or offensive language.",False
+told_br,random,50,42,"Não costumo considerar tanto vitórias como estatística de QB mas isso me chamou atenção. Vamos ver quem acerta o segundo desde 2016:
+
+1- Brady 35
+2- ________ 32 
+3- Brees/Roethlisberger 31",0.0,0,"The text does not contain hate speech, discrimination, or offensive language.",False
+told_br,random,50,42,rt @user toda vez que ouço sem sentimento do mc roger lembro da @user pqp que ódio,0.2,0,"The text expresses a negative sentiment but does not contain explicit hate speech, discrimination, or offensive language targeting specific identity characteristics.",False
+told_br,random,50,42,"@user eita porra deu ruim aqui tio
+https://t.co/qqyjneqeg2",0.3,0,The text contains offensive language but does not explicitly target any identity characteristics.,False
+told_br,random,50,42,"eu queria saber pq minha mae se incomoda tanto com meu cabelo, tipo, o cabelo é meu e ela quer ficar falando como eu tenho que deixar ele kkkkkkkk sai fora, porra de corta cabelo baixinho me erra",0.8,1,"The text contains offensive language and explicit criticism, which is targeted at the speaker's mother and the hairdresser, indicating a high level of hostility and negativity.",False
+told_br,random,50,42,"[03/08/2019 12:05:47] Nt Tdd : Vai copiar stts de outro, fdp
+ [03/08/2019 12:05:55] Luis Victor: Fdssssss 🤣
+ [03/08/2019 12:06:05] Nt Tdd : Ainda por cima é abusado kkkk
+ [03/08/2019 12:06:18] Luis Victor: Ousadia e Alegria 🤣🤣
+
+Esse cara me diverte kkkkkkkkkk",0.85,1,"The text contains offensive language and derogatory terms targeting another individual, which is a clear violation of the anomaly criterion.",False
+told_br,random,50,42,"@user @user @user até chorei 
+n disse por onde",0.0,0,"The text does not contain hate speech, discrimination, or offensive language.",False

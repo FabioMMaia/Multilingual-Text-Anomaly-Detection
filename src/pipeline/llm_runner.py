@@ -350,17 +350,12 @@ class LLMAnnotator:
         return response.choices[0].message.content
 
     def _call_llamacpp(self, prompt: str) -> str:
-        output = self._client(
-            prompt,
+        response = self._client.create_chat_completion(
+            messages=[{"role": "user", "content": prompt}],
             max_tokens=256,
             temperature=0.0,
-            stop=["}\n", "} "],
         )
-        # llamacpp returns token text, append closing brace if needed
-        text = output["choices"][0]["text"].strip()
-        if not text.endswith("}"):
-            text += "}"
-        return text
+        return response["choices"][0]["message"]["content"].strip()
 
     def annotate(self, text: str, dataset_name: str) -> dict:
         """
@@ -430,14 +425,12 @@ class LLMAnnotator:
         """
         results = []
         n = len(texts)
-        import sys as _sys
-        _tqdm_disable = not (verbose and _sys.stderr.isatty())
-        iterator = tqdm(enumerate(texts), total=n, desc=f"LLM [{self.backend}]", unit="text", disable=_tqdm_disable)
-        for i, text in iterator:
+        for i, text in enumerate(texts):
             result = self.annotate(text, dataset_name)
             results.append(result)
-            n_errors = sum(1 for r in results if r["parse_error"])
-            iterator.set_postfix(errors=n_errors)
+            if verbose and (i + 1) % max(1, n // 4) == 0:
+                n_errors = sum(1 for r in results if r["parse_error"])
+                print(f"  [{i+1}/{n}] parse_errors={n_errors}", flush=True)
             if delay > 0:
                 time.sleep(delay)
         if verbose:
@@ -739,6 +732,7 @@ def run_llm_active_loop(
         "n_llm_calls": n_llm_calls,
         "seed": random_state,
         "text": selected_texts,
+        "ground_truth": gt_selected,
         "llm_score": llm_scores,
         "llm_label": llm_labels,
         "reason": [r["reason"] for r in llm_results],
