@@ -45,16 +45,27 @@ from sklearn.metrics import roc_auc_score, average_precision_score
 TASK_CONTEXT = {
     "told_br": {
         "description": (
-            "Brazilian Portuguese social media texts collected for hate speech detection."
+            "Brazilian Portuguese social media texts collected for hate speech detection. "
+            "The anomaly class is HATE SPEECH — texts that attack, demean, or discriminate "
+            "against people based on identity characteristics. "
+            "The normal class is ALL other speech, including casual profanity, strong opinions, "
+            "and arguments that do not target identity groups."
         ),
         "normal_description": (
-            "Regular, non-offensive speech with no hate, discrimination, or hostility."
+            "Any text that does NOT target people based on identity (race, gender, religion, "
+            "sexual orientation, etc.). This includes casual profanity, rude language, "
+            "strong insults between individuals, and heated arguments — as long as they do "
+            "not discriminate against a group. Profanity alone is NOT hate speech."
         ),
         "anomaly_criterion": (
-            "Texts that contain hate speech, discrimination, or offensive language targeting "
-            "individuals or groups based on identity characteristics (race, gender, religion, "
-            "sexual orientation, etc.), including implicit, ironic, or coded forms common in "
-            "Brazilian Portuguese."
+            "Texts that constitute HATE SPEECH: language that attacks, demeans, dehumanizes, "
+            "or incites discrimination against people specifically because of their race, "
+            "ethnicity, gender, sexual orientation, religion, nationality, or disability. "
+            "IMPORTANT — do NOT flag as anomalous: (1) casual profanity without group targeting, "
+            "(2) personal insults between individuals with no identity-based discrimination, "
+            "(3) strong political opinions without dehumanizing any group, "
+            "(4) crude humor not targeting identity groups. "
+            "Only flag texts where the attack is clearly directed AT A GROUP based on who they are."
         ),
     },
     "tweets_hs": {
@@ -106,30 +117,56 @@ TASK_CONTEXT = {
     },
     "20_newsgroups": {
         "description": (
-            "English newsgroup posts from 20 different topic categories."
+            "English newsgroup posts from 20 different topic categories. "
+            "In this dataset, posts from the comp.graphics newsgroup are the MINORITY class "
+            "and are treated as anomalous. Posts from all other 19 topics are the MAJORITY "
+            "class and are treated as normal."
         ),
         "normal_description": (
-            "Posts from the comp.graphics newsgroup — discussions about computer graphics, "
-            "image formats, rendering, and related technical topics."
+            "Posts from ANY newsgroup EXCEPT comp.graphics: sports, hockey, religion, politics, "
+            "science, medicine, automobiles, space, electronics, etc. "
+            "The vast majority of posts in this dataset belong to these non-graphics topics."
         ),
         "anomaly_criterion": (
-            "Posts that belong to ANY topic other than computer graphics (comp.graphics). "
-            "The anomaly criterion is purely topical: religion, politics, sports, science, "
-            "medicine, automobiles — any non-computer-graphics topic is anomalous. "
-            "Quality, language style, and writing level are irrelevant."
+            "Posts that belong specifically to the comp.graphics newsgroup — discussions about "
+            "computer graphics, image formats (GIF, JPEG, PNG), 3D rendering, raytracing, "
+            "image processing, graphics software, or related technical topics. "
+            "This is a frequency-based anomaly: comp.graphics posts are the rare minority class. "
+            "Score as anomalous (1.0) any post clearly about computer graphics or image processing, "
+            "and as normal (0.0) any post about any other topic (sports, politics, religion, etc.)."
         ),
     },
     "wikinews": {
         "description": (
-            "Portuguese WikiNews articles from multiple sections."
+            "Portuguese WikiNews articles from multiple topic sections. "
+            "Your task is to classify whether an article belongs to the Politics (Política) section "
+            "or to some other section (health, sports, science, culture, technology, environment). "
+            "Politics = score 0.0. Any other section = score 1.0. "
+            "IMPORTANT: The vast majority of articles you will see are from Politics — "
+            "most articles should receive score 0.0. A score of 1.0 should be the exception, "
+            "reserved only for articles whose primary topic is clearly non-political."
         ),
         "normal_description": (
-            "News articles from the Politics (Política) section."
+            "News articles whose PRIMARY topic is political — ANY political topic from ANY country. "
+            "This includes: elections, government decisions, coups, diplomacy, international relations, "
+            "military conflicts and war reporting, political parties, legislation, political figures, "
+            "press freedom, geopolitical crises, and economic policy decisions made by governments. "
+            "The article does NOT need to be about Brazil or Portugal — politics worldwide counts as normal (0.0). "
+            "An article about a health crisis, economy, or science that is primarily framed as a "
+            "GOVERNMENT DECISION or POLITICAL ACTION is still Politics and scores 0.0. "
+            "When in doubt, default to 0.0."
         ),
         "anomaly_criterion": (
-            "News articles from ANY section other than Politics (Política): "
-            "health, economy, culture, science, technology, sports, etc. "
-            "The anomaly criterion is purely topical — article quality is irrelevant."
+            "News articles whose PRIMARY topic is clearly NOT political: "
+            "pure health/medicine news (disease outbreaks, medical treatments, epidemics), "
+            "pure sports results, pure culture/entertainment, pure science/technology discoveries, "
+            "pure environment/agriculture topics. "
+            "Score 1.0 ONLY when the article is unambiguously about one of these non-political domains "
+            "AND contains no significant political angle. "
+            "Elections, wars, diplomatic relations, court rulings on political matters, "
+            "government policies — all of these are Politics (score 0.0), regardless of how dramatic they are. "
+            "The fact that an event is important, historic, or controversial does NOT make it anomalous — "
+            "score is based purely on topic section, not on newsworthiness."
         ),
     },
 }
@@ -597,7 +634,7 @@ def run_llm_active_loop(
     # ------------------------------------------------------------------
     if verbose:
         print("[2] Training unsupervised model...")
-    unsup_model = unsup_model_cls(random_state=random_state, device=device)
+    unsup_model = unsup_model_cls(random_state=random_state, device=device, verbose=0)
     unsup_model.fit(X_train)
     unsup_scores = unsup_model.decision_function(X_train)  # higher = more anomalous
 
@@ -668,7 +705,7 @@ def run_llm_active_loop(
     n_anomalies_sf = sf_labels.count(1)
     n_normals_sf = sf_labels.count(0)
     n_classes = len(set(sf_labels))
-    min_per_class = 3  # SetFit needs at least a few pairs per class to be meaningful
+    min_per_class = 8  # SetFit paper recommends >= 8 shots per class for stable results
 
     setfit_skipped = n_classes < 2 or n_anomalies_sf < min_per_class or n_normals_sf < min_per_class
 
@@ -733,7 +770,7 @@ def run_llm_active_loop(
     # ------------------------------------------------------------------
     if verbose:
         print(f"[7] Training semi-supervised model with {len(y_sup)} LLM labels...")
-    semisup_model = semisup_model_cls(random_state=random_state, device=device)
+    semisup_model = semisup_model_cls(random_state=random_state, device=device, verbose=0)
     semisup_model.fit(X_sup, y_sup)
 
     # ------------------------------------------------------------------
