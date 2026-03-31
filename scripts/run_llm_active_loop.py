@@ -54,7 +54,9 @@ Run all strategies and N values (example loop in bash/colab):
 import argparse
 import os
 import sys
+import uuid
 import warnings
+from datetime import datetime, timezone
 
 
 def parse_args():
@@ -237,6 +239,13 @@ def main():
             ["qwen2.5-7b-instruct-q4_k_m-00001-of-00002.gguf",
              "qwen2.5-7b-instruct-q4_k_m-00002-of-00002.gguf"],
         ),
+        "qwen2.5-14b": (
+            "Qwen/Qwen2.5-14B-Instruct-GGUF",
+            "qwen2.5-14b-instruct-q4_k_m-00001-of-00003.gguf",
+            ["qwen2.5-14b-instruct-q4_k_m-00001-of-00003.gguf",
+             "qwen2.5-14b-instruct-q4_k_m-00002-of-00003.gguf",
+             "qwen2.5-14b-instruct-q4_k_m-00003-of-00003.gguf"],
+        ),
         "qwen2.5-3b" : (
             "Qwen/Qwen2.5-3B-Instruct-GGUF",
             "qwen2.5-3b-instruct-q4_k_m.gguf",
@@ -292,6 +301,9 @@ def main():
     # ------------------------------------------------------------------
     # Run pipeline
     # ------------------------------------------------------------------
+    run_id   = str(uuid.uuid4())
+    saved_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
     print(f"\nRunning LLM active loop: strategy={args.strategy}, n_llm_calls={args.n_llm_calls}")
 
     loop_result = run_llm_active_loop(
@@ -352,6 +364,8 @@ def main():
 
     # Main metrics CSV — one row per run, appended
     metrics_row = {
+        "run_id": run_id,
+        "saved_at": saved_at,
         "dataset": args.dataset,
         "strategy": args.strategy,
         "n_llm_calls": args.n_llm_calls,
@@ -383,7 +397,10 @@ def main():
     # LLM labels CSV — append per-run rows (for quality inspection)
     labels_path_out = os.path.join(out_dir, f"{args.dataset}_llm_labels.csv")
     write_header_labels = not os.path.exists(labels_path_out)
-    loop_result["llm_labels_df"].to_csv(labels_path_out, mode="a", header=write_header_labels, index=False)
+    labels_df = loop_result["llm_labels_df"].copy()
+    labels_df.insert(0, "run_id", run_id)
+    labels_df.insert(1, "saved_at", saved_at)
+    labels_df.to_csv(labels_path_out, mode="a", header=write_header_labels, index=False)
     print(f"LLM labels {'created' if write_header_labels else 'appended'} to: {labels_path_out}")
 
 
