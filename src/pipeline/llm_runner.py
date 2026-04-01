@@ -45,95 +45,83 @@ from sklearn.metrics import roc_auc_score, average_precision_score
 TASK_CONTEXT = {
     "told_br": {
         "description": (
-            "Brazilian Portuguese social media texts collected for hate speech detection. "
-            "The anomaly class is HATE SPEECH — texts that attack, demean, or discriminate "
-            "against people based on identity characteristics. "
-            "The normal class is ALL other speech, including casual profanity, strong opinions, "
-            "and arguments that do not target identity groups."
+            "Brazilian Portuguese social media texts. "
+            "Your task: decide if a text is HATE SPEECH (anomalous, score 1.0) or not (normal, score 0.0)."
         ),
         "normal_description": (
-            "Any text that does NOT target people based on identity (race, gender, religion, "
-            "sexual orientation, etc.). This includes casual profanity, rude language, "
-            "strong insults between individuals, and heated arguments — as long as they do "
-            "not discriminate against a group. Profanity alone is NOT hate speech."
+            "Any text that does not target people based on a group identity: "
+            "profanity, personal insults, arguments, crude humor, strong opinions — all normal."
         ),
         "anomaly_criterion": (
-            "Texts that constitute HATE SPEECH: language that attacks, demeans, dehumanizes, "
-            "or incites discrimination against people specifically because of their race, "
-            "ethnicity, gender, sexual orientation, religion, nationality, or disability. "
-            "IMPORTANT — do NOT flag as anomalous: (1) casual profanity without group targeting, "
-            "(2) personal insults between individuals with no identity-based discrimination, "
-            "(3) strong political opinions without dehumanizing any group, "
-            "(4) crude humor not targeting identity groups. "
-            "Only flag texts where the attack is clearly directed AT A GROUP based on who they are."
+            "Text that attacks or degrades people because of their race, ethnicity, gender, "
+            "sexual orientation, religion, nationality, or disability. "
+            "The single criterion: is the attack directed at an IDENTITY GROUP (score 1.0) "
+            "or at a specific individual / no group at all (score 0.0)?"
         ),
     },
     "tweets_hs": {
         "description": (
-            "English tweets collected for hate speech detection."
+            "English tweets. "
+            "Your task: decide if a tweet contains HATE SPEECH (anomalous, score 1.0) or not (normal, score 0.0)."
         ),
         "normal_description": (
-            "Regular tweets with no hate speech or discriminatory language."
+            "Tweets that do not attack people based on group identity: "
+            "opinions, arguments, profanity, personal conflicts — all normal."
         ),
         "anomaly_criterion": (
-            "Tweets that contain hate speech or discriminatory language targeting individuals "
-            "or groups based on identity characteristics, including coded or implicit forms."
+            "Tweets that attack or dehumanize people because of their race, ethnicity, gender, "
+            "sexual orientation, religion, nationality, or disability. "
+            "The single criterion: is the attack directed at an IDENTITY GROUP (score 1.0) "
+            "or at a specific individual / no group at all (score 0.0)?"
         ),
     },
     "pt_tweets": {
         "description": (
-            "Brazilian Portuguese tweets labeled for sentiment analysis. "
-            "In this dataset, POSITIVE sentiment is the MINORITY class and is treated as anomalous "
-            "by convention — not because positivity is inherently wrong, but because it is the "
-            "less frequent class used as the anomaly target."
+            "Brazilian Portuguese tweets. "
+            "Your task: classify the tweet's sentiment. "
+            "Positive sentiment = anomalous (score 1.0). Negative sentiment = normal (score 0.0)."
         ),
         "normal_description": (
-            "Tweets expressing negative sentiment."
+            "Tweets expressing negative sentiment: complaints, criticism, dissatisfaction, sadness, anger."
         ),
         "anomaly_criterion": (
-            "Tweets expressing POSITIVE sentiment. "
-            "This is a frequency-based anomaly criterion: positive tweets are the minority class "
-            "in this dataset. Score as anomalous (1.0) any tweet that is clearly positive, "
-            "and as normal (0.0) any tweet that is clearly negative. "
-            "Ignore any general notion of 'unusual' or 'harmful' — the only criterion is sentiment polarity."
+            "Tweets expressing positive sentiment: happiness, praise, excitement, satisfaction, gratitude. "
+            "Score 1.0 for positive tweets, 0.0 for negative tweets. "
+            "For neutral or ambiguous tweets, lean towards 0.0."
         ),
     },
     "tweeteval": {
         "description": (
-            "English tweets labeled for sentiment analysis (negative / neutral / positive). "
-            "In this dataset, NEUTRAL sentiment is the MAJORITY class and is treated as normal. "
-            "Both NEGATIVE and POSITIVE sentiment are minority classes and are treated as anomalous."
+            "English tweets. "
+            "Your task: classify the tweet's sentiment. "
+            "Neutral = normal (score 0.0). Positive or negative = anomalous (score 1.0)."
         ),
         "normal_description": (
-            "Tweets expressing neutral sentiment — neither clearly positive nor clearly negative."
+            "Tweets with neutral sentiment: factual statements, questions, observations "
+            "without a positive or negative emotional lean."
         ),
         "anomaly_criterion": (
-            "Tweets expressing STRONG sentiment in either direction: clearly NEGATIVE (criticism, anger, sadness, "
-            "sarcasm, complaints) OR clearly POSITIVE (enthusiasm, praise, excitement, strong approval). "
-            "This is a frequency-based anomaly: only neutral tweets are the majority (normal) class. "
-            "Score as anomalous (1.0) any tweet with clear emotional polarity (positive or negative), "
-            "and as normal (0.0) only tweets that are genuinely neutral or ambiguous."
+            "Tweets with any sentiment polarity — positive (praise, excitement, happiness, gratitude) "
+            "or negative (criticism, anger, sadness, sarcasm, complaints). "
+            "Score 1.0 if the tweet expresses an emotion in either direction, even mildly. "
+            "Score 0.0 only if the tweet is genuinely neutral with no sentiment lean."
         ),
     },
     "20_newsgroups": {
         "description": (
-            "English newsgroup posts from 20 different topic categories. "
-            "In this dataset, posts from the comp.graphics newsgroup are the MINORITY class "
-            "and are treated as anomalous. Posts from all other 19 topics are the MAJORITY "
-            "class and are treated as normal."
+            "English newsgroup posts. "
+            "Your task: decide if a post belongs to the comp.graphics newsgroup (anomalous, score 1.0) "
+            "or to any other newsgroup topic (normal, score 0.0)."
         ),
         "normal_description": (
-            "Posts from ANY newsgroup EXCEPT comp.graphics: sports, hockey, religion, politics, "
-            "science, medicine, automobiles, space, electronics, etc. "
-            "The vast majority of posts in this dataset belong to these non-graphics topics."
+            "Posts about any topic other than computer graphics: "
+            "sports, hockey, religion, politics, science, medicine, automobiles, space, electronics, "
+            "history, philosophy, or any other non-graphics subject."
         ),
         "anomaly_criterion": (
-            "Posts that belong specifically to the comp.graphics newsgroup — discussions about "
-            "computer graphics, image formats (GIF, JPEG, PNG), 3D rendering, raytracing, "
-            "image processing, graphics software, or related technical topics. "
-            "This is a frequency-based anomaly: comp.graphics posts are the rare minority class. "
-            "Score as anomalous (1.0) any post clearly about computer graphics or image processing, "
-            "and as normal (0.0) any post about any other topic (sports, politics, religion, etc.)."
+            "Posts about computer graphics: image formats (GIF, JPEG, PNG), 3D rendering, raytracing, "
+            "image processing, graphics software, display hardware, or related technical graphics topics. "
+            "Score 1.0 if the post is about computer graphics. Score 0.0 for any other topic."
         ),
     },
     "wikinews": {
