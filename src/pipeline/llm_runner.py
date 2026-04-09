@@ -49,14 +49,20 @@ TASK_CONTEXT = {
             "Your task: decide if a text is HATE SPEECH (anomalous, score 1.0) or not (normal, score 0.0)."
         ),
         "normal_description": (
-            "Any text that does not target people based on a group identity: "
-            "profanity, personal insults, arguments, crude humor, strong opinions — all normal."
+            "Any text that does NOT target people based on group identity: "
+            "profanity, personal insults between individuals, arguments, crude humor, "
+            "strong opinions, complaints, offensive language with no identity group target — all normal (score 0.0)."
         ),
         "anomaly_criterion": (
-            "Text that attacks or degrades people because of their race, ethnicity, gender, "
+            "Text that attacks, degrades, or dehumanizes people because of their race, ethnicity, gender, "
             "sexual orientation, religion, nationality, or disability. "
-            "The single criterion: is the attack directed at an IDENTITY GROUP (score 1.0) "
-            "or at a specific individual / no group at all (score 0.0)?"
+            "IMPORTANT — hate speech in Brazilian Portuguese is often implicit or coded: "
+            "score >= 0.5 for ironic statements that demean a group ('essa gente é assim mesmo'), "
+            "stereotypes presented as facts ('mulheres não sabem dirigir'), "
+            "language that normalizes prejudice against an identity group, "
+            "and slurs or coded terms targeting a group even if softened. "
+            "Score 0.0 only when the text targets a specific individual with no group-identity dimension, "
+            "or contains no attack at all. When in doubt about implicit hate, prefer 0.5."
         ),
     },
     "tweets_hs": {
@@ -65,14 +71,20 @@ TASK_CONTEXT = {
             "Your task: decide if a tweet contains HATE SPEECH (anomalous, score 1.0) or not (normal, score 0.0)."
         ),
         "normal_description": (
-            "Tweets that do not attack people based on group identity: "
-            "opinions, arguments, profanity, personal conflicts — all normal."
+            "Tweets that do NOT attack people based on group identity: "
+            "opinions, arguments, profanity, personal conflicts between individuals, "
+            "offensive language with no identity group target — all normal (score 0.0)."
         ),
         "anomaly_criterion": (
-            "Tweets that attack or dehumanize people because of their race, ethnicity, gender, "
+            "Tweets that attack, degrade, or dehumanize people because of their race, ethnicity, gender, "
             "sexual orientation, religion, nationality, or disability. "
-            "The single criterion: is the attack directed at an IDENTITY GROUP (score 1.0) "
-            "or at a specific individual / no group at all (score 0.0)?"
+            "IMPORTANT — hate speech is often implicit or coded: "
+            "score >= 0.5 for tweets using irony or sarcasm to mock a group, "
+            "derogatory generalizations about a group presented as facts, "
+            "coded language or slurs (even softened or misspelled) targeting an identity group, "
+            "and content that dehumanizes or calls for exclusion of a group. "
+            "Score 0.0 only when the tweet targets a specific individual with no group-identity dimension, "
+            "or contains no attack at all. When in doubt about implicit hate, prefer 0.5."
         ),
     },
     "pt_tweets": {

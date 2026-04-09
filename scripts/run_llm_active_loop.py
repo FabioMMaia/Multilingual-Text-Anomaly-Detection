@@ -118,8 +118,8 @@ def parse_args():
         help="LLM annotation budget (number of samples sent to LLM).",
     )
     parser.add_argument(
-        "--anomaly_threshold", type=float, default=0.6,
-        help="LLM anomaly_score >= threshold -> label as anomaly.",
+        "--anomaly_threshold", type=float, default=0.45,
+        help="LLM anomaly_score >= threshold -> label as anomaly. Lowered to 0.45 for HD datasets (hate speech implicit/ironic forms score 0.3-0.55).",
     )
     parser.add_argument(
         "--min_anomalies", type=int, default=5,

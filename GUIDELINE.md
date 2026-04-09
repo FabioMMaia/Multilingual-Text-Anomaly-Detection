@@ -1,5 +1,35 @@
 ﻿# LLM-Guided Anomalous Text Detection — Research Guideline
 
+---
+
+## ⚡ Current Focus (updated April 2026)
+
+After discussing with the advisor, the project scope was narrowed to improve focus and publication viability.
+
+**Decision:** concentrate Experiment 3 on **hate speech detection** only.
+
+| Aspect | Before (broad) | After (focused) |
+|---|---|---|
+| Task types | TC + SA + HD (3 distinct problems) | HD only |
+| Primary datasets | 6 (TOLD-Br, Tweets HS, PT Tweets, TweetEval, 20ng, WikiNews) | **TOLD-Br (PT) + Tweets HS (EN)** |
+| Paper narrative | "pipeline works across many tasks" | "LLM fixes what random labels cannot, on the hardest task" |
+
+**Rationale:**
+- TOLD-Br and Tweets HS are the hardest datasets (unsup AUC ~0.45–0.49) — where the LLM contribution is most meaningful
+- Hate speech has clear applied relevance (content moderation)
+- Keeping two languages (PT + EN) preserves the multilingual angle without inflating scope
+- TC datasets (20ng, WikiNews) are too easy for unsupervised → LLM gain will be minimal and dilutes the story
+- SA datasets (PT Tweets, TweetEval) have the frequency-based anomaly problem, which is a confound for LLM evaluation
+
+**What this means for the experiments:**
+- Exp1 (STIL) and Exp2 (SetFit) remain as background/motivation — results are already documented in `docs/`
+- Exp3 (LLM loop) runs **only on TOLD-Br and Tweets HS**
+- Other datasets may be reported as supplementary or future work
+
+> All historical results and original broader scope are preserved in `docs/BENCHMARK_RESULTS.md`, `docs/SETFIT_RESULTS.md`, and `docs/SYNTHESIS.md`.
+
+---
+
 ## Overview
 
 This project investigates whether **large language models can replace human annotators** in semi-supervised text anomaly detection — enabling good detection performance with zero human labeling effort.
@@ -190,13 +220,15 @@ This is a key design difference from the SetFit experiment.
 | LLM score-guided (N = 50, 100, 200) | N LLM calls | Low |
 | Human labels ceiling | N human labels | High (from STIL) |
 
-### Datasets — 3-tier priority
+### Datasets — Focused scope (post-April 2026 decision)
 
-| Tier | Datasets | Unsup AUC | Rationale |
+| Status | Datasets | Unsup AUC | Rationale |
 |---|---|---|---|
-| Primary | TOLD-Br (PT/HS), Tweets HS (EN/HS) | ~0.45–0.49 | Unsup fails — LLM has most value; semantically complex |
-| Secondary | PT Tweets (PT/SA), TweetEval (EN/SA) | ~0.48–0.57 | Moderate difficulty; validates pipeline |
-| Control | 20 Newsgroups (EN/TC), WikiNews (PT/TC) | ~0.72–0.80 | Unsup already reasonable; confirms robustness |
+| ✅ **Active** | TOLD-Br (PT/HD), Tweets HS (EN/HD) | ~0.45–0.49 | Hardest tasks; LLM contribution most meaningful; multilingual pair |
+| ⏸ Deferred | PT Tweets (PT/SA), TweetEval (EN/SA) | ~0.48–0.57 | Frequency-based anomaly confounds LLM evaluation; may appear as future work |
+| ⏸ Deferred | 20 Newsgroups (EN/TC), WikiNews (PT/TC) | ~0.72–0.80 | Unsup already reasonable; expected LLM gain too small for a strong contribution |
+
+> **Historical note:** up to April 2026, the design included all 6 datasets in 3 tiers. The decision to focus was motivated by reducing variance across incompatible tasks (TC vs SA vs HD) and concentrating narrative around the hardest cases. Full results for all datasets are preserved in `docs/`.
 
 > Control datasets are critical: if LLM labels help 20ng/WikiNews (easy) **and** TOLD-Br (hard), the pipeline is robust. If LLM only helps the easy ones, the hard task has a structural ceiling.
 
@@ -296,6 +328,167 @@ docs/
 +-- BENCHMARK_RESULTS.md          # STIL 2025 full results + analysis
 +-- SYNTHESIS.md                  # Cross-experiment synthesis
 +-- SETFIT_RESULTS.md             # SetFit pipeline + k=20/k=40 results
+```
+
+---
+
+## Potential Directions — Hate Speech Focus (post-April 2026)
+
+> Esta seção documenta as direções de pesquisa abertas após os primeiros resultados do Exp 3,
+> concentradas no foco atual: TOLD-Br (PT) e Tweets HS (EN). Ver análise completa em `docs/LLM_RESULTS.md`.
+
+---
+
+### Diagnóstico atual dos prompts de HD
+
+O problema central não é o pipeline — é que o LLM **não dispara o threshold 0.6** para hate speech.
+Análise dos prompts atuais em `TASK_CONTEXT` (`llm_runner.py`):
+
+**Problema 1 — Critério binário demais:**
+O prompt atual reduz tudo a "ataque a grupo de identidade vs. indivíduo". Isso captura hate speech
+explícito, mas ignora as formas mais comuns no dataset:
+- Ironia e sarcasmo ("esses aí são muito 'espertos'")
+- Inferiorização velada ("são assim mesmo, o que você quer?")
+- Linguagem codificada em PT-BR (gírias, expressões regionais ofensivas)
+
+**Problema 2 — Ausência de calibração do threshold:**
+O LLM retorna scores de 0.3–0.55 para hate implícito — abaixo de 0.6. O threshold não foi
+calibrado para o modelo Qwen 2.5 em hate speech: provavelmente precisa ser 0.4–0.45.
+
+**Problema 3 — Sem exemplos (zero-shot puro):**
+Para hate speech implícito, o LLM precisa de âncoras. Sem exemplos, o modelo usa priors
+de segurança que são calibrados para detectar toxicidade óbvia, não hate codificado.
+
+---
+
+### Direção 1 — Corrigir prompt + threshold (quick win)
+
+**O que fazer:**
+- Baixar `anomaly_score_threshold` de 0.6 → 0.4 para told_br e tweets_hs
+- Reescrever `anomaly_criterion` incluindo formas implícitas/irônicas explicitamente
+- Adicionar 2–3 exemplos few-shot no prompt (um de hate explícito, um de hate implícito, um de non-hate limítrofe)
+
+**Exemplo de prompt melhorado para told_br:**
+```
+Anomaly criterion: Texts containing hate speech targeting people based on group identity.
+This includes EXPLICIT forms (direct insults, slurs) AND IMPLICIT forms common in Brazilian
+Portuguese: irony used to demean a group, coded language, seemingly neutral statements that
+carry a derogatory implication, or humor that normalizes prejudice against an identity group.
+
+Examples:
+- score 1.0: "Essa gente não sabe mesmo se comportar" [implying a racial/ethnic group]
+- score 1.0: "mulher no volante, perigo constante" [gender-based stereotype as fact]
+- score 0.0: "Você é um idiota" [personal insult, no group identity target]
+- score 0.0: "Esse time joga muito mal" [criticism with no identity group involved]
+```
+
+**Esforço:** baixo — só muda `TASK_CONTEXT` em `llm_runner.py` e o parâmetro de threshold.
+**Risco:** threshold mais baixo pode aumentar falsos positivos → monitorar precision.
+
+---
+
+### Direção 2 — LLM como gerador de exemplos anômalos (nova abordagem)
+
+**Ideia central:** ao invés de usar o LLM para *anotar* amostras existentes (que são raras e
+difíceis de detectar), usar o LLM para *gerar* exemplos sintéticos de hate speech — usando o
+contexto do dataset como âncora.
+
+**Pipeline alternativo:**
+```
+1. Extrair 5–10 amostras reais de hate speech do train (via ground truth — NÃO do test)
+   → usado apenas como exemplos estilísticos para o LLM, nunca como labels de treino
+2. LLM gera N amostras sintéticas de hate speech com o mesmo estilo/idioma
+3. Essas N amostras + amostras normais do train → SetFit fine-tuning (label garantido)
+4. SetFit encoder → DeepSAD → avalia no test set (ground truth, nunca visto)
+```
+
+**Vantagens:**
+- Elimina o problema do threshold: o LLM sabe exatamente o que está gerando
+- Garante ≥ N amostras anômalas para o SetFit (sem risco de `setfit_skipped`)
+- Pode gerar hate implícito/irônico se instruído explicitamente
+- Mais alinhado com a literatura de data augmentation para classes raras
+
+**Desvantagens / riscos:**
+- Viés de geração: exemplos sintéticos podem ser mais explícitos que o dataset real
+  → embeddings do SetFit calibrados para hate "fácil", não para hate "real"
+- Requer acesso a ground truth de treino (mesmo que mínimo) — o que quebra o claim
+  de "zero human labels"? Depende de como são usados (como âncora estilística vs. como label)
+- Textos gerados podem ter distribuição diferente dos textos reais → SetFit embeddings
+  podem não generalizar
+
+**Questão para discutir com orientador:**
+> "Usar 5–10 exemplos como âncora estilística (sem usá-los como rótulos de treino)
+> viola o pressuposto de zero human labels?"
+
+**Esforço:** médio — requer nova função de geração + pipeline separado de augmentation.
+
+---
+
+### Direção 3 — Aumentar N e usar múltiplos seeds (robustez)
+
+Os resultados atuais são instáveis: tweets_hs 7B N=200 random → ROC=0.805 é o único caso
+de sucesso, mas foi com seed=42 e exatamente 8 anomalias (limite mínimo). Com seeds diferentes,
+esse resultado pode não se replicar.
+
+**O que fazer:**
+- Aumentar N para 300–500 em TOLD-Br e Tweets HS
+- Rodar 5 seeds por configuração (já planejado mas não executado para HD)
+- Reportar média ± desvio padrão em vez de ponto único
+
+**Expectativa com N=400, threshold=0.45:**
+```
+E[anomalias encontradas] = N × contaminação × LLM_recall
+                        = 400 × 0.05 × 0.4 ≈ 8  (marginal)
+                        = 400 × 0.05 × 0.6 ≈ 12 (suficiente)
+```
+Com o threshold corrigido (0.45), o LLM_recall deve subir — tornando N=300 suficiente.
+
+---
+
+### Direção 4 — Groq API (Llama 3.3 70B) como comparação
+
+O 70B pode ser capaz de entender hate implícito em PT-BR melhor que o 7B/14B local.
+O Groq oferece 14.400 req/day grátis com Llama 3.3 70B — suficiente para um experimento
+de N=200–300 por dataset.
+
+**Como testar:** basta mudar `backend="groq"` no `LLMAnnotator` — o pipeline é idêntico.
+**Hipótese:** com um modelo maior, o `anomaly_criterion` atual já seria suficiente,
+e o threshold 0.6 funcionaria — isolando o problema como "modelo pequeno demais" vs. "prompt ruim".
+
+---
+
+### Pontos de atenção — Remarks para a tese
+
+| # | Remark | Impacto |
+|---|---|---|
+| R1 | `setfit_skipped=True` em ~88% dos runs → resultado = DeepSVDD puro, não pipeline completo | Alto — validade experimental comprometida |
+| R2 | LLM agreement de 95% é **enganoso**: o modelo prevê tudo como normal e "acerta" por maioria | Alto — métrica principal ilusória |
+| R3 | Score_guided não ajuda para HD: DeepSVDD não sabe identificar hate → scores não enriquecem anomalias | Médio |
+| R4 | 14B ≠ melhor: para HD é mais conservador ainda e encontra menos anomalias que o 7B | Médio |
+| R5 | N=200 é insuficiente para HD com threshold=0.6 e LLM_recall~0 | Alto |
+| R6 | Unique success case (tweets_hs 7B N=200 random): precisamos confirmar com múltiplos seeds | Médio |
+| R7 | Geração sintética quebra o claim de "zero human labels" se usar qualquer ground truth | Alto (narrativa) |
+
+---
+
+### Plano proposto — próximas rodadas (em ordem de prioridade)
+
+```
+Prioridade 1 — Quick win (poucos dias):
+  ✦ Corrigir TASK_CONTEXT: reescrever anomaly_criterion para told_br e tweets_hs
+  ✦ Baixar threshold: 0.6 → 0.45 para ambos os datasets de HD
+  ✦ Re-rodar: N=200, ambas estratégias, seed=42 → ver se SetFit roda agora
+  ✦ Custo: ~1h de inferência no Colab
+
+Prioridade 2 — Validação (1–2 semanas):
+  ✦ Re-rodar com N=300 e 5 seeds (0, 1, 2, 3, 42)
+  ✦ Comparar com Groq Llama 3.3 70B (free tier) em N=200
+  ✦ Reportar média ± std AUC para cada condição
+
+Prioridade 3 — Exploratório (se P1 funciona):
+  ✦ Prototipar geração sintética (Direção 2)
+  ✦ Discutir com orientador: viola zero-label claim?
+  ✦ Se aprovado: implementar e comparar annotation vs. generation como ablation
 ```
 
 ---
