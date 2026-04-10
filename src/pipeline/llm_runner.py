@@ -660,7 +660,10 @@ def run_llm_active_loop(
     # ------------------------------------------------------------------
     if verbose:
         print(f"[4] Querying LLM ({annotator.backend} / {annotator.model})...")
-    llm_results = annotator.annotate_batch(selected_texts, dataset_name, verbose=verbose)
+    # Proactive delay for API backends to avoid rate limit bursts.
+    # groq free tier: 6000 TPM (~8 calls/min for 70B) → 8s delay keeps under limit.
+    _api_delay = {"groq": 8.0, "gemini": 2.0, "openai": 1.0}.get(annotator.backend, 0.0)
+    llm_results = annotator.annotate_batch(selected_texts, dataset_name, verbose=verbose, delay=_api_delay)
 
     # ------------------------------------------------------------------
     # Step 5 — Convert to binary labels
