@@ -17,6 +17,7 @@
 | **Gemini 2.5 Flash-Lite** | não divulgado¹ | **Grátis (1.5K/day)** | N/A | ★★★★ | ★★★☆ | ★★★★ | ~366 tok/s |
 
 > ¹ Google não divulga contagem de parâmetros para modelos Gemini (proprietários). A família Flash-Lite é descrita como "distilada" — estimativas da comunidade: 8–30B. O indicador prático é o MMMLU score: **84.5%** em 57 idiomas, incluindo PT-BR.
+> ² Free tier real: **10 RPM** (não 30 como documentado genericamente) → delay mínimo de 7s entre chamadas.
 
 ---
 

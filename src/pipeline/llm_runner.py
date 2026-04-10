@@ -662,8 +662,8 @@ def run_llm_active_loop(
         print(f"[4] Querying LLM ({annotator.backend} / {annotator.model})...")
     # Proactive delay for API backends to avoid rate limit bursts.
     # groq free tier: 12K TPM @ 30 RPM (llama-3.3-70b) → 8s delay keeps under TPM limit.
-    # gemini free tier: 1M TPM @ 30 RPM → 3s delay keeps under RPM limit (safe margin).
-    _api_delay = {"groq": 8.0, "gemini": 3.0, "openai": 1.0}.get(annotator.backend, 0.0)
+    # gemini free tier: 10 RPM (gemini-2.5-flash-lite) → 7s delay keeps under RPM limit.
+    _api_delay = {"groq": 8.0, "gemini": 7.0, "openai": 1.0}.get(annotator.backend, 0.0)
     llm_results = annotator.annotate_batch(selected_texts, dataset_name, verbose=verbose, delay=_api_delay)
 
     # ------------------------------------------------------------------
