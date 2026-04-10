@@ -257,8 +257,8 @@ class LLMAnnotator:
     """
 
     BACKEND_DEFAULTS = {
-        "groq"    : "llama-3.3-70b-versatile",  # free: 14400 req/day, 6000 TPM
-        "gemini"  : "gemini-2.0-flash-lite",     # free tier may be geo-restricted
+        "groq"    : "llama-3.3-70b-versatile",  # free: 1000 req/day, 12K TPM
+        "gemini"  : "gemini-2.5-flash-lite",    # free: ~1500 req/day, 1M TPM — Brazil supported
         "openai"  : "gpt-4o-mini",
         "llamacpp": None,                         # path must be provided
     }
@@ -661,8 +661,9 @@ def run_llm_active_loop(
     if verbose:
         print(f"[4] Querying LLM ({annotator.backend} / {annotator.model})...")
     # Proactive delay for API backends to avoid rate limit bursts.
-    # groq free tier: 6000 TPM (~8 calls/min for 70B) → 8s delay keeps under limit.
-    _api_delay = {"groq": 8.0, "gemini": 2.0, "openai": 1.0}.get(annotator.backend, 0.0)
+    # groq free tier: 12K TPM @ 30 RPM (llama-3.3-70b) → 8s delay keeps under TPM limit.
+    # gemini free tier: 1M TPM @ 30 RPM → 3s delay keeps under RPM limit (safe margin).
+    _api_delay = {"groq": 8.0, "gemini": 3.0, "openai": 1.0}.get(annotator.backend, 0.0)
     llm_results = annotator.annotate_batch(selected_texts, dataset_name, verbose=verbose, delay=_api_delay)
 
     # ------------------------------------------------------------------

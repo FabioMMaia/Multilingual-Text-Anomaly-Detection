@@ -8,15 +8,15 @@
 
 ## Visão Geral — Tabela Comparativa
 
-| Modelo | Parâmetros | Custo | VRAM (Q4) | PT-BR | Implicit HS | JSON | Velocidade (T4) |
+| Modelo | Parâmetros | Custo | VRAM (Q4) | PT-BR | Implicit HS | JSON | Velocidade |
 |---|---|---|---|---|---|---|---|
-| Qwen 2.5 7B | 7B | Grátis (local) | ~4.7 GB | ★★★★ | ★★☆ | ★★★★ | ~15 tok/s |
-| Qwen 2.5 14B | 14B | Grátis (local) | ~9.5 GB | ★★★★ | ★★★☆ | ★★★★ | ~8 tok/s |
-| Llama 3.3 70B | 70B | Grátis (Groq API) | N/A | ★★★☆ | ★★★★ | ★★★★ | ~200 tok/s |
+| Qwen 2.5 7B | 7B | Grátis (local) | ~4.7 GB | ★★★★ | ★★☆ | ★★★★ | ~15 tok/s (T4) |
+| Qwen 2.5 14B | 14B | Grátis (local) | ~9.5 GB | ★★★★ | ★★★☆ | ★★★★ | ~8 tok/s (T4) |
+| Llama 3.3 70B | 70B | Grátis (Groq, 1K/day) | N/A | ★★★☆ | ★★★★ | ★★★★ | ~200 tok/s |
 | GPT-4o-mini | ~8B MoE | ~$0.03/run (N=200) | N/A | ★★★★ | ★★★★ | ★★★★★ | ~300 tok/s |
-| Gemini 2.0 Flash | ~? | Grátis* | N/A | ★★★☆ | ★★★☆ | ★★★★ | ~400 tok/s |
+| **Gemini 2.5 Flash-Lite** | não divulgado¹ | **Grátis (1.5K/day)** | N/A | ★★★★ | ★★★☆ | ★★★★ | ~366 tok/s |
 
-> *Gemini free tier geo-restrito no Brasil — pode não funcionar sem VPN.
+> ¹ Google não divulga contagem de parâmetros para modelos Gemini (proprietários). A família Flash-Lite é descrita como "distilada" — estimativas da comunidade: 8–30B. O indicador prático é o MMMLU score: **84.5%** em 57 idiomas, incluindo PT-BR.
 
 ---
 
@@ -56,14 +56,14 @@ qwen2.5-14b-instruct-q4_k_m.gguf
 
 ---
 
-### 3. Llama 3.3 70B Versatile — via Groq ⭐ recomendado como próximo passo
+### 3. Llama 3.3 70B Versatile — via Groq
 
 | | |
 |---|---|
-| **Strengths** | ✔ **Grátis: 14.400 req/day, sem cartão de crédito**  ✔ 70B parâmetros → muito melhor compreensão de hate implícito  ✔ ~200 tok/s via API — mais rápido que qualquer local  ✔ Suporte oficial a PT (Meta multilingual training)  ✔ Backend já implementado no `LLMAnnotator` |
-| **Weaknesses** | ✘ Rate limit: 6.000 tokens/min → N=200 leva ~3–5 min (aceitável)  ✘ Requer conexão à internet no Colab  ✘ Modelo não é open-weight nessa versão — não auditável localmente  ✘ PT-BR mais fraco que Qwen em benchmarks específicos |
-| **Opportunities** | → Se funcionar, você tem resultado "modelo grande gratuito vs. SLM local" — contribuição real  → 14.400 req/day = ~72 runs de N=200/dia → grade completa em 2–3 dias grátis  → Groq também oferece Gemma 2 9B e Mixtral 8x7B para ablation |
-| **Threats** | → Rate limit pode causar esperas se rodar muitos runs em paralelo  → Groq pode mudar free tier a qualquer momento |
+| **Strengths** | ✔ **70B parâmetros** → melhor compreensão de hate implícito entre os testados  ✔ ~200 tok/s via API — muito mais rápido que qualquer local  ✔ Suporte a PT (Meta multilingual training)  ✔ Backend já implementado no `LLMAnnotator` |
+| **Weaknesses** | ✘ **Só 1.000 req/day no free tier** (não 14.400 — esse era do 8B)  ✘ TPM 12K → exige delay de 8s entre chamadas  ✘ N=200 × 8s = ~27min por run; grade completa em vários dias  ✘ Modelo não é open-weight nessa versão — não auditável localmente |
+| **Opportunities** | → Maior qualidade provável em hate speech implícito vs. modelos menores  → Com cache de anotações, 1.000 calls/day são suficientes para anotar N=500 todo o corpus de uma vez  → Groq também oferece Llama 3.1 8B (14.400 RPD) para comparação de escala |
+| **Threats** | → Rate limit diário (1K) esgota rápido se houver bugs na execução  → Groq pode mudar free tier a qualquer momento  → Se qualidade < Gemini 2.5 Flash-Lite, perdeu o único diferencial (tamanho) |
 
 **Como obter:** [console.groq.com](https://console.groq.com) → Sign up → API Keys → gerar chave
 ```bash
@@ -97,19 +97,26 @@ OPENAI_API_KEY=sk-...
 
 ---
 
-### 5. Gemini 2.0 Flash Lite — via Google AI Studio
+### 5. Gemini 2.5 Flash-Lite — via Google AI Studio ⭐ alternativa ao Groq
 
 | | |
 |---|---|
-| **Strengths** | ✔ Grátis no free tier (15 req/min, 1M tokens/day)  ✔ Muito rápido via API  ✔ Bom instruction-following para JSON |
-| **Weaknesses** | ✘ **Free tier bloqueado no Brasil** — requer VPN ou conta com billing fora do BR  ✘ PT-BR menos robusto que Qwen/GPT em hate speech  ✘ Comportamento menos previsível em prompts longos |
-| **Opportunities** | → Se você tiver VPN ou conta com endereço fora do BR, é uma opção válida gratuita |
-| **Threats** | → Geo-restrição torna inviável sem workaround  → Google pode mudar política de free tier |
+| **Strengths** | ✔ **Grátis: ~1.500 req/day, 1M TPM** — limite diário superior ao Groq 70B  ✔ **Brasil suportado oficialmente** — e Colab usa região EUA, sem problema  ✔ Parâmetros não divulgados, mas **MMMLU 84.5%** em 57 idiomas (PT-BR incluso)  ✔ 366 tok/s — mais rápido que todos os locais  ✔ Delay necessário só 3s (30 RPM free tier) vs. 8s do Groq  ✔ Structured outputs (JSON) nativos  ✔ Contexto 1M tokens — sem risco de truncagem |
+| **Weaknesses** | ✘ Parâmetros desconhecidos — não auditável como open-weight  ✘ Qualidade em hate speech implícito PT-BR inferior ao Llama 70B (menor escala)  ✘ **2.0 Flash-Lite está deprecated** (desliga 1 jun 2026) — usar apenas 2.5 |
+| **Opportunities** | → **Volume total por dia**: 1.500 calls/day × N=200 = 7 runs completos/dia  → Com cache de anotações, 1 run de anotação (N=400) cobre toda a grade  → Se funcionar, tem o argumento "multilingual API grátis de alta escala" para a tese  → MMMLU 84.5% sugere boa cobertura de PT-BR coloquial e gírias |
+| **Threats** | → Google pode mudar política de free tier  → Qualidade menor que 70B para hate speech implícito (hipótese não confirmada)  → Sem parâmetro oficial de escala para citar na tese |
 
-**Como obter:** [aistudio.google.com](https://aistudio.google.com) → Get API Key
+**Escala e multilingual (o que se sabe):**
+- Parâmetros: **não divulgado** (Google mantém proprietário para toda a família Gemini)
+- MMMLU (57 idiomas, Q&A multilingual): **84.5%** — supera Llama 3.1 8B (83%), comparável ao Llama 3.3 70B (84.9%)
+- PT-BR: incluso no treinamento multilingual do Google desde o início da família Gemini
+- Velocidade medida: **366 tok/s** (benchmark oficial deepmind.google)
+
+**Como obter:** [aistudio.google.com](https://aistudio.google.com) → Get API Key (grátis, sem cartão)
 ```bash
 GEMINI_API_KEY=AIza...
 --backend gemini
+# modelo padrão já é gemini-2.5-flash-lite (atualizado no código)
 ```
 
 ---
@@ -117,25 +124,24 @@ GEMINI_API_KEY=AIza...
 ## Recomendação para o Projeto
 
 ```
-Rodada 1 — HOJE
-  Modelo : Qwen 2.5 7B (local, llamacpp)
-  Config : told_br, N=200, random + score_guided, seed=42
-  Objetivo: validar se prompt v2 + threshold 0.45 resolve o setfit_skipped
+Rodada atual — Groq Llama 3.3 70B (em andamento)
+  Modelo : Llama 3.3 70B (Groq, 1K req/day)
+  Config : told_br + tweets_hs, N∈{50,100,150,200}, random + score_guided, seed=42
+  Risco  : rate limit 1K/day — cache de anotações resolve (anotar uma vez, treinar N vezes)
+
+Próxima rodada — SE Groq for lento/instável
+  Modelo : Gemini 2.5 Flash-Lite (Google AI Studio, grátis, 1.5K req/day)
+  Config : mesma grade
+  Vantagem: 1M TPM → delay de 3s (vs 8s Groq); Brasil suportado; Colab sem VPN
   Custo  : zero
 
-Rodada 2 — SE RODADA 1 MELHORAR MAS NÃO RESOLVER
-  Modelo : Llama 3.3 70B (Groq, grátis)
-  Config : told_br + tweets_hs, N=200, random, seeds 42/0/1
-  Objetivo: confirmar se é problema de modelo ou de prompt
-  Custo  : zero (criar conta em console.groq.com)
-
-Rodada 3 — SE GROQ FUNCIONAR
-  Modelo : Llama 3.3 70B (Groq)
-  Config : grade completa — N ∈ {100, 200, 300}, 5 seeds
-  Objetivo: resultados finais para a tese
+Rodada parallela — Ablation de escala (Groq 8B)
+  Modelo : llama-3.1-8b-instant (Groq, 14.4K req/day!)
+  Config : told_br, N=200, random, seed 42
+  Objetivo: comparar 8B vs 70B → quantificar ganho de escala no pipeline
   Custo  : zero
 
-Rodada 4 — SOMENTE SE GROQ FALHAR
+Rodada final — SE APIs falharem ou para ceiling
   Modelo : GPT-4o-mini (OpenAI)
   Config : told_br + tweets_hs, N=200, 3 seeds
   Objetivo: ceiling — se GPT-4o-mini falhar, conclusão é argumento da tese
@@ -146,10 +152,10 @@ Rodada 4 — SOMENTE SE GROQ FALHAR
 
 ## Outros modelos no Groq (free tier) para ablation futura
 
-| Modelo | Parâmetros | PT-BR | Uso sugerido |
-|---|---|---|---|
-| `gemma2-9b-it` | 9B | ★★★☆ | Comparação SLM via API (sem custo de GPU) |
-| `mixtral-8x7b-32768` | 47B MoE | ★★★☆ | Alternativa se Llama 3.3 atingir rate limit |
-| `llama-3.1-8b-instant` | 8B | ★★★☆ | Baseline leve — comparar com Qwen 7B local |
+| Modelo | Parâmetros | PT-BR | RPD (free) | Uso sugerido |
+|---|---|---|---|---|
+| `llama-3.1-8b-instant` | 8B | ★★★☆ | **14.400** | Anotação em volume barato; ablation de escala vs. 70B |
+| `meta-llama/llama-4-scout-17b-16e-instruct` | 17B×16E MoE | ★★★☆ | 1.000 | Alternativa arquitetura MoE se Llama 70B falhar |
+| `qwen/qwen3-32b` | 32B | ★★★★ | 1.000 | Boa cobertura PT-BR; 60 RPM (mais generoso) |
 
-> Todos os modelos Groq são free tier, sem cartão de crédito. Limite compartilhado de 14.400 req/day.
+> **Atenção ao limite real:** só o `llama-3.1-8b-instant` tem 14.400 RPD. Os demais modelos Groq têm 1.000 RPD no free tier — o mesmo que o 70B.
