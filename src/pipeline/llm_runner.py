@@ -510,8 +510,9 @@ def select_samples(
     indices: np.ndarray,
     scores: np.ndarray,
     n: int,
-    strategy: Literal["random", "score_guided"] = "score_guided",
+    strategy: Literal["random", "score_guided", "diversity"] = "score_guided",
     random_state: int = 42,
+    embeddings: Optional[np.ndarray] = None,
 ) -> np.ndarray:
     """
     Select N sample indices for LLM annotation.
@@ -523,7 +524,11 @@ def select_samples(
         strategy:
             "score_guided" — select the n samples with the highest anomaly scores.
             "random"       — select n samples uniformly at random.
-        random_state: Seed for random strategy.
+            "diversity"    — cluster embeddings into n groups (k-means++) and pick
+                             the sample closest to each centroid. Maximises coverage
+                             of the embedding space with the annotation budget.
+        random_state: Seed for random and diversity strategies.
+        embeddings: Embedding matrix aligned with `indices` (required for diversity).
 
     Returns:
         selected: Array of n indices.
@@ -536,8 +541,25 @@ def select_samples(
         rng = np.random.default_rng(random_state)
         chosen = rng.choice(len(indices), size=n, replace=False)
         return indices[chosen]
+    elif strategy == "diversity":
+        if embeddings is None:
+            raise ValueError("strategy='diversity' requires embeddings to be provided.")
+        from sklearn.cluster import KMeans
+        embs = embeddings[indices]
+        km = KMeans(n_clusters=n, init="k-means++", n_init=1, random_state=random_state)
+        km.fit(embs)
+        # For each cluster pick the sample closest to its centroid
+        chosen = []
+        for c in range(n):
+            cluster_mask = km.labels_ == c
+            if not cluster_mask.any():
+                continue
+            cluster_pos = np.where(cluster_mask)[0]
+            dists = np.linalg.norm(embs[cluster_pos] - km.cluster_centers_[c], axis=1)
+            chosen.append(cluster_pos[np.argmin(dists)])
+        return indices[np.array(chosen)]
     else:
-        raise ValueError(f"strategy must be 'score_guided' or 'random', got '{strategy}'")
+        raise ValueError(f"strategy must be 'score_guided', 'random', or 'diversity', got '{strategy}'")
 
 
 # ---------------------------------------------------------------------------
@@ -553,7 +575,7 @@ def run_llm_active_loop(
     unsup_model_cls,
     semisup_model_cls,
     setfit_model_name: str = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
-    strategy: Literal["random", "score_guided"] = "score_guided",
+    strategy: Literal["random", "score_guided", "diversity"] = "score_guided",
     n_llm_calls: int = 100,
     anomaly_score_threshold: float = 0.6,
     min_anomalies_required: int = 20,
@@ -568,7 +590,7 @@ def run_llm_active_loop(
     Pipeline:
         1. Train/test split (labels used ONLY for final evaluation).
         2. Run unsupervised model (e.g. DeepSVDD) on train embeddings -> anomaly scores.
-        3. Select n_llm_calls samples (random or score-guided).
+        3. Select n_llm_calls samples (random, score-guided, or diversity).
         4. Query LLM -> get anomaly_score per sample.
         5. Convert LLM scores to binary labels via threshold.
         6. Check: if fewer than min_anomalies_required labeled anomalies, warn and continue.
@@ -587,7 +609,7 @@ def run_llm_active_loop(
         unsup_model_cls: Class for the unsupervised AD model (e.g. deepod.models.DeepSVDD).
         semisup_model_cls: Class for the semi-supervised AD model (e.g. deepod.models.DeepSAD).
         setfit_model_name: SetFit base model for contrastive fine-tuning.
-        strategy: Sample selection strategy ("random" or "score_guided").
+        strategy: Sample selection strategy ("random", "score_guided", or "diversity").
         n_llm_calls: Budget of LLM annotation calls.
         anomaly_score_threshold: LLM scores >= threshold -> label as anomaly (1).
         min_anomalies_required: Minimum anomaly labels needed to proceed; warns if not met.
@@ -652,6 +674,7 @@ def run_llm_active_loop(
         n=n_llm_calls,
         strategy=strategy,
         random_state=random_state,
+        embeddings=X_train,
     )
     selected_texts = texts_train[selected_local_idx]
 

@@ -44,8 +44,8 @@ Usage (local, no GPU, CPU model)
         --n_llm_calls 50
 
 Run all strategies and N values (example loop in bash/colab):
-    for strategy in random score_guided; do
-      for n in 50 100 200; do
+    for strategy in random score_guided diversity; do
+      for n in 50 200; do
         python scripts/run_llm_active_loop.py --dataset told_br --strategy $strategy --n_llm_calls $n
       done
     done
@@ -110,7 +110,7 @@ def parse_args():
     # Selection strategy
     parser.add_argument(
         "--strategy", type=str, default="score_guided",
-        choices=["random", "score_guided"],
+        choices=["random", "score_guided", "diversity"],
         help="Sample selection strategy for LLM annotation budget.",
     )
     parser.add_argument(
