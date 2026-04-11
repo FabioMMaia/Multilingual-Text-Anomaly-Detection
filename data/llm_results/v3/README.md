@@ -140,7 +140,7 @@ print("Done.")
 Run Qwen **14B** first (slower — better to start with); re-run swapping to 7B.
 
 ```python
-import subprocess
+import subprocess, re, time
 
 PROJECT_PATH = "/content/drive/MyDrive/Projeto ML/2026/Master/Multilingual-Text-Anomaly-Detection"
 DATA_DIR     = "/content/drive/MyDrive/Projeto ML/2025/AD/third_setup/adaptative-text-anomaly-detection/data"
@@ -153,9 +153,13 @@ seed       = "42"
 # ── Change this to "qwen2.5-7b" for the 7B pass ──
 MODEL = "qwen2.5-14b"
 
+total = len(datasets) * len(strategies) * len(ns)
+run   = 0
+
 for dataset in datasets:
     for strategy in strategies:
         for n in ns:
+            run += 1
             cmd = [
                 "python", "-u",
                 "scripts/run_llm_active_loop.py",
@@ -170,16 +174,19 @@ for dataset in datasets:
                 "--llamacpp_model", MODEL,
                 "--results_dir",  "data/llm_results/v3",
             ]
-            print(f"\n>>> {dataset} | {strategy} | N={n} | model={MODEL}", flush=True)
-            proc = subprocess.Popen(
-                cmd,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                text=True, bufsize=1,
-            )
-            for line in proc.stdout:
-                print(line, end="", flush=True)
-            proc.wait()
+            t0 = time.time()
+            result = subprocess.run(cmd, capture_output=True, text=True)
+            elapsed = time.time() - t0
+
+            roc = re.search(r"ROC-AUC\s+\(test\)\s*:\s*([\d.]+)", result.stdout)
+            roc_str = roc.group(1) if roc else "N/A"
+
+            status = "✓" if result.returncode == 0 else "✗"
+            print(f"[{run:02d}/{total}] {status} {dataset:<30} {strategy:<15} N={n:<4} "
+                  f"ROC={roc_str}  {elapsed/60:.1f}min", flush=True)
+
+            if result.returncode != 0:
+                print("  STDERR:", result.stderr[-300:])
 ```
 
 **Expected time on T4:**

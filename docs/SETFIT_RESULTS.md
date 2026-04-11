@@ -349,7 +349,88 @@ SetFit é útil quando alinha com a fronteira de anomalia, mas frágil quando o 
 
 ---
 
-## 7. Implicações para o próximo experimento
+## 7. Por que o MLP supera os modelos de AD?
+
+### Resultado empírico
+
+MLP (com SetFit) vence em **todos os 6 datasets** por ROC-AUC médio (todos n, k=20 e k=40):
+
+| Dataset | Task | Lang | MLP | DeepSAD | DevNet |
+|---------|------|------|-----|---------|--------|
+| 20 Newsgroups | TC | EN | **0.984** | 0.960 | 0.977 |
+| Portuguese Tweets | SA | PT | **1.000** | 0.999 | 0.855 |
+| WikiNews | TC | PT | **0.935** | 0.868 | 0.747 |
+| Tweets HS | HS | EN | **0.890** | 0.879 | 0.639 |
+| TweetEval | SA | EN | **0.623** | 0.590 | 0.572 |
+| TOLD-Br | HS | PT | **0.629** | 0.580 | 0.534 |
+
+E a curva ROC-AUC vs n do MLP é quase monotonicamente crescente — tweets_hs k=40 sobe em **6/6 steps** consecutivos.
+
+### A explicação: o SetFit faz o trabalho pesado
+
+O MLP tem vantagens teóricas nulas neste cenário: labels desbalanceados (95/5), descarta dados não rotulados, CE loss sem semântica de AD. Na teoria, é o pior candidato. Na prática, vence.
+
+O motivo é que o **SetFit já resolve o problema antes do modelo de AD**. Com fine-tuning contrastivo em k=20-40 amostras GT, o encoder aprende a separar normal vs anomalia no espaço de embedding. O trabalho difícil está feito — qualquer classificador razoável acima disso vai funcionar.
+
+```
+Distiluse genérico   →  embeddings sobrepostos  →  todos os modelos sofrem
+SetFit (GT k=20-40)  →  embeddings separáveis   →  qualquer modelo funciona
+```
+
+Quando o espaço de embedding já é discriminativo:
+- O **imbalance 95/5 não importa** — as classes já estão separadas
+- Os **dados não rotulados não acrescentam** — o sinal já está nos k labels
+- O **boundary é simples** — MLP linear ou raso é suficiente
+
+### Por que MLP escala melhor com n
+
+| Propriedade | MLP (CE) | DeepSAD | DevNet |
+|---|---|---|---|
+| Mais labels limpos = melhor boundary | ✅ diretamente | ✅ mas geometria pode distorcer | ✅ mas só usa anomalias |
+| Estável com n grande | ✅ | ✅ | ❌ colapsos em vários configs |
+| Usa normais rotulados | ✅ | ✅ | ❌ ignora |
+
+MLP escala monotonicamente porque CE loss otimiza diretamente o boundary com todos os labels disponíveis. DeepSAD às vezes piora porque a hipersfera pode ser perturbada por outliers nos labels; DevNet colapsa porque depende só das anomalias e começa a overfitar.
+
+### Comparação de funções de loss
+
+| | Cross-Entropy (MLP) | DevNet | DeepSAD |
+|---|---|---|---|
+| Usa inliers rotulados | ✅ | ✅ (inlier_loss = \|dev\|) | ✅ |
+| Usa anomalias rotuladas | ✅ | ✅ (outlier_loss = max(margin−dev, 0)) | ✅ |
+| Usa unlabeled | ❌ ignora | ❌ (ref. = Gaussiana sintética) | ✅ definem a hipersfera |
+| Referência de "normalidade" | fronteira aprendida | Gaussiana N(0,1) simulada | hipersfera aprendida nos dados |
+| Ruído nos labels | ❌ aprende o ruído direto | ❌ Gaussiana desalinha quando embedding distorce | ✅ hipersfera absorve outliers |
+| Imbalance 95/5 | ❌ sem balanceamento | ✅ WeightedRandomSampler 50/50 | ✅ by design |
+| Semântica | classificação | AD | AD |
+
+### A prática difere da teoria — mas não contradiz
+
+O MLP só ganha porque **as pré-condições teóricas do DeepSAD foram eliminadas pelo SetFit**. Inverta as condições (labels ruidosos, embeddings genéricos — exatamente o cenário do pipeline LLM) e o DeepSAD volta a ser o modelo correto — como confirmado nos experimentos v0/v1/v2.
+
+> **Insight:** a escolha do modelo de AD importa menos quando o embedding é discriminativo; importa muito quando não é. SetFit com GT labels elimina a vantagem do DeepSAD. Labels LLM sem GT SetFit a restaura.
+
+### ⚠️ Ressalva: estes experimentos não são AD — são few-shot classification
+
+Quando o SetFit é treinado com k=20–40 amostras **GT por classe**, o encoder aprende explicitamente a fronteira normal/anomalia. O que resta para o modelo de AD é explorar uma separação que já existe no embedding. Isso é:
+
+```
+Few-shot contrastive learning (SetFit GT) → embedding discriminativo → classificação binária
+```
+
+Não é anomaly detection — é classificação binária com embedding especializado. As propriedades que tornam AD difícil (ausência de labels, imbalance extremo, unlabeled data) foram todas eliminadas pelo fine-tuning com GT.
+
+**O papel correto destes experimentos no paper:** são o **teto teórico** — o que seria possível com labels perfeitos e em quantidade. Não são comparáveis diretamente com o pipeline LLM, onde nenhum label GT existe. A comparação relevante é:
+
+| Cenário | Labels | SetFit | Melhor modelo |
+|---|---|---|---|
+| SetFit-GT (estes experimentos) | GT humanos | Fine-tunado com GT | MLP (tarefa trivializada) |
+| Pipeline LLM (v0/v1/v2/v3) | Pseudo-labels LLM | Fine-tunado com ruído | DeepSAD |
+| Baseline puro | Nenhum | Não aplicado | DeepSVDD |
+
+---
+
+## 8. Implicações para o próximo experimento
 
 O padrão de TOLD-Br é o mais relevante para a tese:
 - Com k=20 e rótulos **aleatórios**, SetFit não ajuda (DevNet fica abaixo do baseline)
