@@ -306,6 +306,9 @@ def main():
 
     print(f"\nRunning LLM active loop: strategy={args.strategy}, n_llm_calls={args.n_llm_calls}")
 
+    import time
+    t_start = time.perf_counter()
+
     loop_result = run_llm_active_loop(
         texts=texts,
         embeddings=embeddings,
@@ -335,6 +338,8 @@ def main():
     train_scores = loop_result["train_scores"]
     y_train = loop_result["train_labels"]
 
+    elapsed_seconds = round(time.perf_counter() - t_start, 1)
+
     roc_auc       = roc_auc_score(y_test, test_scores)
     pr_auc        = average_precision_score(y_test, test_scores)
     train_roc_auc = roc_auc_score(y_train, train_scores)
@@ -350,6 +355,7 @@ def main():
     print(f"  LLM vs ground truth: agreement={loop_result['llm_agreement']:.1%}, "
           f"precision={loop_result['llm_precision']:.1%}, recall={loop_result['llm_recall']:.1%}")
     print(f"  Parse errors: {loop_result['n_parse_errors']}")
+    print(f"  Elapsed time : {elapsed_seconds}s")
 
     # ------------------------------------------------------------------
     # Save results (append mode — accumulates multiple seeds/runs)
@@ -383,6 +389,7 @@ def main():
         "llm_agreement": loop_result["llm_agreement"],
         "llm_precision": loop_result["llm_precision"],
         "llm_recall": loop_result["llm_recall"],
+        "elapsed_seconds": elapsed_seconds,
         "backend": args.backend,
         "llm_model": annotator.model,
         "encoder": encoder_short,
