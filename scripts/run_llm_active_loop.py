@@ -399,9 +399,14 @@ def main():
     }
     metrics_df = pd.DataFrame([metrics_row])
     metrics_path = os.path.join(out_dir, f"{args.dataset}.csv")
-    write_header = not os.path.exists(metrics_path)
-    metrics_df.to_csv(metrics_path, mode="a", header=write_header, index=False)
-    print(f"\nMetrics {'created' if write_header else 'appended'} to: {metrics_path}")
+    if os.path.exists(metrics_path):
+        existing = pd.read_csv(metrics_path)
+        merged = pd.concat([existing, metrics_df], ignore_index=True)
+        merged.to_csv(metrics_path, index=False)
+        print(f"\nMetrics appended to: {metrics_path}")
+    else:
+        metrics_df.to_csv(metrics_path, index=False)
+        print(f"\nMetrics created at: {metrics_path}")
 
     # LLM labels CSV — append per-run rows (for quality inspection)
     labels_path_out = os.path.join(out_dir, f"{args.dataset}_llm_labels.csv")
