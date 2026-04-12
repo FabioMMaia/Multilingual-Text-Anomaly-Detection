@@ -60,10 +60,18 @@ def parse_args():
 
 def main():
     args = parse_args()
-    project_path = os.path.abspath(args.project_path)
 
-    # Add src to path
-    sys.path.append(os.path.join(project_path, "src"))
+    # Resolve project_path: if "." is passed and src/ is not there,
+    # fall back to the directory containing this script.
+    candidate = os.path.abspath(args.project_path)
+    if not os.path.isdir(os.path.join(candidate, "src")):
+        candidate = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    project_path = candidate
+
+    # Add src to path before any local imports
+    src_path = os.path.join(project_path, "src")
+    if src_path not in sys.path:
+        sys.path.insert(0, src_path)
 
     from encoders.text_encoders import SentenceBERT, BERTimbau
     from pipeline.data_handler import process_dataset
