@@ -159,10 +159,10 @@ def process_dataset(dataset_name, subset_name, model_name, encoder_class, source
                 full_dataset = full_dataset.rename_column("tweet", "text")
             elif dataset_name == "franciellevargas/HateBR":
                 full_dataset = concatenate_datasets([dataset[k] for k in dataset.keys() if k in ["train", "test", "validation"]])
-                # Rename instagram_comments -> text, offensive_language (bool) -> label (int)
-                full_dataset = full_dataset.rename_column("instagram_comments", "text")
-                full_dataset = full_dataset.map(lambda x: {"label": int(x["offensive_language"])})
-                print("HateBR: renamed 'instagram_comments' -> 'text', 'offensive_language' (bool) -> 'label' (int)")
+                # Rename comentario -> text, label_final (int 0/1) -> label
+                full_dataset = full_dataset.rename_column("comentario", "text")
+                full_dataset = full_dataset.rename_column("label_final", "label")
+                print("HateBR: renamed 'comentario' -> 'text', 'label_final' -> 'label'")
             else:
                 full_dataset = concatenate_datasets([dataset[k] for k in dataset.keys() if k in ["train", "test", "validation"]])
 
