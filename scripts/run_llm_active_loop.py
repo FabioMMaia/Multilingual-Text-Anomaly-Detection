@@ -69,7 +69,7 @@ def parse_args():
     )
     parser.add_argument(
         "--dataset", type=str, default="told_br",
-        choices=["told_br", "tweets_hs", "pt_tweets", "tweeteval", "20_newsgroups", "wikinews"],
+        choices=["told_br", "tweets_hs", "pt_tweets", "tweeteval", "20_newsgroups", "wikinews", "hatebr"],
         help="Dataset name (must match TASK_CONTEXT keys and parquet filenames).",
     )
     parser.add_argument(
@@ -193,6 +193,7 @@ def main():
         "tweeteval"      : "tweet_eval",
         "20_newsgroups"  : "20_newsgroups",
         "wikinews"       : "wikinews",
+        "hatebr"         : "HateBR",
     }
     dataset_file = DATASET_FILE_MAP.get(args.dataset, args.dataset)
 

@@ -43,6 +43,27 @@ from sklearn.metrics import roc_auc_score, average_precision_score
 # ---------------------------------------------------------------------------
 
 TASK_CONTEXT = {
+    "hatebr": {
+        "description": (
+            "Brazilian Portuguese Instagram comments about politicians. "
+            "Your task: decide if a comment is OFFENSIVE (anomalous, score 1.0) or NOT OFFENSIVE (normal, score 0.0)."
+        ),
+        "normal_description": (
+            "Comments that express opinions, criticism, or disagreement WITHOUT attacking a person: "
+            "political criticism, factual statements, neutral or positive opinions, sarcasm without insults — all normal (score 0.0). "
+            "Brazilian Portuguese is expressive; mild informality or strong political opinions are NOT offensive."
+        ),
+        "anomaly_criterion": (
+            "Comments that a content moderator would flag as offensive, including: "
+            "(1) direct insults or personal attacks on a person ('idiota', 'vagabundo', 'incompetente miserável'); "
+            "(2) hate speech targeting groups by race, gender, religion, sexual orientation, or nationality; "
+            "(3) homophobia, sexism, racism, xenophobia, or religious intolerance — even in indirect or ironic form; "
+            "(4) apologies for the dictatorship or content promoting political violence. "
+            "Score >= 0.5 when the comment is clearly offensive. "
+            "Harsh but non-offensive political criticism = score 0.0. "
+            "When uncertain, prefer 0.2 (lean non-offensive)."
+        ),
+    },
     "told_br": {
         "description": (
             "Brazilian Portuguese social media texts. "

@@ -75,6 +75,7 @@ def main():
     # ------------------------------------------------------------------ #
     datasets_to_process = [
         ("JAugusto97/told-br", "binary", "pt", "hf"),
+        ("franciellevargas/HateBR", None, "pt", "hf"),
         ("tweets-hate-speech-detection/tweets_hate_speech_detection", None, "en", "hf"),
         ("SetFit/20_newsgroups", None, "en", "hf"),
         ("wikinews", "wikinews_dataset/wikinews_filtered.parquet", "pt", "wikinews_dump"),

@@ -3,7 +3,10 @@
 ## Overview
 
 **Goal:** Full production experiment — 3 seeds for publishable confidence intervals.  
-Grid: 4 datasets × 3 strategies × 2 N × 2 models × 3 seeds = **144 runs**
+Grid: 3 datasets × 2 strategies × 2 N × 2 models × 3 seeds = **72 runs**
+
+> `score_guided` dropped after v3 pilot: underperforms random in 7/8 configs (up to −0.40, N=50). v3 data (seed=42) cited as ablation.  
+> `told_br` dropped after Phase 0 validation: ROC=0.49 (N=50) and ROC=0.52 (N=200) with revised prompt — identical to v3. Oracle (SetFit+GT N=40) = 0.67 confirms the ceiling is too low; root cause is poor embedding-space separability for PT-BR toxic tweets in distiluse, not LLM annotation quality.
 
 **New in v4 vs v3:**
 
@@ -17,7 +20,7 @@ Grid: 4 datasets × 3 strategies × 2 N × 2 models × 3 seeds = **144 runs**
 
 |                | English         | Portuguese |
 |----------------|-----------------|------------|
-| Hate Detection | tweets_hs       | told_br    |
+| Hate Detection | tweets_hs       | ~~told_br~~ (dropped) |
 | Topic Class.   | 20_newsgroups   | wikinews   |
 
 ---
@@ -26,9 +29,9 @@ Grid: 4 datasets × 3 strategies × 2 N × 2 models × 3 seeds = **144 runs**
 
 | Parameter | Value |
 |-----------|-------|
-| Datasets  | tweets_hs, told_br, 20_newsgroups, wikinews |
+| Datasets  | tweets_hs, 20_newsgroups, wikinews (told_br dropped — see above) |
 | Models    | Qwen 2.5 7B Q4 + Qwen 2.5 14B Q4 (llamacpp) |
-| Strategies | random, score_guided, diversity |
+| Strategies | random, diversity (score_guided dropped — see above) |
 | N         | 50, 200 |
 | Seeds     | 0, 1, 42 |
 | Threshold | 0.45 |
@@ -58,42 +61,40 @@ seeds      = ["42"]
 MODEL      = "qwen2.5-7b"
 ```
 
-### Phase 1 — 7B full sweep (72 runs, ~6.5h)
-
-All datasets, all strategies, both N, seeds 0+1+42.
+### Phase 1 — 7B full sweep (36 runs, ~3.3h)
 
 ```python
-datasets   = ["tweets_hs", "told_br", "20_newsgroups", "wikinews"]
-strategies = ["random", "score_guided", "diversity"]
+datasets   = ["tweets_hs", "20_newsgroups", "wikinews"]
+strategies = ["random", "diversity"]
 ns         = ["50", "200"]
 seeds      = ["0", "1", "42"]
 MODEL      = "qwen2.5-7b"
 ```
 
-### Phase 2 — 14B N=50 (18 runs × 3 seeds = 54 total calls... wait: 4 × 3 × 1 × 3 = 36 runs, ~2h)
+### Phase 2 — 14B N=50 (3 × 2 × 1 × 3 = 18 runs, ~1h)
 
 ```python
 ns         = ["50"]
 MODEL      = "qwen2.5-14b"
 ```
 
-### Phase 3 — 14B N=200 (36 runs, ~6.3h — split across sessions if needed)
+### Phase 3 — 14B N=200 (18 runs, ~3.2h)
 
 ```python
 ns         = ["200"]
 MODEL      = "qwen2.5-14b"
 ```
 
-**Total 14B: 72 runs (~8.3h).  Grand total: ~15h across 3-4 Colab sessions.**
+**Total 14B: 36 runs (~4.2h).  Grand total: ~7.5h across 2 Colab sessions.**
 
 ---
 
 ## Expected Time on T4
 
-| Model | N=50 avg | N=200 avg | 72 runs total |
+| Model | N=50 avg | N=200 avg | 36 runs total |
 |-------|----------|-----------|---------------|
-| 14B   | ~3.3 min | ~10.6 min | ~500 min      |
-| 7B    | ~2 min   | ~6 min    | ~290 min      |
+| 14B   | ~3.3 min | ~10.6 min | ~252 min      |
+| 7B    | ~2 min   | ~6 min    | ~144 min      |
 
 ---
 
@@ -184,8 +185,8 @@ PROJECT_PATH = "/content/drive/MyDrive/Projeto ML/2026/Master/Multilingual-Text-
 DATA_DIR     = "/content/drive/MyDrive/Projeto ML/2025/AD/third_setup/adaptative-text-anomaly-detection/data"
 
 # ── Configure per phase (see Execution Plan above) ──
-datasets   = ["tweets_hs", "told_br", "20_newsgroups", "wikinews"]
-strategies = ["random", "score_guided", "diversity"]
+datasets   = ["tweets_hs", "20_newsgroups", "wikinews"]  # told_br dropped (Phase 0: ROC=0.49/0.52, structural limit)
+strategies = ["random", "diversity"]   # score_guided dropped after v3 pilot
 ns         = ["50", "200"]
 seeds      = ["0", "1", "42"]
 
@@ -222,7 +223,7 @@ def _already_done(dataset, strategy, n, seed, model, results_dir):
             pass
     return False
 
-total = len(datasets) * len(strategies) * len(ns) * len(seeds)
+total = len(datasets) * len(strategies) * len(ns) * len(seeds)  # 3×2×2×3 = 72
 run   = 0
 
 try:
@@ -314,7 +315,7 @@ display(summary)
 
 | Phase | Runs | Status |
 |-------|------|--------|
-| Phase 0 — told_br validation (7B, random, N=50+200, seed=42) | 2 | ⏳ |
-| Phase 1 — 7B full sweep | 72 | ⏳ |
-| Phase 2 — 14B N=50 | 36 | ⏳ |
-| Phase 3 — 14B N=200 | 36 | ⏳ |
+| Phase 0 — told_br validation (7B, random, N=50+200, seed=42) | 2 | ✅ ROC=0.49/0.52 → dropped |
+| Phase 1 — 7B full sweep | 36 | ⏳ |
+| Phase 2 — 14B N=50 | 18 | ⏳ |
+| Phase 3 — 14B N=200 | 18 | ⏳ |
