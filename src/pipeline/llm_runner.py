@@ -46,23 +46,28 @@ TASK_CONTEXT = {
     "told_br": {
         "description": (
             "Brazilian Portuguese social media texts. "
-            "Your task: decide if a text is HATE SPEECH (anomalous, score 1.0) or not (normal, score 0.0)."
+            "Your task: decide if a text contains OFFENSIVE/TOXIC content (anomalous, score 1.0) "
+            "or is acceptable (normal, score 0.0)."
         ),
         "normal_description": (
-            "Any text that does NOT target people based on group identity: "
-            "profanity, personal insults between individuals, arguments, crude humor, "
-            "strong opinions, complaints, offensive language with no identity group target — all normal (score 0.0)."
+            "Texts that, despite being informal or expressive, are NOT intentionally attacking a specific target: "
+            "exclamatory profanity without attack intent ('ai que pqp', 'caralho que legal'), "
+            "casual humor, mild stereotypes used conversationally without malicious intent, "
+            "strong political opinions, self-deprecation, and arguments without direct personal insults — "
+            "all normal (score 0.0). Brazilian Portuguese is naturally expressive with informal language."
         ),
         "anomaly_criterion": (
-            "Text that attacks, degrades, or dehumanizes people because of their race, ethnicity, gender, "
-            "sexual orientation, religion, nationality, or disability. "
-            "IMPORTANT — hate speech in Brazilian Portuguese is often implicit or coded: "
-            "score >= 0.5 for ironic statements that demean a group ('essa gente é assim mesmo'), "
-            "stereotypes presented as facts ('mulheres não sabem dirigir'), "
-            "language that normalizes prejudice against an identity group, "
-            "and slurs or coded terms targeting a group even if softened. "
-            "Score 0.0 only when the text targets a specific individual with no group-identity dimension, "
-            "or contains no attack at all. When in doubt about implicit hate, prefer 0.5."
+            "Text that a Brazilian content moderator would flag as toxic/offensive, covering five categories: "
+            "(1) INSULT — direct personal attacks on a specific person ('você é um idiota', 'cala a boca', 'campanha bloqueie um idiota'); "
+            "(2) OBSCENE — sexually explicit or graphic content used to demean or shock ('putinha do anal', sexual acts described to insult); "
+            "(3) LGBTQphobia — slurs or attacks on LGBTQ+ people ('viado', 'sapatão' used as insults, not neutral references); "
+            "(4) MISOGYNY / RACISM / XENOPHOBIA — attacks degrading people by gender, race, ethnicity, or origin; "
+            "(5) THREATS — explicit or implicit threats of harm toward a person or group. "
+            "KEY DISTINCTION — profanity is common in Brazilian informal speech and is NOT sufficient alone: "
+            "'ai que pqp', 'caralho que legal', 'que merda' = expressive, NOT toxic (score 0.0). "
+            "Toxic content combines offensive vocabulary WITH intent to demean a target OR sexually explicit degradation. "
+            "Vague political criticism, mild rants, casual stereotypes, self-deprecation = score 0.0. "
+            "Score >= 0.5 when text clearly fits categories (1)-(5). When uncertain, prefer 0.2 (lean normal)."
         ),
     },
     "tweets_hs": {

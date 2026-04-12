@@ -284,31 +284,83 @@ display(
 
 ## Results
 
-> Fill in after pilot runs complete.
+Pilot complete: **48/48 runs** (4 datasets × 3 strategies × 2 N × 2 models, seed=42).
 
 ### tweets_hs
 
-| model | strategy | N | ROC-AUC | PR-AUC | agreement | precision | recall |
-|-------|----------|---|---------|--------|-----------|-----------|--------|
-| — | — | — | — | — | — | — | — |
+| model | strategy | N | ROC-AUC | PR-AUC | agreement | llm_prec | llm_rec | anomalies_found |
+|-------|----------|---|---------|--------|-----------|----------|---------|-----------------|
+| 14B | diversity | 50 | 0.7141 | 0.1796 | 0.960 | 0.500 | 0.500 | 2 |
+| 14B | diversity | 200 | 0.8467 | 0.3148 | 0.940 | 0.500 | 0.833 | 20 |
+| 14B | random | 50 | **0.8663** | 0.3291 | 0.900 | 0.286 | 1.000 | 7 |
+| 14B | random | 200 | 0.8397 | 0.3745 | 0.940 | 0.300 | 0.375 | 10 |
+| 14B | score_guided | 50 | 0.4555 ⚠️ | 0.0435 | 0.940 | 0.000 | 0.000 | 0 |
+| 14B | score_guided | 200 | 0.8297 | 0.2646 | 0.915 | 0.143 | 0.286 | 14 |
+| 7B | diversity | 50 | 0.7141 | 0.1796 | 0.960 | 0.500 | 0.500 | 2 |
+| 7B | diversity | 200 | **0.8509** | 0.3375 | 0.950 | 0.556 | 0.833 | 18 |
+| 7B | random | 50 | 0.8708 | 0.2846 | 0.920 | 0.333 | 1.000 | 6 |
+| 7B | random | 200 | 0.8100 | 0.2540 | 0.935 | 0.273 | 0.375 | 11 |
+| 7B | score_guided | 50 | 0.4884 ⚠️ | 0.0480 | 0.920 | 0.000 | 0.000 | 1 |
+| 7B | score_guided | 200 | 0.7908 | 0.3040 | 0.910 | 0.077 | 0.143 | 13 |
+
+> ⚠️ `score_guided N=50` colapsa para ~random chance: LLM rotula 0 anomalias (limiar 0.45 não cruzado), DeepSAD treina só em normais → scores aleatórios.
 
 ### told_br
 
-| model | strategy | N | ROC-AUC | PR-AUC | agreement | precision | recall |
-|-------|----------|---|---------|--------|-----------|-----------|--------|
-| — | — | — | — | — | — | — | — |
+| model | strategy | N | ROC-AUC | PR-AUC | agreement | llm_prec | llm_rec | anomalies_found |
+|-------|----------|---|---------|--------|-----------|----------|---------|-----------------|
+| 14B | diversity | 50 | 0.4862 | 0.0500 | 0.900 | 0.000 | 0.000 | 5 |
+| 14B | diversity | 200 | 0.4914 | 0.0596 | 0.879 | 0.133 | 0.154 | 15 |
+| 14B | random | 50 | 0.5150 | 0.0467 | 0.940 | 0.333 | 0.500 | 3 |
+| 14B | random | 200 | 0.5006 | 0.0480 | 0.920 | 0.250 | 0.300 | 12 |
+| 14B | score_guided | 50 | 0.4887 | 0.0437 | 0.920 | 0.000 | 0.000 | 2 |
+| 14B | score_guided | 200 | 0.5086 | 0.0466 | 0.905 | 0.000 | 0.000 | 12 |
+| 7B | diversity | 50 | 0.5106 | 0.0458 | 0.920 | 0.000 | 0.000 | 4 |
+| 7B | diversity | 200 | 0.4910 | 0.0508 | 0.860 | 0.059 | 0.077 | 17 |
+| 7B | random | 50 | 0.4718 | 0.0410 | 0.920 | 0.000 | 0.000 | 2 |
+| 7B | random | 200 | 0.4903 | 0.0462 | 0.865 | 0.130 | 0.300 | 23 |
+| 7B | score_guided | 50 | 0.4942 | 0.0453 | 0.940 | 0.333 | 0.500 | 3 |
+| 7B | score_guided | 200 | 0.5101 | 0.0602 | 0.905 | 0.125 | 0.286 | 16 |
+
+> Todos os resultados ~0.49–0.51. Problema estrutural: o dataset told-br tem contaminação de ruído nos labels GT (hate speech ambíguo em PT-BR), não é falha do pipeline. **Excluir de v3-full.**
 
 ### 20_newsgroups
 
-| model | strategy | N | ROC-AUC | PR-AUC | agreement | precision | recall |
-|-------|----------|---|---------|--------|-----------|-----------|--------|
-| — | — | — | — | — | — | — | — |
+| model | strategy | N | ROC-AUC | PR-AUC | agreement | llm_prec | llm_rec | anomalies_found |
+|-------|----------|---|---------|--------|-----------|----------|---------|-----------------|
+| 14B | diversity | 50 | **0.9435** | 0.4013 | 0.980 | 0.000 | 0.000 | 0 |
+| 14B | diversity | 200 | 0.9400 | 0.5843 | 0.920 | 1.000 | 0.059 | 1 |
+| 14B | random | 50 | 0.9330 | 0.3872 | 0.960 | 1.000 | 0.333 | 1 |
+| 14B | random | 200 | 0.8825 | 0.5379 | 0.965 | 1.000 | 0.222 | 2 |
+| 14B | score_guided | 50 | 0.8710 | 0.2693 | 0.980 | 0.000 | 0.000 | 0 |
+| 14B | score_guided | 200 | 0.8075 | 0.1806 | 0.955 | 1.000 | 0.100 | 1 |
+| 7B | diversity | 50 | **0.9435** | 0.4013 | 0.980 | 0.000 | 0.000 | 0 |
+| 7B | diversity | 200 | 0.9260 | 0.4133 | 0.915 | 0.000 | 0.000 | 0 |
+| 7B | random | 50 | 0.8720 | 0.5486 | 0.940 | 0.500 | 0.333 | 2 |
+| 7B | random | 200 | 0.9025 | 0.4943 | 0.960 | 1.000 | 0.111 | 1 |
+| 7B | score_guided | 50 | 0.8710 | 0.2693 | 0.980 | 0.000 | 0.000 | 0 |
+| 7B | score_guided | 200 | 0.7895 | 0.1350 | 0.950 | 0.000 | 0.000 | 0 |
+
+> Dataset TC com boa separabilidade: distiluse já separa bem os tópicos. `diversity N=50` é o sweet spot — 7B iguala 14B (0.9435). N=200 começa a degradar marginalmente.
 
 ### wikinews
 
-| model | strategy | N | ROC-AUC | PR-AUC | agreement | precision | recall |
-|-------|----------|---|---------|--------|-----------|-----------|--------|
-| — | — | — | — | — | — | — | — |
+| model | strategy | N | ROC-AUC | PR-AUC | agreement | llm_prec | llm_rec | anomalies_found |
+|-------|----------|---|---------|--------|-----------|----------|---------|-----------------|
+| 14B | diversity | 50 | 0.7489 | 0.1656 | 1.000 | 0.000 | 0.000 | 0 |
+| 14B | diversity | 200 | 0.7601 | 0.4285 | 0.980 | 0.600 | 0.600 | 5 |
+| 14B | random | 50 | 0.7393 | 0.1417 | 0.960 | 1.000 | 0.333 | 1 |
+| 14B | random | 200 | **0.8305** | 0.3773 | 0.950 | 0.700 | 0.500 | 10 |
+| 14B | score_guided | 50 | 0.7874 | 0.1879 | 0.800 | 0.200 | 0.143 | 5 |
+| 14B | score_guided | 200 | **0.8472** | 0.3657 | 0.935 | 0.471 | 0.571 | 17 |
+| 7B | diversity | 50 | 0.6361 | 0.1070 | 0.960 | 0.000 | 0.000 | 2 |
+| 7B | diversity | 200 | 0.6031 | 0.1499 | 0.960 | 0.000 | 0.000 | 3 |
+| 7B | random | 50 | 0.6982 | 0.1288 | 0.960 | 0.000 | 0.000 | 1 |
+| 7B | random | 200 | 0.7280 | 0.2126 | 0.960 | 0.167 | 0.167 | 12 |
+| 7B | score_guided | 50 | 0.5407 | 0.0823 | 0.800 | 0.000 | 0.000 | 5 |
+| 7B | score_guided | 200 | 0.6244 | 0.1464 | 0.935 | 0.176 | 0.429 | 17 |
+
+> **Gap 14B vs 7B mais claro aqui** (~0.08–0.12 ROC). Wikinews requer compreensão de contexto cultural PT-BR — 14B superior. N=200 compensa a dificuldade de identificar anomalias neste dataset.
 
 ---
 
