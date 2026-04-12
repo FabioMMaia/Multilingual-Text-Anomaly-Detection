@@ -837,6 +837,18 @@ def run_llm_active_loop(
         "truncated": [r.get("truncated", False) for r in llm_results],
     })
 
+    # ------------------------------------------------------------------
+    # Diagnostic: separation ratio before and after SetFit
+    # (uses GT labels only for diagnostic purposes — not for training)
+    # ------------------------------------------------------------------
+    from utils.metrics import separation_ratio
+    y_train_gt = binary_labels[train_idx]
+    sep_before = separation_ratio(X_train,    y_train_gt)
+    sep_after  = separation_ratio(X_train_sf, y_train_gt)
+
+    if verbose:
+        print(f"    Separation ratio: {sep_before:.4f} (distiluse) → {sep_after:.4f} (SetFit)")
+
     if verbose:
         print("[8] Done. Returning test scores for evaluation.")
 
@@ -858,4 +870,6 @@ def run_llm_active_loop(
         "llm_precision"   : round(llm_precision, 4),
         "llm_recall"      : round(llm_recall, 4),
         "llm_labels_df"   : llm_labels_df,
+        "sep_ratio_before": round(float(sep_before), 4),
+        "sep_ratio_after" : round(float(sep_after),  4),
     }

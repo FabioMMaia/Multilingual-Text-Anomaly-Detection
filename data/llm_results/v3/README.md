@@ -140,7 +140,8 @@ print("Done.")
 Run Qwen **14B** first (slower — better to start with); re-run swapping to 7B.
 
 ```python
-import subprocess, re, time
+import subprocess, re, time, threading, glob
+import pandas as pd
 
 PROJECT_PATH = "/content/drive/MyDrive/Projeto ML/2026/Master/Multilingual-Text-Anomaly-Detection"
 DATA_DIR     = "/content/drive/MyDrive/Projeto ML/2025/AD/third_setup/adaptative-text-anomaly-detection/data"
@@ -153,48 +154,87 @@ seed       = "42"
 # ── Change this to "qwen2.5-7b" for the 7B pass ──
 MODEL = "qwen2.5-14b"
 
+# ── Keep-alive: pings drive every 4 min to prevent Colab idle timeout ──
+def _keepalive(stop_event, interval=240):
+    while not stop_event.wait(interval):
+        try:
+            _ = glob.glob(f"{PROJECT_PATH}/data/llm_results/v3/**/*.csv", recursive=True)
+        except Exception:
+            pass
+
+_stop = threading.Event()
+threading.Thread(target=_keepalive, args=(_stop,), daemon=True).start()
+
+# ── Skip helper: returns True if this config is already saved in the CSV ──
+def _already_done(dataset, strategy, n, seed, model, results_dir):
+    pattern = f"{PROJECT_PATH}/{results_dir}/{strategy}/N_{n}/{dataset}.csv"
+    for f in glob.glob(pattern):
+        try:
+            df = pd.read_csv(f)
+            model_tag = model.split("/")[-1]
+            match = df[
+                (df["n_llm_calls"] == int(n)) &
+                (df["seed"] == int(seed)) &
+                (df["llm_model"].str.contains(model_tag, na=False))
+            ]
+            if not match.empty:
+                return True
+        except Exception:
+            pass
+    return False
+
 total = len(datasets) * len(strategies) * len(ns)
 run   = 0
 
-for dataset in datasets:
-    for strategy in strategies:
-        for n in ns:
-            run += 1
-            cmd = [
-                "python", "-u",
-                "scripts/run_llm_active_loop.py",
-                "--project_path", PROJECT_PATH,
-                "--data_dir",     DATA_DIR,
-                "--dataset",      dataset,
-                "--strategy",     strategy,
-                "--n_llm_calls",  n,
-                "--seed",         seed,
-                "--device",       "cuda",
-                "--backend",      "llamacpp",
-                "--llamacpp_model", MODEL,
-                "--results_dir",  "data/llm_results/v3",
-            ]
-            t0 = time.time()
-            result = subprocess.run(cmd, capture_output=True, text=True)
-            elapsed = time.time() - t0
+try:
+    for dataset in datasets:
+        for strategy in strategies:
+            for n in ns:
+                run += 1
 
-            roc = re.search(r"ROC-AUC\s+\(test\)\s*:\s*([\d.]+)", result.stdout)
-            roc_str = roc.group(1) if roc else "N/A"
+                if _already_done(dataset, strategy, n, seed, MODEL, "data/llm_results/v3"):
+                    print(f"[{run:02d}/{total}] ↷ {dataset:<30} {strategy:<15} N={n:<4} (already done)", flush=True)
+                    continue
 
-            status = "✓" if result.returncode == 0 else "✗"
-            print(f"[{run:02d}/{total}] {status} {dataset:<30} {strategy:<15} N={n:<4} "
-                  f"ROC={roc_str}  {elapsed/60:.1f}min", flush=True)
+                cmd = [
+                    "python", "-u",
+                    "scripts/run_llm_active_loop.py",
+                    "--project_path", PROJECT_PATH,
+                    "--data_dir",     DATA_DIR,
+                    "--dataset",      dataset,
+                    "--strategy",     strategy,
+                    "--n_llm_calls",  n,
+                    "--seed",         seed,
+                    "--device",       "cuda",
+                    "--backend",      "llamacpp",
+                    "--llamacpp_model", MODEL,
+                    "--results_dir",  "data/llm_results/v3",
+                ]
+                t0 = time.time()
+                result = subprocess.run(cmd, capture_output=True, text=True)
+                elapsed = time.time() - t0
 
-            if result.returncode != 0:
-                print("  STDERR:", result.stderr[-300:])
+                roc = re.search(r"ROC-AUC\s+\(test\)\s*:\s*([\d.]+)", result.stdout)
+                roc_str = roc.group(1) if roc else "N/A"
+
+                status = "✓" if result.returncode == 0 else "✗"
+                print(f"[{run:02d}/{total}] {status} {dataset:<30} {strategy:<15} N={n:<4} "
+                      f"ROC={roc_str}  {elapsed/60:.1f}min", flush=True)
+
+                if result.returncode != 0:
+                    print("  STDERR:", result.stderr[-300:])
+finally:
+    _stop.set()  # stop keep-alive thread when sweep finishes or crashes
 ```
 
 **Expected time on T4:**
 
-| Model | Time/run | 24 runs total |
-|-------|----------|---------------|
-| 14B   | ~3 min   | ~72 min       |
-| 7B    | ~1.5 min | ~36 min       |
+| Model | N=50 avg | N=200 avg | 24 runs total |
+|-------|----------|-----------|---------------|
+| 14B   | ~3.3 min | ~10.6 min | ~170 min      |
+| 7B    | ~2 min   | ~6 min    | ~95 min       |
+
+> **Note:** If the session drops mid-sweep, simply re-run Cell 6 — already-completed runs are skipped automatically via `_already_done()`. The keep-alive thread pings Drive every 4 min to suppress Colab's idle-timeout warning.
 
 ---
 

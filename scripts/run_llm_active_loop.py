@@ -390,6 +390,8 @@ def main():
         "llm_precision": loop_result["llm_precision"],
         "llm_recall": loop_result["llm_recall"],
         "elapsed_seconds": elapsed_seconds,
+        "sep_ratio_before": loop_result["sep_ratio_before"],
+        "sep_ratio_after" : loop_result["sep_ratio_after"],
         "backend": args.backend,
         "llm_model": annotator.model,
         "encoder": encoder_short,
