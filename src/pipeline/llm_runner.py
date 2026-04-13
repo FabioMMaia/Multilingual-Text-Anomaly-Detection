@@ -678,16 +678,20 @@ def run_llm_active_loop(
         print(f"[1] Split: {len(train_idx)} train / {len(test_idx)} test")
 
     # ------------------------------------------------------------------
-    # Step 2 — Unsupervised model -> anomaly scores
+    # Step 2 — Unsupervised model -> anomaly scores (score_guided only)
     # ------------------------------------------------------------------
-    if verbose:
-        print("[2] Training unsupervised model...")
-    unsup_model = unsup_model_cls(random_state=random_state, device=device, verbose=0)
-    unsup_model.fit(X_train)
-    unsup_scores = unsup_model.decision_function(X_train)  # higher = more anomalous
-
-    if verbose:
-        print(f"    Scores range: [{unsup_scores.min():.4f}, {unsup_scores.max():.4f}]")
+    if strategy == "score_guided":
+        if verbose:
+            print("[2] Training unsupervised model (score_guided)...")
+        unsup_model = unsup_model_cls(random_state=random_state, device=device, verbose=0)
+        unsup_model.fit(X_train)
+        unsup_scores = unsup_model.decision_function(X_train)  # higher = more anomalous
+        if verbose:
+            print(f"    Scores range: [{unsup_scores.min():.4f}, {unsup_scores.max():.4f}]")
+    else:
+        unsup_scores = np.zeros(len(train_idx))  # unused placeholder
+        if verbose:
+            print(f"[2] Skipping unsupervised model (strategy='{strategy}' does not use scores).")
 
     # ------------------------------------------------------------------
     # Step 3 — Select samples for LLM annotation

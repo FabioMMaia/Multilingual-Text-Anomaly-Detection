@@ -10,7 +10,7 @@ Usage (local):
 Usage (Colab):
     !python scripts/run_benchmark.py \
         --project_path "/content/drive/MyDrive/Projeto ML/2025/AD/Multilingual-Text-Anomaly-Detection" \
-        --results_dir "experiments_results"
+        --results_dir "data/benchmark_results"
 """
 
 import argparse
@@ -25,11 +25,19 @@ from tqdm import tqdm
 def parse_args():
     parser = argparse.ArgumentParser(description="Benchmark AD models across dataset/encoder pairs.")
     parser.add_argument("--project_path", type=str, default=".", help="Root path of the project.")
-    parser.add_argument("--results_dir", type=str, default="experiments_results", help="Where to save CSV results.")
+    parser.add_argument("--results_dir", type=str, default="data/benchmark_results", help="Where to save CSV results.")
     parser.add_argument("--contamination", type=float, nargs="+", default=[0.05],
                         help="Contamination levels for semi-supervised models (e.g. 0.01 0.05).")
     parser.add_argument("--n_rounds", type=int, default=1,
                         help="Number of random rounds per contamination level.")
+    parser.add_argument("--device", type=str, default="cpu",
+                        help="Device for deep models: 'cpu' or 'cuda'.")
+    parser.add_argument("--data_dir", type=str, default=None,
+                        help="Path to parquet files (texts/labels/embeddings). Defaults to <project_path>/data.")
+    parser.add_argument("--dataset_filter", type=str, default=None,
+                        help="Only run combos where dataset name contains this string (case-insensitive).")
+    parser.add_argument("--encoder_filter", type=str, default=None,
+                        help="Only run combos where encoder name contains this string (case-insensitive).")
     return parser.parse_args()
 
 
@@ -37,6 +45,7 @@ def main():
     args = parse_args()
     project_path = os.path.abspath(args.project_path)
     results_dir = os.path.join(project_path, args.results_dir)
+    data_dir = os.path.abspath(args.data_dir) if args.data_dir else os.path.join(project_path, "data")
 
     sys.path.append(os.path.join(project_path, "src"))
     os.chdir(project_path)
@@ -58,32 +67,25 @@ def main():
     # ------------------------------------------------------------------ #
     # Dataset / encoder config
     # ------------------------------------------------------------------ #
+    # v5 dataset grid only (2×2): tweets_hs, 20_newsgroups, HateBR, wikinews
+    # Single encoder (distiluse-v2) for fair comparison with the LLM pipeline.
     config = {
         "en": {
             "datasets": [
                 "tweets-hate-speech-detection/tweets_hate_speech_detection",
                 "SetFit/20_newsgroups",
-                "cardiffnlp/tweet_eval",
             ],
             "encoders": [
-                "sentence-transformers/distiluse-base-multilingual-cased-v1",
                 "sentence-transformers/distiluse-base-multilingual-cased-v2",
-                "FacebookAI/xlm-roberta-large",
             ],
         },
         "pt": {
             "datasets": [
-                "JAugusto97/told-br",
+                "franciellevargas/HateBR",
                 "wikinews",
-                "augustop/portuguese-tweets-for-sentiment-analysis",
             ],
             "encoders": [
-                "sentence-transformers/distiluse-base-multilingual-cased-v1",
                 "sentence-transformers/distiluse-base-multilingual-cased-v2",
-                "FacebookAI/xlm-roberta-large",
-                "neuralmind/bert-base-portuguese-cased",
-                "neuralmind/bert-large-portuguese-cased",
-                "PORTULAN/serafim-100m-portuguese-pt-sentence-encoder-ir",
             ],
         },
     }
@@ -94,8 +96,8 @@ def main():
     model_groups = {
         "semi": {
             "models": {
-                "DevNet": lambda: DevNet(),
-                "DeepSAD": lambda: DeepSAD(epochs=100, rep_dim=128, device="cuda"),
+                "DevNet": lambda: DevNet(device=args.device),
+                "DeepSAD": lambda: DeepSAD(epochs=100, rep_dim=128, device=args.device),
                 "XGBOD": lambda: XGBOD(estimator_list=[LOF(), IForest()]),
                 "MLP": lambda: MLP(),
             },
@@ -110,7 +112,7 @@ def main():
             "models": {
                 "IForest": lambda: IForest(),
                 "LOF": lambda: LOF(),
-                "DeepSVDD": lambda: DeepSVDD(epochs=100, rep_dim=128),
+                "DeepSVDD": lambda: DeepSVDD(epochs=100, rep_dim=128, device=args.device),
                 "OCSVM": lambda: OCSVM(kernel="rbf", nu=0.05, gamma="scale"),
                 "AutoEncoder": lambda: AutoEncoder(),
                 "VAE": lambda: VAE(),
@@ -138,11 +140,18 @@ def main():
                     encoder_short = encoder_name.split("/")[-1]
                     combo_name = f"{dataset_short}_{encoder_short}"
 
+                    if args.dataset_filter and args.dataset_filter.lower() not in dataset_short.lower():
+                        pbar.update(1)
+                        continue
+                    if args.encoder_filter and args.encoder_filter.lower() not in encoder_short.lower():
+                        pbar.update(1)
+                        continue
+
                     try:
                         print(f"\nProcessing: {combo_name}")
-                        texts_df = pd.read_parquet(os.path.join(project_path, f"data/texts_{dataset_short}.parquet"))
-                        labels_df = pd.read_parquet(os.path.join(project_path, f"data/labels_{dataset_short}.parquet"))
-                        embeddings_df = pd.read_parquet(os.path.join(project_path, f"data/embeddings_{dataset_short}_{encoder_short}.parquet"))
+                        texts_df = pd.read_parquet(os.path.join(data_dir, f"texts_{dataset_short}.parquet"))
+                        labels_df = pd.read_parquet(os.path.join(data_dir, f"labels_{dataset_short}.parquet"))
+                        embeddings_df = pd.read_parquet(os.path.join(data_dir, f"embeddings_{dataset_short}_{encoder_short}.parquet"))
 
                         labeled_anomalies_df = label_normal_vs_anomaly(labels_df, as_df=True)
 

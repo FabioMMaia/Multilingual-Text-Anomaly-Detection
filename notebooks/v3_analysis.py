@@ -89,8 +89,7 @@ def plot_q1_model_comparison(df):
     ax.set_xlabel("")
     ax.set_ylabel("Estratégia × N")
     plt.tight_layout()
-    plt.savefig("data/llm_results/v3/q1_model_comparison.png", dpi=150)
-    print("Saved: q1_model_comparison.png")
+
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -126,8 +125,7 @@ def plot_q2_strategy(df):
         ax.legend(fontsize=9)
     fig.suptitle("Q2 — Estratégia de seleção × Dataset", fontsize=14)
     plt.tight_layout()
-    plt.savefig("data/llm_results/v3/q2_strategy.png", dpi=150)
-    print("Saved: q2_strategy.png")
+
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -156,8 +154,7 @@ def plot_q3_n_budget(df):
     ax.set_title("Q3 — N=50 vs N=200\nPontos acima da diagonal: N=200 melhora", fontsize=13)
     ax.legend(fontsize=9)
     plt.tight_layout()
-    plt.savefig("data/llm_results/v3/q3_n_budget.png", dpi=150)
-    print("Saved: q3_n_budget.png")
+
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -182,8 +179,7 @@ def plot_q4_dataset_difficulty(df):
     ax.set_title("Q4 — Dificuldade por dataset\n(todos os 12 configs por dataset)", fontsize=13)
     ax.legend()
     plt.tight_layout()
-    plt.savefig("data/llm_results/v3/q4_dataset_difficulty.png", dpi=150)
-    print("Saved: q4_dataset_difficulty.png")
+
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -229,8 +225,7 @@ def plot_q5_score_guided_collapse(df):
 
     fig.suptitle("Q5 — score_guided N=50: colapso de anomalias → ROC degrada", fontsize=13)
     plt.tight_layout()
-    plt.savefig("data/llm_results/v3/q5_score_guided_collapse.png", dpi=150)
-    print("Saved: q5_score_guided_collapse.png")
+
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -265,8 +260,7 @@ def plot_q6_llm_quality(df):
 
     fig.suptitle("Q6 — Qualidade das anotações LLM por dataset e modelo", fontsize=13)
     plt.tight_layout()
-    plt.savefig("data/llm_results/v3/q6_llm_quality.png", dpi=150)
-    print("Saved: q6_llm_quality.png")
+
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -305,8 +299,7 @@ def plot_q7_cost_benefit(df):
     ax.set_ylabel("ROC-AUC", fontsize=11)
     ax.set_title("Q7 — Custo × Benefício: tempo vs ROC\n● = 7B  ■ = 14B", fontsize=13)
     plt.tight_layout()
-    plt.savefig("data/llm_results/v3/q7_cost_benefit.png", dpi=150)
-    print("Saved: q7_cost_benefit.png")
+
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -336,8 +329,95 @@ def plot_q8_top_configs(df):
     ax.set_xlabel("")
     ax.set_ylabel("Config (modelo / estratégia / N)")
     plt.tight_layout()
-    plt.savefig("data/llm_results/v3/q8_top_configs.png", dpi=150)
-    print("Saved: q8_top_configs.png")
+
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Q9 — Separabilidade dos embeddings
+# ─────────────────────────────────────────────────────────────────────────────
+def plot_q9_separability(df):
+    """
+    Q9: sep_ratio_before vs sep_ratio_after (7B) por dataset,
+    e correlação sep_ratio_before vs ROC-AUC médio (7B).
+
+    Apenas qwen2.5-7b tem sep_ratio registado nos CSVs de v3.
+    """
+    df2 = df.copy()
+    df2["dataset"] = df2["dataset"].astype(str)
+    df2["sep_ratio_before"] = pd.to_numeric(df2["sep_ratio_before"], errors="coerce")
+    df2["sep_ratio_after"]  = pd.to_numeric(df2["sep_ratio_after"], errors="coerce") \
+        if "sep_ratio_after" in df2.columns else np.nan
+
+    # só 7B tem dados — filtrar para não sujar médias
+    df7 = df2[df2["model"] == "qwen2.5-7b"]
+
+    # before: constante por dataset — pegar primeiro valor não-nulo
+    before = (
+        df7.dropna(subset=["sep_ratio_before"])
+        .groupby("dataset")["sep_ratio_before"].first()
+        .reindex(DATASET_ORDER)
+    )
+    # after: pode variar por config — média por dataset
+    after = (
+        df7.dropna(subset=["sep_ratio_after"])
+        .groupby("dataset")["sep_ratio_after"].mean()
+        .reindex(DATASET_ORDER)
+    )
+    # AUC médio 7B por dataset
+    mean_auc_7b = df7.groupby("dataset")["roc_auc"].mean().reindex(DATASET_ORDER)
+
+    palette = ["#60A5FA", "#34D399", "#FBBF24", "#F87171"]
+    fig, axes = plt.subplots(1, 2, figsize=(13, 5))
+
+    # ── esquerda: before vs after por dataset ────────────────────────────────
+    ax = axes[0]
+    x = np.arange(len(DATASET_ORDER))
+    w = 0.35
+    bars_b = ax.bar(x - w/2, before.fillna(0), w, label="before LLM",
+                    color=palette, alpha=0.85)
+    bars_a = ax.bar(x + w/2, after.fillna(0),  w, label="after LLM",
+                    color=palette, alpha=0.45, hatch="//")
+    ax.axhline(1.0, color="gray", linestyle="--", linewidth=0.8, label="ratio = 1")
+    ax.set_xticks(x)
+    ax.set_xticklabels([DATASET_LABELS[d] for d in DATASET_ORDER], fontsize=9)
+    ax.set_ylabel("separation_ratio  (7B)")
+    ax.set_title("sep_ratio antes e depois das anotações LLM\n"
+                 "< 1: anomalias afastadas (fácil)   > 1: mesclam com normais (difícil)",
+                 fontsize=10)
+    ax.legend(fontsize=9)
+    for bar, val in zip(bars_b, before.fillna(0)):
+        if val > 0:
+            ax.text(bar.get_x() + bar.get_width() / 2, val + 0.01,
+                    f"{val:.3f}", ha="center", fontsize=8)
+    for bar, val in zip(bars_a, after.fillna(0)):
+        if val > 0:
+            ax.text(bar.get_x() + bar.get_width() / 2, val + 0.01,
+                    f"{val:.3f}", ha="center", fontsize=8)
+
+    # ── direita: scatter sep_ratio_before vs ROC-AUC (7B) ────────────────────
+    ax = axes[1]
+    xs, ys = [], []
+    for ds, color in zip(DATASET_ORDER, palette):
+        xv = before.get(ds)
+        yv = mean_auc_7b.get(ds)
+        if pd.isna(xv) or pd.isna(yv):
+            continue
+        ax.scatter(xv, yv, color=color, s=130, zorder=5)
+        ax.annotate(DATASET_LABELS[ds], (xv, yv),
+                    textcoords="offset points", xytext=(6, 4), fontsize=9)
+        xs.append(xv); ys.append(yv)
+
+    title_suffix = ""
+    if len(xs) >= 2:
+        r = np.corrcoef(xs, ys)[0, 1]
+        title_suffix = f"\nPearson r = {r:.3f}"
+    ax.axhline(0.5, color="gray", linestyle="--", linewidth=0.7, alpha=0.6)
+    ax.set_xlabel("separation_ratio (before LLM)  — 7B", fontsize=10)
+    ax.set_ylabel("Mean ROC-AUC  (7B, todos os configs)", fontsize=10)
+    ax.set_title("sep_ratio_before vs AUC do pipeline (7B)" + title_suffix, fontsize=11)
+
+    fig.suptitle("Q9 — Separabilidade dos embeddings  (qwen2.5-7b)", fontsize=13)
+    plt.tight_layout()
 
 
 # ─────────────────────────────────────────────────────────────────────────────

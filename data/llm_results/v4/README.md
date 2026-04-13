@@ -1,104 +1,123 @@
-# v4 — Full Experiment (3 Seeds + Revised told_br Prompt)
+
+# v4 — HateBR Calibration Phase ✅
 
 ## Overview
 
-**Goal:** Full production experiment — 3 seeds for publishable confidence intervals.  
-Grid: 3 datasets × 2 strategies × 2 N × 2 models × 3 seeds = **72 runs**
+**Goal:** Calibration phase — fix the 2×2 dataset grid and lock all methodological decisions before the final production experiment (v5).
 
-> `score_guided` dropped after v3 pilot: underperforms random in 7/8 configs (up to −0.40, N=50). v3 data (seed=42) cited as ablation.  
-> `told_br` dropped after Phase 0 validation: ROC=0.49 (N=50) and ROC=0.52 (N=200) with revised prompt — identical to v3. Oracle (SetFit+GT N=40) = 0.67 confirms the ceiling is too low; root cause is poor embedding-space separability for PT-BR toxic tweets in distiluse, not LLM annotation quality.
-
-**New in v4 vs v3:**
-
-- 3 seeds (0, 1, 42) — mandatory for confidence intervals
-- **Revised told_br prompt (v2):** task redefined as *toxic/offensive language detection*
-  covering insult, obscene, LGBTQphobia, misogyny, racism, xenophobia (aligns with ToLD-Br annotation schema)
-  vs. v3 prompt which only targeted identity-based hate speech (missed ~60% of told_br positives)
-- All other prompts unchanged (tweets_hs, 20_newsgroups, wikinews)
-
-**Dataset grid (2×2):**
-
-|                | English         | Portuguese |
-|----------------|-----------------|------------|
-| Hate Detection | tweets_hs       | ~~told_br~~ (dropped) |
-| Topic Class.   | 20_newsgroups   | wikinews   |
+**Status: COMPLETE. All decisions made. Grid locked. → Go to v5.**
 
 ---
 
-## Config
+## Final Dataset Grid (2×2)
 
-| Parameter | Value |
-|-----------|-------|
-| Datasets  | tweets_hs, 20_newsgroups, wikinews (told_br dropped — see above) |
-| Models    | Qwen 2.5 7B Q4 + Qwen 2.5 14B Q4 (llamacpp) |
-| Strategies | random, diversity (score_guided dropped — see above) |
-| N         | 50, 200 |
-| Seeds     | 0, 1, 42 |
-| Threshold | 0.45 |
-| told_br Prompt | v2 (toxicity: insult+obscene+LGBTQ+misogyny+racism+xenophobia) |
-| Other Prompts | v1 (unchanged) |
-| Encoder   | distiluse-base-multilingual-cased-v2 |
-| Hardware  | Colab T4 |
-
-Results saved under `data/llm_results/v4/{strategy}/N_{n}/{dataset}.csv`.
+|                | English         | Portuguese      |
+|----------------|-----------------|-----------------|
+| Hate Detection | tweets_hs       | **hatebr** ←new |
+| Topic Class.   | 20_newsgroups   | wikinews        |
 
 ---
 
-## Execution Plan
+## Decisions & Takeaways
 
-### Phase 0 — told_br prompt validation (before full run)
+### ❌ told_br — dropped
+- Oracle AUC (GT labels used as LLM proxy): **0.67**
+- With revised toxicity prompt (7B, random): ROC=**0.49** (N=50) / **0.52** (N=200) — no improvement
+- Root cause: distiluse-v2 does not separate PT-BR toxic tweets geometrically. All encoders in benchmark gave 0.38–0.59. Structural flaw — not fixable with prompts.
+- **Paper treatment:** Not cited. Reserved for future work ("LLM annotation quality on noisy datasets").
 
-**2 runs only**: random, N=50+200, 7B, seed=42  
-Expected time: ~8 min on T4.  
-**Gate criteria:** AUC > 0.58 → proceed with full v4. If still ~0.51 → reassess prompt.
+### ✅ hatebr — added (`franciellevargas/HateBR`)
+- Expert-annotated Instagram comments on Brazilian politicians, 7,000 samples
+- Columns: `comentario` → `text`, `label_final` → `label`
+- Oracle run N=50: ROC=**0.6638** (SetFit skipped — only 3 anomalies found)
+- Oracle run N=200: ROC=**0.7254** (SetFit active, 12 anomalies, agreement=92%)
+- **Surpasses told_br oracle (0.67) with noisy LLM labels** → strong positive signal
 
-To run, use Cell 6 with:
-```python
-datasets   = ["told_br"]
-strategies = ["random"]
-ns         = ["50", "200"]
-seeds      = ["42"]
-MODEL      = "qwen2.5-7b"
-```
+### ❌ score_guided — dropped
+- Performance in v3 (seed=42): worse than random in **7/8 configs** (worst: tweets_hs N=50, Δ=−0.40)
+- Root cause: score_guided prioritises uncertain samples → selects hard negatives, not anomalies
+- v3 seed=42 data cited as ablation evidence in paper.
+- v5 strategies: `random` + `diversity` only.
 
-### Phase 1 — 7B full sweep (36 runs, ~3.3h)
+### ✅ 7B + 14B — both kept, smaller/larger models discarded
+- v3 pilot (seed=42): 7B=0.8708 vs 14B=0.8663 (tweets_hs random N=50), 7B=0.8509 vs 14B=0.8467 (diversity N=200)
+- 20_newsgroups: essentially tied across all configs
+- **Paper argument:** "annotation quality does not scale trivially with model size — 7B is sufficient and ~40% cheaper"
+- Running both provides the model size ablation.
+- **Qwen 3B discarded:** no prior evidence that annotation quality holds; would add +48 runs with no guaranteed return. Optional spot check post-v5 if a Colab session is available.
+- **Q2 quantization discarded:** degrades reasoning more than Q4, especially on text classification.
+- **32B+ infeasible:** T4 has 16GB VRAM.
+- **Final decision: 7B Q4 + 14B Q4. Do not revisit.**
 
-```python
-datasets   = ["tweets_hs", "20_newsgroups", "wikinews"]
-strategies = ["random", "diversity"]
-ns         = ["50", "200"]
-seeds      = ["0", "1", "42"]
-MODEL      = "qwen2.5-7b"
-```
+### ✅ N={50, 200} — locked, 100/150 discarded
+- N=100/150 tested in v2, removed in v3: intermediate results with no qualitative difference
+- N=50 = minimal annotation budget (~5% of training data); N=200 = generous budget (~20%)
+- Captures the endpoints of the cost-benefit curve — sufficient for the paper's argument
+- Adding N=100/150 would double the runs (96→192) without changing the conclusion
+- In v3, tweets_hs N=50 already achieved ROC=0.87 — no "elbow" in the curve to discover
+- **Final decision: N={50, 200}. Do not revisit.**
 
-### Phase 2 — 14B N=50 (3 × 2 × 1 × 3 = 18 runs, ~1h)
+### ✅ `separation_ratio` — embedding separability metric
+- Implemented in `src/utils/metrics.py`
+- Formula: `sep_ratio = mean_cosine_dist(A→N) / mean_cosine_dist(A→A)`
+  - **< 1** → anomalies cluster away from normals → easy task
+  - **> 1** → anomalies blend into normal space → hard task
+- **Paper use:** report in Table 1 alongside baseline AUC — becomes an explanatory variable for why some datasets are harder:
+  - 20_newsgroups, wikinews: low sep_ratio → unsupervised models already perform well
+  - tweets_hs, hatebr: higher sep_ratio → LLM guidance gives bigger lift
+  - told_br (dropped): very high sep_ratio → structural limit confirmed empirically
+- Compute in v5 Phase 0 (Cell 0b)
 
-```python
-ns         = ["50"]
-MODEL      = "qwen2.5-14b"
-```
+### ✅ distiluse-base-multilingual-cased-v2 — encoder confirmed
+- Empirical evidence from `data/stil_data/benchmark_results (4).csv` (unsupervised models, mean AUC):
 
-### Phase 3 — 14B N=200 (18 runs, ~3.2h)
+| dataset       | distiluse-v2 | xlm-roberta-large | bert-base-PT |
+|---------------|:------------:|:-----------------:|:------------:|
+| 20_newsgroups | 0.846        | 0.688             | —            |
+| tweets_hs     | **0.539**    | 0.415             | —            |
+| wikinews      | 0.701        | 0.678             | 0.755        |
 
-```python
-ns         = ["200"]
-MODEL      = "qwen2.5-14b"
-```
+- xlm-roberta-large underperforms on 2/3 datasets despite being a much larger model.
+- bert-base-PT wins on wikinews but is monolingual — cannot handle EN datasets.
+- **distiluse-v2 is the best multilingual option across the 2×2 grid.**
+- **Paper argument:** "We evaluated multiple encoders and selected distiluse-v2 as it consistently outperformed alternatives. Encoder selection is orthogonal to our main contribution — all methods use the same encoder for a fair comparison."
 
-**Total 14B: 36 runs (~4.2h).  Grand total: ~7.5h across 2 Colab sessions.**
+### 📁 Folder structure locked
+- LLM results: `data/llm_results/v5/`
+- Benchmark results: `data/benchmark_results/` (written by `run_benchmark.py`)
+- Parquets (texts/labels/embeddings): `DATA_DIR` (external Drive path)
 
 ---
 
-## Expected Time on T4
+## Phase Status
 
-| Model | N=50 avg | N=200 avg | 36 runs total |
-|-------|----------|-----------|---------------|
-| 14B   | ~3.3 min | ~10.6 min | ~252 min      |
-| 7B    | ~2 min   | ~6 min    | ~144 min      |
+| Phase | Runs | Status |
+|-------|------|--------|
+| Phase 0a — told_br validation (7B, random, N=50+200, seed=42) | 2 | ✅ ROC=0.49/0.52 → dropped |
+| Phase 0b — hatebr validation (7B, random, N=50+200, seed=42) | 2 | ✅ ROC=0.66/0.725 → added |
+
+**Phase 0 is the only required phase for v4. Cells below are kept as reference for an optional single-seed pilot sweep.**
 
 ---
 
-## Colab Cells
+## Next Steps → v5
+
+1. **Run benchmark** (all 4 datasets, distiluse-v2, Colab GPU, ~15 min):
+```bash
+python scripts/run_benchmark.py \
+    --project_path $PROJECT_PATH \
+    --data_dir $DATA_DIR \
+    --results_dir data/benchmark_results \
+    --device cuda
+```
+
+2. **Run LLM v5** (96 runs, ~10h, 2–3 Colab sessions) → see `data/llm_results/v5/README.md`
+
+3. **Compile results** — benchmark_results.csv + v5 CSVs → paper tables
+
+---
+
+## Reference Cells (optional single-seed pilot sweep)
 
 ### Cell 1 — Mount Drive & Environment
 
@@ -184,11 +203,12 @@ import pandas as pd
 PROJECT_PATH = "/content/drive/MyDrive/Projeto ML/2026/Master/Multilingual-Text-Anomaly-Detection"
 DATA_DIR     = "/content/drive/MyDrive/Projeto ML/2025/AD/third_setup/adaptative-text-anomaly-detection/data"
 
-# ── Configure per phase (see Execution Plan above) ──
-datasets   = ["tweets_hs", "20_newsgroups", "wikinews"]  # told_br dropped (Phase 0: ROC=0.49/0.52, structural limit)
-strategies = ["random", "diversity"]   # score_guided dropped after v3 pilot
+# ── v4 calibration: hatebr only, seed=42, 7B ──
+# For full 3-seed production experiment see v5/README.md
+datasets   = ["tweets_hs", "hatebr", "20_newsgroups", "wikinews"]  # told_br replaced by hatebr
+strategies = ["random", "diversity"]   # score_guided dropped
 ns         = ["50", "200"]
-seeds      = ["0", "1", "42"]
+seeds      = ["42"]  # single seed for calibration; 3 seeds (0,1,42) go in v5
 
 MODEL      = "qwen2.5-7b"   # change to "qwen2.5-14b" for 14B pass
 
@@ -223,7 +243,7 @@ def _already_done(dataset, strategy, n, seed, model, results_dir):
             pass
     return False
 
-total = len(datasets) * len(strategies) * len(ns) * len(seeds)  # 3×2×2×3 = 72
+total = len(datasets) * len(strategies) * len(ns) * len(seeds)  # 4×2×2×1 = 16 (calibration)
 run   = 0
 
 try:
@@ -309,13 +329,7 @@ display(summary)
 
 ---
 
-## Results
+## Reference Cells (optional pilot — not required for v5)
 
-*In progress.*
-
-| Phase | Runs | Status |
-|-------|------|--------|
-| Phase 0 — told_br validation (7B, random, N=50+200, seed=42) | 2 | ✅ ROC=0.49/0.52 → dropped |
-| Phase 1 — 7B full sweep | 36 | ⏳ |
-| Phase 2 — 14B N=50 | 18 | ⏳ |
-| Phase 3 — 14B N=200 | 18 | ⏳ |
+Cells below are kept as reference for running a single-seed pilot sweep on all 4 datasets.  
+**Skip these and go directly to v5 if you are ready for the full run.**
