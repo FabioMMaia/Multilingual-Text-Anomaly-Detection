@@ -209,12 +209,15 @@ def _already_done(dataset, strategy, n, seed, model, results_dir):
 # ── Sweep ─────────────────────────────────────────────────────────────────────
 total = len(models) * len(datasets) * len(strategies) * len(ns) * len(seeds)  # 96
 run   = 0
+consecutive_errors = 0
+MAX_CONSECUTIVE_ERRORS = 5  # stop early if model is broken (e.g. OOM)
 
 try:
     for model in models:
         print(f"\n{'='*60}")
         print(f"  MODEL: {model}")
         print(f"{'='*60}\n")
+        consecutive_errors = 0  # reset between models
         for seed in seeds:
             for dataset in datasets:
                 for strategy in strategies:
@@ -223,6 +226,7 @@ try:
 
                         if _already_done(dataset, strategy, n, seed, model, RESULTS_DIR):
                             print(f"[{run:03d}/{total}] ↷ {model:<20} {dataset:<20} {strategy:<12} N={n:<4} seed={seed} (skip)", flush=True)
+                            consecutive_errors = 0
                             continue
 
                         cmd = [
@@ -251,7 +255,22 @@ try:
                               f"ROC={roc_str}  {elapsed/60:.1f}min", flush=True)
 
                         if result.returncode != 0:
-                            print("  STDERR:", result.stderr[-400:])
+                            consecutive_errors += 1
+                            print(f"  STDERR: {result.stderr[-400:]}")
+                            if consecutive_errors >= MAX_CONSECUTIVE_ERRORS:
+                                print(f"\n⚠️  {MAX_CONSECUTIVE_ERRORS} consecutive errors — stopping sweep for {model}.")
+                                break
+                        else:
+                            consecutive_errors = 0
+                    else:
+                        continue
+                    break
+                else:
+                    continue
+                break
+            else:
+                continue
+            break
 finally:
     _stop.set()
     print("\nDone.")

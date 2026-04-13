@@ -119,7 +119,7 @@ def parse_wikinews_to_parquet_auto(parquet_output_path):
     print(f"Saved to: {parquet_output_path}")
 
 
-def process_dataset(dataset_name, subset_name, model_name, encoder_class, source, project_path=".", max_samples=60_000, sampling_strategy="stratified"):
+def process_dataset(dataset_name, subset_name, model_name, encoder_class, source, project_path=".", data_dir=None, max_samples=60_000, sampling_strategy="stratified"):
     print(f"\n🔄 Processing: {dataset_name} ({subset_name}) with {model_name}")
 
     assert sampling_strategy in ["stratified", "head"], f"Unknown sampling strategy: {sampling_strategy}"
@@ -128,7 +128,8 @@ def process_dataset(dataset_name, subset_name, model_name, encoder_class, source
     dataset_short = dataset_name.split("/")[-1]
 
     # Define file paths
-    data_dir = os.path.join(project_path, "data")
+    if data_dir is None:
+        data_dir = os.path.join(project_path, "data")
     os.makedirs(data_dir, exist_ok=True)
     path_texts = os.path.join(data_dir, f"texts_{dataset_short}.parquet")
     path_labels = os.path.join(data_dir, f"labels_{dataset_short}.parquet")

@@ -55,6 +55,16 @@ def parse_args():
             "E.g. 'told-br' to run only one dataset."
         )
     )
+    parser.add_argument(
+        "--data_dir",
+        type=str,
+        default=None,
+        help=(
+            "Directory where parquet files will be saved. "
+            "Defaults to <project_path>/data. "
+            "Use this on Colab to point to a shared Drive folder."
+        )
+    )
     return parser.parse_args()
 
 
@@ -125,6 +135,7 @@ def main():
                     encoder_class,
                     source,
                     project_path=project_path,
+                    data_dir=args.data_dir,
                     max_samples=args.max_samples,
                     sampling_strategy=args.sampling_strategy,
                 )
