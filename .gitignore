@@ -31,6 +31,7 @@ src/codigos_exemplo/
 # CSV results — ignored (large, generated)
 data/llm_results/**/*.csv
 data/setfit_results/**/*.csv
+data/benchmark_results/*.csv
 
 # Distribution / packaging
 .Python
