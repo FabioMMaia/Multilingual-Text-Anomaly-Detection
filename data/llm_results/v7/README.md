@@ -313,3 +313,28 @@ expressividade do MLP > ganho de embedding do SetFit.
 3. **MLP sem SetFit ≥ DeepSAD com SetFit** — modelo AD mais importante que fine-tuning do embedding
 4. **N=200 ajuda MLP mais que DeepSAD** — tweets_hs: MLP+0.123 vs N=50
 5. **Esperado no v8:** MLP + SetFit deve superar ambos — teste final do 2×2
+
+---
+
+### Tabela 5 — Overview completo vs benchmark (mean por dataset)
+
+> Benchmark: `data/benchmark_results/benchmark_results.csv` — mesmo embedding distiluse-v2.
+
+| Dataset | Unsup best | v6 DeepSAD | v7 MLP | Oracle best | v7 vs unsup | v7 vs oracle | % gap fechado |
+|---|---|---|---|---|---|---|---|
+| 20_newsgroups | 0.920 | 0.850 | **0.937** | 0.998 | +0.017 | −0.060 | 22% |
+| hatebr | 0.561 | 0.595 | **0.672** | 0.873 | +0.111 | −0.201 | 36% |
+| tweets_hs | 0.575 | 0.806 | **0.819** | 0.956 | +0.243 | −0.137 | **64%** |
+| wikinews | 0.776 | 0.748 | **0.827** | 0.943 | +0.051 | −0.116 | 31% |
+
+**Best config por dataset:**
+
+| Dataset | Unsup best | v5 DS+SF | v6 DS | v7 MLP | Oracle best |
+|---|---|---|---|---|---|
+| 20_newsgroups | 0.920 | 0.947 | 0.928 | **0.948** | 0.998 |
+| hatebr | 0.561 | 0.754 | 0.721 | **0.751** | 0.873 |
+| tweets_hs | 0.575 | 0.871 | 0.876 | **0.893** | 0.956 |
+| wikinews | 0.776 | 0.865 | 0.821 | **0.859** | 0.943 |
+
+v7 supera o unsup best em todos os datasets — sem nenhum label humano.  
+tweets_hs é o destaque: +0.243 sobre unsup, 64% do gap até o oracle fechado.
