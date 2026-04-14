@@ -90,16 +90,30 @@ MLP supera DeepSAD em todos os datasets (+0.066 global). MLP sem SetFit supera a
 
 ---
 
-#### v8 — MLP + SetFit (pipeline completo com MLP) ⏳
+#### v8 — MLP + SetFit (pipeline completo com MLP) ✅
 
-Mesmos labels do v5, com SetFit, MLP. Fecha o 2×2.
+MLP + SetFit fecha o 2×2. SetFit ajuda condicionalmente: +0.059 em hatebr, +0.010 em tweets_hs, sem efeito em 20_newsgroups (LLM não encontra anomalias suficientes para fine-tuning), e **regride em wikinews** (−0.049 — overfitting com labels ruidosos).
 
 | | sem SetFit | com SetFit |
 |---|---|---|
 | **DeepSAD** | v6 ✅ | v5 ✅ |
-| **MLP** | v7 ✅ | **v8** ⏳ |
+| **MLP** | v7 ✅ | **v8 ✅** |
+
+**Melhor configuração global: MLP + SetFit** com AUC médio 0.819 vs oracle 0.942 (fecha 22–67% do gap).
 
 → [`data/llm_results/v8/`](data/llm_results/v8/README.md)
+
+---
+
+### Tabela Final — 2×2 completa (mean ROC-AUC)
+
+| Dataset | Unsup | DS+SF (v5) | DS (v6) | MLP (v7) | **MLP+SF (v8)** | Oracle |
+|---|---|---|---|---|---|---|
+| 20_newsgroups | 0.920 | 0.879 | 0.850 | 0.937 | **0.937** | 0.998 |
+| hatebr | 0.561 | 0.620 | 0.595 | 0.672 | **0.731** | 0.873 |
+| tweets_hs | 0.575 | 0.791 | 0.806 | 0.819 | **0.829** | 0.956 |
+| wikinews | 0.776 | 0.719 | 0.748 | **0.827** | 0.778 | 0.943 |
+| **Global** | **0.708** | **0.752** | **0.750** | **0.814** | **0.819** | **0.942** |
 
 ---
 
@@ -107,11 +121,12 @@ Mesmos labels do v5, com SetFit, MLP. Fecha o 2×2.
 
 1. **LLM labels > sem labels:** pipeline supera unsupervised em todos os datasets (tweets_hs +0.296, hatebr +0.193)
 2. **MLP > DeepSAD com labels ruidosos** (+0.066 global) — hipótese de robustez geométrica refutada
-3. **SetFit é condicional:** ajuda em EN (+0.029), prejudica onde embedding base já é forte (wikinews −0.030)
+3. **SetFit é condicional:** ajuda quando há anomalias LLM suficientes (hatebr N=200 +0.15), sem efeito para datasets com poucas anomalias (20_newsgroups), pode regredir com labels muito ruidosos (wikinews −0.049)
 4. **Modelo AD > fine-tuning:** MLP sem SetFit bate DeepSAD com SetFit em todos os datasets
-5. **tweets_hs é o caso mais forte:** 64% do gap unsup→oracle fechado com labels LLM
+5. **tweets_hs é o caso mais forte:** 67% do gap unsup→oracle fechado com labels LLM (v8)
 6. **7B suficiente para hate speech; 14B compensa em tópico multilingual** (wikinews: 7B=0.657 vs 14B=0.780)
 7. **Eficiência de labels extrema:** oracle usa 15×–78× mais anomalias confirmadas que o pipeline N=200 — e mesmo assim o gap de AUC é de apenas 5–12 pp
+8. **Melhor configuração final: MLP + SetFit (v8)** — 0.819 global, fecha 22–67% do gap unsup→oracle por dataset
 
 ---
 

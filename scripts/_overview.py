@@ -7,6 +7,7 @@ def load_v(version):
 df5 = load_v('v5')
 df6 = load_v('v6')
 df7 = load_v('v7')
+df8 = load_v('v8')
 
 # Normalize llm_model to short name
 df5['model_short'] = df5['llm_model'].apply(lambda x: '7B' if '7b' in str(x).lower() else '14B')
@@ -30,21 +31,23 @@ v5_7b  = df5[df5['model_short']=='7B'].groupby('dataset')['roc_auc'].mean()
 v5_14b = df5[df5['model_short']=='14B'].groupby('dataset')['roc_auc'].mean()
 v6_mean = df6.groupby('dataset')['roc_auc'].mean()
 v7_mean = df7.groupby('dataset')['roc_auc'].mean()
+v8_mean = df8.groupby('dataset')['roc_auc'].mean()
 v5_best = df5.groupby('dataset')['roc_auc'].max()
 v6_best = df6.groupby('dataset')['roc_auc'].max()
 v7_best = df7.groupby('dataset')['roc_auc'].max()
+v8_best = df8.groupby('dataset')['roc_auc'].max()
 
 datasets = ['20_newsgroups','hatebr','tweets_hs','wikinews']
 
 print("=== MEAN — v5 quebrado por modelo LLM ===")
-print(f"{'Dataset':<20} {'Unsup':>7} {'v5 7B':>7} {'v5 14B':>8} {'v6 DS':>7} {'v7 MLP':>8} {'Oracle':>8} {'v7 vs unsup':>12} {'% gap':>7}")
+print(f"{'Dataset':<20} {'Unsup':>7} {'v5 7B':>7} {'v5 14B':>8} {'v6 DS':>7} {'v7 MLP':>8} {'v8 MLP+SF':>10} {'Oracle':>8} {'v8 vs unsup':>12} {'% gap':>7}")
 for d in datasets:
     u = unsup[d]; o = oracle[d]
-    gap = (v7_mean[d]-u)/(o-u)*100
-    print(f"{d:<20} {u:>7.3f} {v5_7b[d]:>7.3f} {v5_14b.get(d, float('nan')):>8.3f} {v6_mean[d]:>7.3f} {v7_mean[d]:>8.3f} {o:>8.3f} {v7_mean[d]-u:>+12.3f} {gap:>6.1f}%")
+    gap = (v8_mean[d]-u)/(o-u)*100
+    print(f"{d:<20} {u:>7.3f} {v5_7b[d]:>7.3f} {v5_14b.get(d, float('nan')):>8.3f} {v6_mean[d]:>7.3f} {v7_mean[d]:>8.3f} {v8_mean[d]:>10.3f} {o:>8.3f} {v8_mean[d]-u:>+12.3f} {gap:>6.1f}%")
 
 print()
 print("=== BEST CONFIG ===")
-print(f"{'Dataset':<20} {'Unsup':>7} {'v5 best':>8} {'v6 best':>8} {'v7 best':>8} {'Oracle':>8}")
+print(f"{'Dataset':<20} {'Unsup':>7} {'v5 best':>8} {'v6 best':>8} {'v7 best':>8} {'v8 best':>8} {'Oracle':>8}")
 for d in datasets:
-    print(f"{d:<20} {unsup[d]:>7.3f} {v5_best[d]:>8.3f} {v6_best[d]:>8.3f} {v7_best[d]:>8.3f} {oracle[d]:>8.3f}")
+    print(f"{d:<20} {unsup[d]:>7.3f} {v5_best[d]:>8.3f} {v6_best[d]:>8.3f} {v7_best[d]:>8.3f} {v8_best[d]:>8.3f} {oracle[d]:>8.3f}")
