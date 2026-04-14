@@ -418,7 +418,7 @@ def main():
         "sep_ratio_before": loop_result["sep_ratio_before"],
         "sep_ratio_after" : loop_result["sep_ratio_after"],
         "backend": args.backend,
-        "llm_model": annotator.model,
+        "llm_model": annotator.model if annotator is not None else f"loaded_from_v5",
         "encoder": encoder_short,
         "device": args.device,
     }
