@@ -618,3 +618,30 @@ em texto informal PT, o que propaga ruído para o DeepSAD. É um achado publicá
 3. **7B vs 14B:** 7B é suficiente para hate speech; 14B compensa em tarefas com maior complexidade semântica multilingual
 4. **Hatebr outlier:** não é falha do pipeline — é evidência de gap cultural LLM (EN-centric) em hate speech PT; N=200 mitiga (0.59 → 0.72)
 5. **random > diversity** globalmente: estratégia simples é suficiente; diversity adiciona variância sem ganho médio
+
+---
+
+### Eficiência de Labels — Pipeline vs Oracle
+
+> O oracle semi-supervisionado usa **~5% do treino com ground truth labels** (anomalias reais confirmadas).
+> O pipeline LLM anota N amostras — mas a maioria é rotulada como **normal** pelo LLM.
+> Abaixo: quantas anomalias cada abordagem realmente passa ao modelo AD.
+
+| Dataset | Oracle (GT, ~5% treino) | Pipeline N=50 (LLM anom. média) | Pipeline N=200 (LLM anom. média) | Razão oracle/N=200 |
+|---|---|---|---|---|
+| 20_newsgroups | **39** | ~0.2 | ~0.8 | **~49×** |
+| hatebr | **140** | ~2.2 | ~7.8 | **~18×** |
+| tweets_hs | **1189** | ~4.8 | ~15.3 | **~78×** |
+| wikinews | **233** | ~4.1 | ~15.1 | **~15×** |
+
+O oracle recebe entre **15× e 78× mais anomalias confirmadas** do que o pipeline N=200.
+Apesar disso, o pipeline (v7 best config) chega a:
+
+| Dataset | v7 MLP (best) | Oracle best | Gap |
+|---|---|---|---|
+| 20_newsgroups | 0.948 | 0.998 | −0.050 |
+| hatebr | 0.751 | 0.873 | −0.122 |
+| tweets_hs | 0.893 | 0.956 | −0.063 |
+| wikinews | 0.859 | 0.943 | −0.084 |
+
+**A comparação não é simétrica — favorece o oracle.** O pipeline opera com informação de anomalia ordens de magnitude menor, sem qualquer label humano.

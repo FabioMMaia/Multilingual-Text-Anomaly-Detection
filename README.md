@@ -111,6 +111,20 @@ Mesmos labels do v5, com SetFit, MLP. Fecha o 2×2.
 4. **Modelo AD > fine-tuning:** MLP sem SetFit bate DeepSAD com SetFit em todos os datasets
 5. **tweets_hs é o caso mais forte:** 64% do gap unsup→oracle fechado com labels LLM
 6. **7B suficiente para hate speech; 14B compensa em tópico multilingual** (wikinews: 7B=0.657 vs 14B=0.780)
+7. **Eficiência de labels extrema:** oracle usa 15×–78× mais anomalias confirmadas que o pipeline N=200 — e mesmo assim o gap de AUC é de apenas 5–12 pp
+
+---
+
+### Label Efficiency — Pipeline vs Oracle
+
+| Dataset | Oracle anomalias (GT) | Pipeline N=200 (LLM anom. média) | Razão | Gap AUC |
+|---|---|---|---|---|
+| 20_newsgroups | 39 | ~1 | **~49×** | −0.050 |
+| hatebr | 140 | ~8 | **~18×** | −0.122 |
+| tweets_hs | 1189 | ~15 | **~78×** | −0.063 |
+| wikinews | 233 | ~15 | **~15×** | −0.084 |
+
+O oracle recebe dezenas a centenas de vezes mais anomalias reais confirmadas, com labels humanos perfeitos. O pipeline usa apenas anotações LLM ruidosas de N=200 amostras — e ainda assim fecha 64% do gap em tweets_hs.
 
 ---
 
