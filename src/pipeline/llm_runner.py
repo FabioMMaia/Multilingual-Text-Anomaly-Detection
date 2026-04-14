@@ -609,6 +609,8 @@ def run_llm_active_loop(
     random_state: int = 42,
     device: str = "cpu",
     verbose: bool = True,
+    load_labels_from: Optional[str] = None,
+    no_setfit: bool = False,
 ) -> dict:
     """
     Full LLM-guided anomaly detection pipeline (no human labels used in training).
@@ -694,49 +696,87 @@ def run_llm_active_loop(
             print(f"[2] Skipping unsupervised model (strategy='{strategy}' does not use scores).")
 
     # ------------------------------------------------------------------
-    # Step 3 — Select samples for LLM annotation
+    # Step 3+4 — Sample selection + LLM annotation (or load from file)
     # ------------------------------------------------------------------
-    if verbose:
-        print(f"[3] Selecting {n_llm_calls} samples ({strategy})...")
-    selected_local_idx = select_samples(
-        indices=np.arange(len(train_idx)),
-        scores=unsup_scores,
-        n=n_llm_calls,
-        strategy=strategy,
-        random_state=random_state,
-        embeddings=X_train,
-    )
-    selected_texts = texts_train[selected_local_idx]
+    if load_labels_from is not None:
+        # Ablation mode: reuse existing LLM labels, skip annotation entirely
+        if verbose:
+            print(f"[3] Loading LLM labels from {load_labels_from} (seed={random_state})...")
+        labels_df = pd.read_csv(load_labels_from)
+        seed_rows = labels_df[labels_df["seed"] == random_state].reset_index(drop=True)
+        if len(seed_rows) == 0:
+            raise ValueError(f"No rows with seed={random_state} found in {load_labels_from}")
 
-    # ------------------------------------------------------------------
-    # Step 4 — LLM annotation
-    # ------------------------------------------------------------------
-    if verbose:
-        print(f"[4] Querying LLM ({annotator.backend} / {annotator.model})...")
-    # Proactive delay for API backends to avoid rate limit bursts.
-    # groq free tier: 12K TPM @ 30 RPM (llama-3.3-70b) → 8s delay keeps under TPM limit.
-    # gemini free tier: 10 RPM (gemini-2.5-flash-lite) → 7s delay keeps under RPM limit.
-    _api_delay = {"groq": 8.0, "gemini": 7.0, "openai": 1.0}.get(annotator.backend, 0.0)
-    llm_results = annotator.annotate_batch(selected_texts, dataset_name, verbose=verbose, delay=_api_delay)
+        # Match loaded texts to train_idx via text lookup
+        loaded_texts = seed_rows["text"].values
+        loaded_llm_scores = seed_rows["llm_score"].values.astype(float)
+        loaded_llm_labels = seed_rows["llm_label"].values.astype(int)
 
-    # ------------------------------------------------------------------
-    # Step 5 — Convert to binary labels
-    # ------------------------------------------------------------------
-    llm_scores = np.array([
-        r["anomaly_score"] if r["anomaly_score"] is not None else -1.0
-        for r in llm_results
-    ])
-    valid_mask = llm_scores >= 0  # exclude parse errors
-    llm_labels = np.where(llm_scores >= anomaly_score_threshold, 1, 0)
-    llm_labels[~valid_mask] = -1  # mark parse errors
+        # Find local indices in texts_train that match the loaded texts
+        text_to_local = {t: i for i, t in enumerate(texts_train)}
+        matched_local_idx, matched_llm_scores, matched_llm_labels = [], [], []
+        for t, sc, lb in zip(loaded_texts, loaded_llm_scores, loaded_llm_labels):
+            if t in text_to_local:
+                matched_local_idx.append(text_to_local[t])
+                matched_llm_scores.append(sc)
+                matched_llm_labels.append(lb)
 
-    n_valid = valid_mask.sum()
-    n_anomalies = (llm_labels[valid_mask] == 1).sum()
-    n_normals = (llm_labels[valid_mask] == 0).sum()
-    n_errors = (~valid_mask).sum()
+        if len(matched_local_idx) == 0:
+            raise ValueError(
+                f"No matching texts found between loaded labels and current train split. "
+                f"Ensure the same seed is used for the train/test split."
+            )
 
-    if verbose:
-        print(f"    Valid: {n_valid} | Anomalies: {n_anomalies} | Normals: {n_normals} | Errors: {n_errors}")
+        selected_local_idx = np.array(matched_local_idx)
+        selected_texts = texts_train[selected_local_idx]
+        llm_scores = np.array(matched_llm_scores)
+        llm_labels = np.array(matched_llm_labels)
+        # llm_results placeholder for llm_labels_df construction below
+        llm_results = [{"reason": "loaded", "parse_error": False, "truncated": False}] * len(selected_local_idx)
+
+        valid_mask = llm_labels >= 0
+        n_valid = valid_mask.sum()
+        n_anomalies = (llm_labels[valid_mask] == 1).sum()
+        n_normals = (llm_labels[valid_mask] == 0).sum()
+        n_errors = (~valid_mask).sum()
+
+        if verbose:
+            print(f"    Loaded {len(selected_local_idx)} labels (matched). "
+                  f"Valid: {n_valid} | Anomalies: {n_anomalies} | Normals: {n_normals}")
+    else:
+        # Normal mode: select samples and query LLM
+        if verbose:
+            print(f"[3] Selecting {n_llm_calls} samples ({strategy})...")
+        selected_local_idx = select_samples(
+            indices=np.arange(len(train_idx)),
+            scores=unsup_scores,
+            n=n_llm_calls,
+            strategy=strategy,
+            random_state=random_state,
+            embeddings=X_train,
+        )
+        selected_texts = texts_train[selected_local_idx]
+
+        if verbose:
+            print(f"[4] Querying LLM ({annotator.backend} / {annotator.model})...")
+        _api_delay = {"groq": 8.0, "gemini": 7.0, "openai": 1.0}.get(annotator.backend, 0.0)
+        llm_results = annotator.annotate_batch(selected_texts, dataset_name, verbose=verbose, delay=_api_delay)
+
+        llm_scores = np.array([
+            r["anomaly_score"] if r["anomaly_score"] is not None else -1.0
+            for r in llm_results
+        ])
+        valid_mask = llm_scores >= 0
+        llm_labels = np.where(llm_scores >= anomaly_score_threshold, 1, 0)
+        llm_labels[~valid_mask] = -1
+
+        n_valid = valid_mask.sum()
+        n_anomalies = (llm_labels[valid_mask] == 1).sum()
+        n_normals = (llm_labels[valid_mask] == 0).sum()
+        n_errors = (~valid_mask).sum()
+
+        if verbose:
+            print(f"    Valid: {n_valid} | Anomalies: {n_anomalies} | Normals: {n_normals} | Errors: {n_errors}")
 
     if n_anomalies < min_anomalies_required:
         warnings.warn(
@@ -764,7 +804,7 @@ def run_llm_active_loop(
     n_classes = len(set(sf_labels))
     min_per_class = 8  # SetFit paper recommends >= 8 shots per class for stable results
 
-    setfit_skipped = n_classes < 2 or n_anomalies_sf < min_per_class or n_normals_sf < min_per_class
+    setfit_skipped = no_setfit or n_classes < 2 or n_anomalies_sf < min_per_class or n_normals_sf < min_per_class
 
     if setfit_skipped:
         warnings.warn(

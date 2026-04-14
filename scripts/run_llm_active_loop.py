@@ -159,6 +159,23 @@ def parse_args():
         "--contamination", type=float, default=0.05,
         help="Target anomaly contamination rate for training set.",
     )
+    # Ablation flags
+    parser.add_argument(
+        "--load_labels_from", type=str, default=None,
+        help=(
+            "Path to an existing *_llm_labels.csv (e.g. from v5) to skip LLM annotation entirely. "
+            "The CSV must contain columns: seed, llm_score, llm_label, text. "
+            "Only rows matching --seed are loaded. "
+            "Useful for the v6 ablation (same labels, no SetFit)."
+        ),
+    )
+    parser.add_argument(
+        "--no_setfit", action="store_true",
+        help=(
+            "Skip SetFit fine-tuning and use the original distiluse embeddings directly in DeepSAD. "
+            "Use together with --load_labels_from for the no-SetFit ablation (v6)."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -327,6 +344,8 @@ def main():
         random_state=args.seed,
         device=args.device,
         verbose=True,
+        load_labels_from=args.load_labels_from,
+        no_setfit=args.no_setfit,
     )
 
     # ------------------------------------------------------------------
