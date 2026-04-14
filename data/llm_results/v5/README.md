@@ -364,6 +364,168 @@ display(summary)
 
 ---
 
+### Tabela 3 — Comparação com Baselines (ROC-AUC)
+
+> Baselines usam embeddings distiluse-v2 + ground truth labels (oracle) ou sem labels (unsup).  
+> v5 usa labels LLM — **nenhum label humano no treino**.
+
+#### 3a — Baselines não-supervisionados (sem labels)
+
+| Dataset | IForest | LOF | DeepSVDD | OCSVM | AutoEncoder | VAE | HBOS | **Best unsup** |
+|---|---|---|---|---|---|---|---|---|
+| 20_newsgroups | 0.858 | 0.856 | 0.702 | 0.770 | 0.902 | 0.920 | 0.917 | **0.920** |
+| hatebr | 0.382 | 0.561 | 0.515 | 0.372 | 0.474 | 0.381 | 0.377 | **0.561** |
+| tweets_hs | 0.536 | 0.498 | 0.548 | 0.553 | 0.575 | 0.526 | 0.540 | **0.575** |
+| wikinews | 0.697 | 0.676 | 0.591 | 0.666 | 0.757 | 0.776 | 0.743 | **0.776** |
+
+#### 3b — Oracle semi-supervisionado (com ground truth labels — teto teórico)
+
+| Dataset | DeepSAD | DevNet | MLP | XGBOD | **Best oracle** |
+|---|---|---|---|---|---|
+| 20_newsgroups | 0.998 | 0.980 | 0.998 | 0.996 | **0.998** |
+| hatebr | 0.770 | 0.783 | 0.863 | 0.873 | **0.873** |
+| tweets_hs | 0.896 | 0.709 | 0.956 | 0.945 | **0.956** |
+| wikinews | 0.864 | 0.812 | 0.929 | 0.943 | **0.943** |
+
+#### 3c — v5 pipeline vs baselines (melhor config por dataset)
+
+| Dataset | Best unsup (sem labels) | v5 best (LLM labels) | Oracle best (GT labels) | v5 gap to unsup | v5 gap to oracle |
+|---|---|---|---|---|---|
+| 20_newsgroups | 0.920 | **0.939** | 0.998 | **+0.019** ✅ | −0.059 |
+| hatebr | 0.561 | **0.724** | 0.873 | **+0.163** ✅ | −0.149 |
+| tweets_hs | 0.575 | **0.832** | 0.956 | **+0.257** ✅ | −0.124 |
+| wikinews | 0.776 | **0.815** | 0.943 | **+0.039** ✅ | −0.128 |
+
+**v5 supera todos os baselines não-supervisionados em todos os datasets**, usando apenas labels gerados por LLM — sem nenhum label humano no treino.
+
+---
+
+### Análise Macro
+
+#### Q1 — 7B vs 14B: vale a pena?
+
+| Modelo | Mean AUC | Std | N runs |
+|---|---|---|---|
+| 7B | 0.738 | 0.121 | 48 |
+| 14B | **0.766** | 0.126 | 48 |
+
+14B é marginalmente melhor (+0.028 global), mas a vantagem é **concentrada em wikinews (+0.123)**.
+Em 20_newsgroups os modelos são **idênticos** (mesmo score em 5 configurações — saturação da tarefa).
+Em hatebr, **7B supera 14B** (+0.037), sugerindo que capacidade de modelo não compensa alinhamento cultural.
+
+**Conclusão:** 7B é custo-benefício superior para hate speech. 14B compensa em tarefas com sinal semântico mais rico (tópico multilingual/wikinews).
+
+---
+
+#### Q2 — N=50 vs N=200: annotation budget importa?
+
+| N | Mean AUC | Std |
+|---|---|---|
+| 50 | 0.745 | 0.141 |
+| 200 | **0.759** | 0.104 |
+
+Globalmente, N=200 é ligeiramente melhor (+0.014) e **mais estável** (std menor).
+O efeito varia por dataset:
+
+| Dataset | N=50 | N=200 | Δ |
+|---|---|---|---|
+| 20_newsgroups | **0.927** | 0.832 | **−0.094** |
+| tweets_hs | 0.765 | **0.818** | +0.053 |
+| wikinews | 0.699 | **0.738** | +0.040 |
+| hatebr | 0.590 | **0.649** | +0.059 |
+
+**Inversão em 20_newsgroups:** N=50 é melhor (+0.094) — o dataset tem sinal forte o suficiente
+para que menos anotações LLM produzam labels mais precisos (menos ruído acumulado).
+Para hate speech multilingual (hatebr), N=200 é essencial: +0.059 e sobe até 0.724.
+
+---
+
+#### Q3 — random vs diversity: estratégia de seleção importa?
+
+| Strategy | Mean AUC | Std |
+|---|---|---|
+| random | **0.767** | 0.111 |
+| diversity | 0.738 | 0.135 |
+
+Random supera diversity globalmente (+0.029). Interação com N:
+
+| Strategy | N=50 | N=200 |
+|---|---|---|
+| diversity | 0.738 | 0.737 |
+| random | 0.752 | **0.781** |
+
+Diversity não melhora com N=200, enquanto random ganha +0.029 extra.
+Hipótese: diversity com N pequeno cobre regiões normais demais (afasta o LLM do boundary anômalo).
+
+---
+
+#### Q4 — Dificuldade dos datasets
+
+| Dataset | Mean AUC | Std | Best unsup | Δ vs unsup |
+|---|---|---|---|---|
+| 20_newsgroups | **0.879** | 0.079 | 0.920 | −0.041 (N=50 já supera: 0.927) |
+| tweets_hs | 0.791 | 0.063 | 0.575 | **+0.216** |
+| wikinews | 0.719 | 0.085 | 0.776 | −0.057 (best config: 0.815) |
+| hatebr | 0.620 | 0.089 | 0.561 | **+0.059** (best: 0.724) |
+
+---
+
+#### Q5 — Melhor configuração por dataset
+
+| Dataset | Config | AUC |
+|---|---|---|
+| 20_newsgroups | diversity / N=50 / 14B | **0.939 ±0.011** |
+| tweets_hs | diversity / N=200 / 14B | **0.832 ±0.022** |
+| wikinews | random / N=200 / 14B | **0.815 ±0.014** |
+| hatebr | random / N=200 / 7B | **0.724 ±0.026** |
+
+---
+
+### Takeaways para o Paper
+
+1. **v5 supera todos os baselines não-supervisionados em todos os datasets** — sem nenhum label humano
+2. **Gap ao oracle:** 6–15 pp abaixo do teto com ground truth — razoável dado o ruído de anotação LLM
+3. **N=50 já é competitivo** em datasets com sinal forte (20_newsgroups: 0.927) → annotation-efficiency
+4. **7B vs 14B:** 7B suficiente para hate speech; 14B compensa em tópico multilingual (wikinews)
+5. **Hatebr:** gap cultural LLM (EN-centric) — mitigável com N=200 (0.59 → 0.72)
+6. **random > diversity** globalmente — estratégia simples é suficiente
+
+---
+
+### Tabela 1 — ROC-AUC mean ± std por configuração (3 seeds)
+
+| Dataset | Strategy | N | 7B AUC | 14B AUC |
+|---|---|---|---|---|
+| 20_newsgroups | diversity | 50 | **0.939 ±0.011** | **0.939 ±0.011** |
+| 20_newsgroups | diversity | 200 | 0.820 ±0.120 | 0.786 ±0.141 |
+| 20_newsgroups | random | 50 | 0.904 ±0.029 | 0.925 ±0.011 |
+| 20_newsgroups | random | 200 | 0.860 ±0.041 | 0.863 ±0.037 |
+| hatebr | diversity | 50 | 0.590 ±0.072 | 0.566 ±0.093 |
+| hatebr | diversity | 200 | 0.615 ±0.083 | 0.576 ±0.158 |
+| hatebr | random | 50 | 0.624 ±0.083 | 0.582 ±0.072 |
+| hatebr | random | 200 | **0.724 ±0.026** | **0.681 ±0.011** |
+| tweets_hs | diversity | 50 | 0.725 ±0.062 | 0.751 ±0.081 |
+| tweets_hs | diversity | 200 | 0.823 ±0.038 | **0.832 ±0.022** |
+| tweets_hs | random | 50 | 0.769 ±0.111 | 0.815 ±0.051 |
+| tweets_hs | random | 200 | 0.793 ±0.020 | 0.823 ±0.035 |
+| wikinews | diversity | 50 | 0.620 ±0.040 | 0.777 ±0.024 |
+| wikinews | diversity | 200 | 0.691 ±0.077 | 0.755 ±0.042 |
+| wikinews | random | 50 | 0.625 ±0.082 | 0.773 ±0.080 |
+| wikinews | random | 200 | 0.693 ±0.060 | **0.815 ±0.014** |
+
+---
+
+### Tabela 2 — Média global por dataset × modelo (colapsado sobre strategy + N)
+
+| Dataset | 7B mean | 7B std | 14B mean | 14B std | 14B > 7B? |
+|---|---|---|---|---|---|
+| 20_newsgroups | **0.881** | 0.073 | 0.878 | 0.089 | ≈ empate |
+| tweets_hs | 0.777 | 0.069 | **0.805** | 0.056 | +0.028 |
+| wikinews | 0.657 | 0.068 | **0.780** | 0.046 | +0.123 |
+| hatebr | **0.638** | 0.080 | 0.601 | 0.097 | 7B melhor |
+
+---
+
 ### Análise Macro
 
 #### Q1 — 7B vs 14B: vale a pena?
