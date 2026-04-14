@@ -2,7 +2,18 @@ from sklearn.neural_network import MLPClassifier
 
 
 class MLP(MLPClassifier):
-    """Sklearn MLP with a DeepOD-compatible decision_function interface."""
+    """Sklearn MLP with a DeepOD-compatible decision_function interface.
+
+    Accepts and ignores DeepOD-style kwargs (random_state, device, verbose)
+    so it can be used as a drop-in replacement for DeepSAD.
+    """
+
+    def __init__(self, *args, random_state=None, device=None, verbose=None, **kwargs):
+        # Pass random_state to sklearn; ignore device/verbose (sklearn-only)
+        init_kwargs = kwargs.copy()
+        if random_state is not None:
+            init_kwargs["random_state"] = random_state
+        super().__init__(*args, **init_kwargs)
 
     def decision_function(self, X):
         proba = self.predict_proba(X)

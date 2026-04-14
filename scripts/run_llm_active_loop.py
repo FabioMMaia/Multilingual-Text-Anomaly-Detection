@@ -131,6 +131,12 @@ def parse_args():
         default="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
         help="SetFit base model for contrastive fine-tuning.",
     )
+    # Semi-supervised model
+    parser.add_argument(
+        "--semisup_model", type=str, default="deepsad",
+        choices=["deepsad", "mlp"],
+        help="Semi-supervised anomaly detection model. 'deepsad' (default) or 'mlp'.",
+    )
     # Device
     parser.add_argument(
         "--device", type=str, default="cpu",
@@ -190,6 +196,7 @@ def main():
     import pandas as pd
     from deepod.models import DeepSVDD, DeepSAD
     from sklearn.metrics import roc_auc_score, average_precision_score
+    from models.MLP import MLP
 
     from pipeline.anomaly_detection import (
         label_normal_vs_anomaly,
@@ -339,7 +346,7 @@ def main():
         dataset_name=args.dataset,
         annotator=annotator,
         unsup_model_cls=DeepSVDD,
-        semisup_model_cls=DeepSAD,
+        semisup_model_cls={"deepsad": DeepSAD, "mlp": MLP}[args.semisup_model],
         setfit_model_name=args.setfit_model,
         strategy=args.strategy,
         n_llm_calls=args.n_llm_calls,
