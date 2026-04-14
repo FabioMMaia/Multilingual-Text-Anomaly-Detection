@@ -213,8 +213,82 @@ print(merged.groupby("n_llm_calls")["setfit_gain"].mean().round(3).to_string())
 
 ## Results
 
-*Não iniciado.*
+**Status: ✅ Concluído — 48/48 runs (3 seeds × 4 datasets × 2 strategies × 2 N)**
 
-| Runs | Status |
-|---|---|
-| 96/96 | ⏳ |
+> v6 é uma versão do sweep sem o eixo de modelo LLM (labels carregados do v5 — sem 7B/14B), por isso 48 runs.
+
+---
+
+### Tabela 1 — ROC-AUC mean ± std por dataset (colapsado sobre strategy + N)
+
+| Dataset | v5 (SetFit) | v6 (sem SetFit) | SetFit gain |
+|---|---|---|---|
+| 20_newsgroups | 0.879 ±0.079 | 0.850 ±0.105 | **+0.029** ✅ |
+| hatebr | 0.620 ±0.089 | 0.595 ±0.077 | **+0.025** ✅ |
+| tweets_hs | 0.791 ±0.063 | 0.806 ±0.063 | −0.014 ❌ |
+| wikinews | 0.719 ±0.085 | 0.748 ±0.049 | −0.030 ❌ |
+| **Global** | **0.752** | **0.750** | **+0.002 ±0.064** |
+
+---
+
+### Tabela 2 — Ganho do SetFit por N
+
+| N | SetFit gain mean | std |
+|---|---|---|
+| 50 | −0.005 | 0.060 |
+| 200 | +0.010 | 0.067 |
+
+---
+
+### Tabela 3 — Ganho do SetFit por strategy
+
+| Strategy | SetFit gain mean | std |
+|---|---|---|
+| diversity | −0.005 | 0.061 |
+| random | +0.010 | 0.066 |
+
+---
+
+### Tabela 4 — Ganho do SetFit por dataset × N
+
+| Dataset | N=50 | N=200 |
+|---|---|---|
+| 20_newsgroups | +0.026 | +0.032 |
+| hatebr | −0.001 | +0.050 |
+| tweets_hs | −0.018 | −0.011 |
+| wikinews | −0.026 | −0.033 |
+
+---
+
+### Análise
+
+#### SetFit: efeito condicional, não universal
+
+O ganho global de SetFit é **+0.002 ±0.064** — estatisticamente insignificante.
+O desvio padrão elevado (0.064) revela que o efeito é **altamente variável**:
+
+- **Ajuda** em datasets EN com sinal semântico limpo: 20_newsgroups (+0.029), hatebr (+0.025 — notável para dataset PT difícil)
+- **Prejudica** em datasets onde distiluse já é bom: tweets_hs (−0.014), wikinews (−0.030)
+
+**Hipótese explicativa:** SetFit fine-tunes o embedding nos labels LLM. Quando esses labels são ruidosos _e_ o embedding base já captura bem a estrutura do dado (tweets, wikinews multilingual), o fine-tuning propaga o ruído para o espaço de embedding — piorando o DeepSAD.
+
+#### Efeito do N no SetFit
+
+N=200 amplifica tanto os ganhos quanto as perdas (std maior que N=50).
+A única configuração onde N=200 ajuda claramente: **hatebr +0.050** — o maior ganho isolado do SetFit.
+Hipótese: mais labels → SetFit converge melhor mesmo com ruído, quando há sinal cultural suficiente.
+
+#### Efeito da strategy
+
+Random (gain=+0.010) supera diversity (−0.005) com SetFit.
+Consistency com v5: random já era melhor no sweep principal.
+
+---
+
+### Takeaways para o Paper
+
+1. **SetFit é condicional:** ajuda em EN/sinal forte (+0.029 20ng, +0.025 hatebr), prejudica onde embedding base já é suficiente
+2. **Globalmente negligível:** +0.002 — não justifica custo computacional em todos os datasets
+3. **Exceção: hatebr N=200 +0.050** — único caso onde SetFit claramente compensa
+4. **Wikinews sem SetFit é melhor (−0.030)** — distiluse multilingual já cobre o espaço semântico
+5. **Std elevado (0.064)** — SetFit introduz variância adicional, especialmente com labels ruidosos
