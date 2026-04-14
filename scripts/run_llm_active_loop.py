@@ -281,40 +281,45 @@ def main():
         ),
     }
 
-    llamacpp_kwargs = {}
-    if args.backend == "llamacpp":
-        tag = args.llamacpp_model
-        if tag in LLAMACPP_MODEL_MAP:
-            hf_repo, first_shard, all_shards = LLAMACPP_MODEL_MAP[tag]
-            models_dir = os.path.join(project_path, "models")
-            os.makedirs(models_dir, exist_ok=True)
-            resolved_path = os.path.join(models_dir, first_shard)
-            if not os.path.exists(resolved_path):
-                print(f"Model '{tag}' not found locally. Download with:")
-                for shard in all_shards:
-                    dst = os.path.join(models_dir, shard)
-                    print(f"  wget https://huggingface.co/{hf_repo}/resolve/main/{shard} -O {dst}")
-                raise FileNotFoundError(f"GGUF model not found: {resolved_path}")
-            print(f"Local model: {tag} -> {resolved_path}")
-            model_arg = resolved_path
-        else:
-            # Treat as explicit path
-            if not os.path.exists(tag):
-                raise FileNotFoundError(f"GGUF model not found: {tag}")
-            model_arg = tag
-        llamacpp_kwargs = {
-            "n_threads": args.llamacpp_threads,
-            "n_gpu_layers": args.llamacpp_n_gpu_layers,
-        }
+    # When loading labels from file, skip LLM annotator init entirely
+    if args.load_labels_from is not None:
+        print(f"[ablation] --load_labels_from set — skipping LLM annotator init.")
+        annotator = None
     else:
-        model_arg = args.llm_model  # None -> use default
+        llamacpp_kwargs = {}
+        if args.backend == "llamacpp":
+            tag = args.llamacpp_model
+            if tag in LLAMACPP_MODEL_MAP:
+                hf_repo, first_shard, all_shards = LLAMACPP_MODEL_MAP[tag]
+                models_dir = os.path.join(project_path, "models")
+                os.makedirs(models_dir, exist_ok=True)
+                resolved_path = os.path.join(models_dir, first_shard)
+                if not os.path.exists(resolved_path):
+                    print(f"Model '{tag}' not found locally. Download with:")
+                    for shard in all_shards:
+                        dst = os.path.join(models_dir, shard)
+                        print(f"  wget https://huggingface.co/{hf_repo}/resolve/main/{shard} -O {dst}")
+                    raise FileNotFoundError(f"GGUF model not found: {resolved_path}")
+                print(f"Local model: {tag} -> {resolved_path}")
+                model_arg = resolved_path
+            else:
+                # Treat as explicit path
+                if not os.path.exists(tag):
+                    raise FileNotFoundError(f"GGUF model not found: {tag}")
+                model_arg = tag
+            llamacpp_kwargs = {
+                "n_threads": args.llamacpp_threads,
+                "n_gpu_layers": args.llamacpp_n_gpu_layers,
+            }
+        else:
+            model_arg = args.llm_model  # None -> use default
 
-    annotator = LLMAnnotator(
-        backend=args.backend,
-        api_key=args.api_key,
-        model=model_arg,
-        llamacpp_kwargs=llamacpp_kwargs if args.backend == "llamacpp" else None,
-    )
+        annotator = LLMAnnotator(
+            backend=args.backend,
+            api_key=args.api_key,
+            model=model_arg,
+            llamacpp_kwargs=llamacpp_kwargs if args.backend == "llamacpp" else None,
+        )
 
     # ------------------------------------------------------------------
     # Run pipeline
