@@ -318,18 +318,19 @@ expressividade do MLP > ganho de embedding do SetFit.
 
 ### Tabela 5 — Overview completo vs benchmark (mean por dataset)
 
-> Benchmark: `data/benchmark_results/benchmark_results.csv` — mesmo embedding distiluse-v2.
+> Benchmark: `data/benchmark_results/benchmark_results.csv` — mesmo embedding distiluse-v2.  
+> v5 quebrado por modelo LLM (7B vs 14B). v6/v7 não têm dimensão de modelo LLM (labels carregados do v5).
 
-| Dataset | Unsup best | v6 DeepSAD | v7 MLP | Oracle best | v7 vs unsup | v7 vs oracle | % gap fechado |
-|---|---|---|---|---|---|---|---|
-| 20_newsgroups | 0.920 | 0.850 | **0.937** | 0.998 | +0.017 | −0.060 | 22% |
-| hatebr | 0.561 | 0.595 | **0.672** | 0.873 | +0.111 | −0.201 | 36% |
-| tweets_hs | 0.575 | 0.806 | **0.819** | 0.956 | +0.243 | −0.137 | **64%** |
-| wikinews | 0.776 | 0.748 | **0.827** | 0.943 | +0.051 | −0.116 | 31% |
+| Dataset | Unsup best | v5 7B | v5 14B | v6 DeepSAD | v7 MLP | Oracle best | v7 vs unsup | % gap fechado |
+|---|---|---|---|---|---|---|---|---|
+| 20_newsgroups | 0.920 | 0.881 | 0.878 | 0.850 | **0.937** | 0.998 | +0.017 | 22% |
+| hatebr | 0.561 | 0.638 | 0.601 | 0.595 | **0.672** | 0.873 | +0.111 | 36% |
+| tweets_hs | 0.575 | 0.777 | 0.805 | 0.806 | **0.819** | 0.956 | +0.243 | **64%** |
+| wikinews | 0.776 | 0.657 | 0.780 | 0.748 | **0.827** | 0.943 | +0.051 | 31% |
 
 **Best config por dataset:**
 
-| Dataset | Unsup best | v5 DS+SF | v6 DS | v7 MLP | Oracle best |
+| Dataset | Unsup best | v5 best | v6 best | v7 best | Oracle best |
 |---|---|---|---|---|---|
 | 20_newsgroups | 0.920 | 0.947 | 0.928 | **0.948** | 0.998 |
 | hatebr | 0.561 | 0.754 | 0.721 | **0.751** | 0.873 |
@@ -337,4 +338,5 @@ expressividade do MLP > ganho de embedding do SetFit.
 | wikinews | 0.776 | 0.865 | 0.821 | **0.859** | 0.943 |
 
 v7 supera o unsup best em todos os datasets — sem nenhum label humano.  
-tweets_hs é o destaque: +0.243 sobre unsup, 64% do gap até o oracle fechado.
+tweets_hs é o destaque: +0.243 sobre unsup, 64% do gap até o oracle fechado.  
+Wikinews: v5 14B (0.780) ≈ v7 MLP (0.827) — mas v7 não usa LLM, só labels do v5 reaproveitados.
