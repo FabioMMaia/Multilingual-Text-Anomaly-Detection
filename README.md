@@ -1,8 +1,116 @@
 # Multilingual Text Anomaly Detection
 
-Research repository investigating text anomaly detection in low-supervision multilingual scenarios — from classical benchmarks to LLM-guided annotation.
+Research repository investigating text anomaly detection in low-supervision multilingual scenarios — from classical benchmarks to LLM-guided annotation without any human labels.
 
 > **Current direction:** See [GUIDELINE.md](GUIDELINE.md)
+
+---
+
+## Research Story
+
+### Motivation
+
+Classical anomaly detection is fully unsupervised — no labels required. Semi-supervised models (DeepSAD, MLP) are far more powerful but require ground-truth labels. **Can we replace human labels with LLM-generated annotations and still beat unsupervised baselines?**
+
+---
+
+### Experiment Line
+
+#### Baseline — Unsupervised + Oracle benchmark
+
+Ran 11 models (IForest, LOF, DeepSVDD, OCSVM, AutoEncoder, VAE, HBOS, DevNet, DeepSAD, MLP, XGBOD) on 4 datasets with `distiluse-base-multilingual-cased-v2` embeddings.
+
+| Dataset | Best unsup (no labels) | Oracle best (GT labels) | Gap |
+|---|---|---|---|
+| 20_newsgroups | 0.920 (VAE) | 0.998 (MLP) | 0.078 |
+| hatebr | 0.561 (LOF) | 0.873 (XGBOD) | 0.312 |
+| tweets_hs | 0.575 (AutoEncoder) | 0.956 (MLP) | 0.381 |
+| wikinews | 0.776 (VAE) | 0.943 (XGBOD) | 0.167 |
+
+→ [`data/benchmark_results/`](data/benchmark_results/)
+
+---
+
+#### v5 — LLM active loop (main pipeline)
+
+LLM (Qwen 7B or 14B) annotates N samples selected by a strategy (random or diversity). SetFit fine-tunes the embedding on LLM labels. DeepSAD uses the fine-tuned embedding.
+
+**Grid:** 4 datasets × 2 strategies × 2 N (50/200) × 2 models (7B/14B) × 3 seeds = **96 runs**
+
+| Dataset | Best config | AUC | vs unsup |
+|---|---|---|---|
+| 20_newsgroups | diversity / N=50 / 14B | **0.947** | +0.027 ✅ |
+| hatebr | random / N=200 / 7B | **0.754** | +0.193 ✅ |
+| tweets_hs | diversity / N=200 / 14B | **0.871** | +0.296 ✅ |
+| wikinews | random / N=200 / 14B | **0.865** | +0.089 ✅ |
+
+**Pipeline supera todos os baselines não-supervisionados em todos os datasets — sem nenhum label humano.**
+
+→ [`data/llm_results/v5/`](data/llm_results/v5/README.md)
+
+---
+
+#### v6 — Ablation: sem SetFit (isola contribuição do fine-tuning)
+
+Mesmos labels do v5, mesmo DeepSAD. Só remove o SetFit — usa distiluse direto.
+
+**SetFit gain global: +0.002 ±0.064** — efeito condicional:
+
+| Dataset | SetFit gain | Conclusão |
+|---|---|---|
+| 20_newsgroups | +0.029 | SetFit ajuda — sinal EN forte |
+| hatebr | +0.025 (+0.050 @ N=200) | SetFit ajuda — mais anotações compensam |
+| tweets_hs | −0.014 | SetFit prejudica — distiluse já é bom |
+| wikinews | −0.030 | SetFit prejudica — multilingual forte no base |
+
+**Conclusão:** SetFit é dataset-specific. A alta variância (±0.064) indica instabilidade sobre labels ruidosos.
+
+→ [`data/llm_results/v6/`](data/llm_results/v6/README.md)
+
+---
+
+#### v7 — Ablation: MLP vs DeepSAD (isola contribuição do modelo AD)
+
+Mesmos labels do v5, sem SetFit (distiluse direto). Troca DeepSAD por MLP (PyTorch, BCELoss).
+
+**Hipótese:** DeepSAD (geométrico) seria mais robusto a labels ruidosos. **Refutada.**
+
+| Dataset | v6 DeepSAD | v7 MLP | MLP gain | % gap unsup→oracle fechado |
+|---|---|---|---|---|
+| 20_newsgroups | 0.850 | **0.937** | +0.105 | 22% |
+| hatebr | 0.595 | **0.672** | +0.077 | 36% |
+| tweets_hs | 0.806 | **0.819** | +0.013 | **64%** |
+| wikinews | 0.748 | **0.827** | +0.079 | 31% |
+
+MLP supera DeepSAD em todos os datasets (+0.066 global). MLP sem SetFit supera até DeepSAD com SetFit (v5).
+
+**Conclusão:** modelo AD é mais determinante que o fine-tuning do embedding.
+
+→ [`data/llm_results/v7/`](data/llm_results/v7/README.md)
+
+---
+
+#### v8 — MLP + SetFit (pipeline completo com MLP) ⏳
+
+Mesmos labels do v5, com SetFit, MLP. Fecha o 2×2.
+
+| | sem SetFit | com SetFit |
+|---|---|---|
+| **DeepSAD** | v6 ✅ | v5 ✅ |
+| **MLP** | v7 ✅ | **v8** ⏳ |
+
+→ [`data/llm_results/v8/`](data/llm_results/v8/README.md)
+
+---
+
+### Key Takeaways
+
+1. **LLM labels > sem labels:** pipeline supera unsupervised em todos os datasets (tweets_hs +0.296, hatebr +0.193)
+2. **MLP > DeepSAD com labels ruidosos** (+0.066 global) — hipótese de robustez geométrica refutada
+3. **SetFit é condicional:** ajuda em EN (+0.029), prejudica onde embedding base já é forte (wikinews −0.030)
+4. **Modelo AD > fine-tuning:** MLP sem SetFit bate DeepSAD com SetFit em todos os datasets
+5. **tweets_hs é o caso mais forte:** 64% do gap unsup→oracle fechado com labels LLM
+6. **7B suficiente para hate speech; 14B compensa em tópico multilingual** (wikinews: 7B=0.657 vs 14B=0.780)
 
 ---
 
