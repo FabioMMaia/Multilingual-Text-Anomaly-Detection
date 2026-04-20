@@ -182,6 +182,16 @@ def parse_args():
             "Use together with --load_labels_from for the no-SetFit ablation (v6)."
         ),
     )
+    parser.add_argument(
+        "--load_labels_model", type=str, default=None,
+        help=(
+            "When using --load_labels_from, filter labels to only those produced by this model tag "
+            "(e.g. 'qwen2.5-14b'). The tag must match a key in LLAMACPP_MODEL_MAP. "
+            "Uses the companion metrics CSV (same dir, same name without _llm_labels) to resolve "
+            "run_ids that match the model, then filters the labels CSV by those run_ids. "
+            "Required when the labels file contains runs from multiple models (e.g. v5 7B+14B)."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -357,6 +367,7 @@ def main():
         device=args.device,
         verbose=True,
         load_labels_from=args.load_labels_from,
+        load_labels_model=args.load_labels_model,
         no_setfit=args.no_setfit,
     )
 
@@ -425,7 +436,7 @@ def main():
         "sep_ratio_before": loop_result["sep_ratio_before"],
         "sep_ratio_after" : loop_result["sep_ratio_after"],
         "backend": args.backend,
-        "llm_model": annotator.model if annotator is not None else f"loaded_from_v5",
+        "llm_model": annotator.model if annotator is not None else (args.load_labels_model or "loaded_from_file"),
         "encoder": encoder_short,
         "device": args.device,
     }

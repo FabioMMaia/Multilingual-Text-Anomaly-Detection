@@ -610,6 +610,7 @@ def run_llm_active_loop(
     device: str = "cpu",
     verbose: bool = True,
     load_labels_from: Optional[str] = None,
+    load_labels_model: Optional[str] = None,
     no_setfit: bool = False,
 ) -> dict:
     """
@@ -644,6 +645,14 @@ def run_llm_active_loop(
         test_size: Fraction of data held out for evaluation.
         random_state: Reproducibility seed.
         verbose: Print progress at each step.
+        load_labels_from: Path to an existing *_llm_labels.csv to skip LLM annotation
+            entirely (ablation mode). Only rows matching `random_state` are used.
+        load_labels_model: Model tag (e.g. 'qwen2.5-14b') used to filter the labels
+            file when it contains runs from multiple models. Requires a companion
+            metrics CSV in the same directory (same name without '_llm_labels').
+            If None, all rows matching `random_state` are used (old behaviour).
+        no_setfit: If True, skip SetFit fine-tuning and use the original pre-computed
+            embeddings directly for the semi-supervised model.
 
     Returns:
         dict with keys:
@@ -703,6 +712,29 @@ def run_llm_active_loop(
         if verbose:
             print(f"[3] Loading LLM labels from {load_labels_from} (seed={random_state})...")
         labels_df = pd.read_csv(load_labels_from)
+
+        # If a model tag is specified, filter to only run_ids produced by that model.
+        # The companion metrics CSV (same dir, same name without _llm_labels suffix)
+        # is used to resolve which run_ids correspond to the requested model.
+        if load_labels_model is not None:
+            metrics_path = load_labels_from.replace("_llm_labels.csv", ".csv")
+            if not os.path.exists(metrics_path):
+                raise FileNotFoundError(
+                    f"--load_labels_model requires a companion metrics CSV at {metrics_path}"
+                )
+            metrics_df = pd.read_csv(metrics_path)
+            model_run_ids = metrics_df[
+                metrics_df["llm_model"].str.contains(load_labels_model, case=False, na=False)
+            ]["run_id"].unique()
+            if len(model_run_ids) == 0:
+                raise ValueError(
+                    f"No runs found for model tag '{load_labels_model}' in {metrics_path}. "
+                    f"Available llm_model values: {metrics_df['llm_model'].unique().tolist()}"
+                )
+            if verbose:
+                print(f"    Model filter '{load_labels_model}': {len(model_run_ids)} matching run_id(s).")
+            labels_df = labels_df[labels_df["run_id"].isin(model_run_ids)]
+
         seed_rows = labels_df[labels_df["seed"] == random_state].reset_index(drop=True)
         if len(seed_rows) == 0:
             raise ValueError(f"No rows with seed={random_state} found in {load_labels_from}")

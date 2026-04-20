@@ -149,7 +149,8 @@ for seed in seeds:
                     "--n_llm_calls",    n,
                     "--seed",           seed,
                     "--device",         "cuda",
-                    "--load_labels_from", labels_csv,
+                    "--load_labels_from",   labels_csv,
+                    "--load_labels_model", "qwen2.5-14b",
                     # sem --no_setfit → SetFit ativo
                     "--semisup_model",  "mlp",
                     "--results_dir",    RESULTS_DIR,

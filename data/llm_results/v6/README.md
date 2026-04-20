@@ -146,7 +146,8 @@ for seed in seeds:
                     "--seed",           seed,
                     "--device",         "cuda",
                     "--backend",        "llamacpp",        # necessário pelo argparse, mas não é chamado
-                    "--load_labels_from", labels_csv,
+                    "--load_labels_from",   labels_csv,
+                    "--load_labels_model", "qwen2.5-14b",
                     "--no_setfit",
                     "--results_dir",    RESULTS_DIR,
                 ]
