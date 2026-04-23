@@ -37,7 +37,7 @@ mesma anotação LLM, mesmo DeepSAD, só muda o espaço de embedding.
 | Strategies | random, diversity |
 | N | 50, 200 |
 | Seeds | 0, 1, 42 |
-| Total runs | 96 |
+| Total runs | 48 |
 | Hardware | Colab T4 (sem LLM — só DeepSAD) |
 | Tempo estimado | ~2h total (~1-2 min/run) |
 
@@ -99,7 +99,7 @@ def _already_done(dataset, strategy, n, seed, results_dir):
 
 ---
 
-### Cell 4 — v6 Sweep (96 runs, ~2h)
+### Cell 4 — v6 Sweep (48 runs, ~2h)
 
 ```python
 import subprocess, re, time, glob
@@ -116,7 +116,7 @@ seeds      = ["0", "1", "42"]
 RESULTS_DIR = "data/llm_results/v6"
 V5_DIR      = "data/llm_results/v5"
 
-total = len(datasets) * len(strategies) * len(ns) * len(seeds)  # 96
+total = len(datasets) * len(strategies) * len(ns) * len(seeds)  # 48
 run = 0
 
 for seed in seeds:
