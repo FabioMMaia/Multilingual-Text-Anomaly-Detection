@@ -174,7 +174,7 @@ print("\nDone.")
 
 ---
 
-### Cell 5 — Comparação v5 vs v6 (ganho do SetFit)
+### Cell 5 — Comparação v5 vs v6 (ganho do SetFit) por modelo
 
 ```python
 import pandas as pd, glob, numpy as np
@@ -192,25 +192,22 @@ def load_v(version, project_path):
 df5 = load_v("v5", PROJECT_PATH)
 df6 = load_v("v6", PROJECT_PATH)
 
-# Merge por chave comum
-key = ["dataset", "strategy", "n_llm_calls", "seed"]
+# llm_model na chave garante que 14b só compara com 14b, 7b com 7b
+key = ["dataset", "strategy", "n_llm_calls", "seed", "llm_model"]
 merged = df5[key + ["roc_auc"]].merge(
     df6[key + ["roc_auc"]],
     on=key, suffixes=("_v5", "_v6")
 )
 merged["setfit_gain"] = merged["roc_auc_v5"] - merged["roc_auc_v6"]
 
-# Média por dataset
-print("=== Ganho do SetFit por dataset (v5 - v6) ===")
-gain = merged.groupby("dataset")["setfit_gain"].agg(["mean", "std"]).round(3)
-print(gain.to_string())
+print("=== Ganho do SetFit por dataset × modelo (v5 - v6) ===")
+print(merged.groupby(["dataset", "llm_model"])["setfit_gain"].agg(["mean", "std"]).round(3).to_string())
 
-print("\n=== Ganho global ===")
-print(f"  mean={merged['setfit_gain'].mean():.3f}  std={merged['setfit_gain'].std():.3f}")
+print("\n=== Ganho global por modelo ===")
+print(merged.groupby("llm_model")["setfit_gain"].agg(["mean", "std"]).round(3).to_string())
 
-# Por N
-print("\n=== Ganho por N ===")
-print(merged.groupby("n_llm_calls")["setfit_gain"].mean().round(3).to_string())
+print("\n=== Ganho por N × modelo ===")
+print(merged.groupby(["n_llm_calls", "llm_model"])["setfit_gain"].mean().round(3).to_string())
 ```
 
 ---
