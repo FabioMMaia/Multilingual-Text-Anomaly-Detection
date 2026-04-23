@@ -44,7 +44,7 @@ Comparando v8 vs v5 → efeito do MLP vs DeepSAD com SetFit
 | Strategies | random, diversity |
 | N | 50, 200 |
 | Seeds | 0, 1, 42 |
-| Total runs | 48 (labels carregados do v5 — sem re-executar LLM) |
+| Total runs | 96 (2 modelos × 48) |
 | Hardware | Colab T4 |
 | Tempo estimado | ~2–3h total (~1–2min/run com SetFit) |
 
@@ -86,14 +86,15 @@ print("CWD:", os.getcwd())
 ```python
 import glob, pandas as pd
 
-def _already_done(dataset, strategy, n, seed, results_dir):
+def _already_done(dataset, strategy, n, seed, model, results_dir):
     pattern = f"{PROJECT_PATH}/{results_dir}/{strategy}/N_{n}/{dataset}.csv"
     for f in glob.glob(pattern):
         try:
             df = pd.read_csv(f)
             match = df[
                 (df["n_llm_calls"] == int(n)) &
-                (df["seed"]        == int(seed))
+                (df["seed"]        == int(seed)) &
+                (df["llm_model"].str.contains(model, na=False))
             ]
             if not match.empty:
                 return True
@@ -116,59 +117,61 @@ datasets   = ["tweets_hs", "hatebr", "20_newsgroups", "wikinews"]
 strategies = ["random", "diversity"]
 ns         = ["50", "200"]
 seeds      = ["0", "1", "42"]
+models     = ["qwen2.5-14b", "qwen2.5-7b"]
 
 RESULTS_DIR = "data/llm_results/v8"
 V5_DIR      = "data/llm_results/v5"
 
-total = len(datasets) * len(strategies) * len(ns) * len(seeds)  # 96
+total = len(datasets) * len(strategies) * len(ns) * len(seeds) * len(models)  # 96
 run = 0
 
-for seed in seeds:
-    for dataset in datasets:
-        for strategy in strategies:
-            for n in ns:
-                run += 1
+for model in models:
+    for seed in seeds:
+        for dataset in datasets:
+            for strategy in strategies:
+                for n in ns:
+                    run += 1
 
-                if _already_done(dataset, strategy, n, seed, RESULTS_DIR):
-                    print(f"[{run:03d}/{total}] ↷ {dataset:<20} {strategy:<12} N={n:<4} seed={seed} (skip)", flush=True)
-                    continue
+                    if _already_done(dataset, strategy, n, seed, model, RESULTS_DIR):
+                        print(f"[{run:03d}/{total}] ↷ {dataset:<20} {strategy:<12} N={n:<4} seed={seed} model={model} (skip)", flush=True)
+                        continue
 
-                labels_csv = f"{PROJECT_PATH}/{V5_DIR}/{strategy}/N_{n}/{dataset}_llm_labels.csv"
+                    labels_csv = f"{PROJECT_PATH}/{V5_DIR}/{strategy}/N_{n}/{dataset}_llm_labels.csv"
 
-                if not os.path.exists(labels_csv):
-                    print(f"[{run:03d}/{total}] ✗ labels not found: {labels_csv}", flush=True)
-                    continue
+                    if not os.path.exists(labels_csv):
+                        print(f"[{run:03d}/{total}] ✗ labels not found: {labels_csv}", flush=True)
+                        continue
 
-                cmd = [
-                    "python", "-u",
-                    "scripts/run_llm_active_loop.py",
-                    "--project_path",   PROJECT_PATH,
-                    "--data_dir",       DATA_DIR,
-                    "--dataset",        dataset,
-                    "--strategy",       strategy,
-                    "--n_llm_calls",    n,
-                    "--seed",           seed,
-                    "--device",         "cuda",
-                    "--load_labels_from",   labels_csv,
-                    "--load_labels_model", "qwen2.5-14b",
-                    # sem --no_setfit → SetFit ativo
-                    "--semisup_model",  "mlp",
-                    "--results_dir",    RESULTS_DIR,
-                ]
+                    cmd = [
+                        "python", "-u",
+                        "scripts/run_llm_active_loop.py",
+                        "--project_path",   PROJECT_PATH,
+                        "--data_dir",       DATA_DIR,
+                        "--dataset",        dataset,
+                        "--strategy",       strategy,
+                        "--n_llm_calls",    n,
+                        "--seed",           seed,
+                        "--device",         "cuda",
+                        "--load_labels_from",   labels_csv,
+                        "--load_labels_model", model,
+                        # sem --no_setfit → SetFit ativo
+                        "--semisup_model",  "mlp",
+                        "--results_dir",    RESULTS_DIR,
+                    ]
 
-                t0 = time.time()
-                result = subprocess.run(cmd, capture_output=True, text=True)
-                elapsed = time.time() - t0
+                    t0 = time.time()
+                    result = subprocess.run(cmd, capture_output=True, text=True)
+                    elapsed = time.time() - t0
 
-                roc = re.search(r"ROC-AUC\s+\(test\)\s*:\s*([\d.]+)", result.stdout)
-                roc_str = roc.group(1) if roc else "N/A"
-                status  = "✓" if result.returncode == 0 else "✗"
+                    roc = re.search(r"ROC-AUC\s+\(test\)\s*:\s*([\d.]+)", result.stdout)
+                    roc_str = roc.group(1) if roc else "N/A"
+                    status  = "✓" if result.returncode == 0 else "✗"
 
-                print(f"[{run:03d}/{total}] {status} {dataset:<20} {strategy:<12} N={n:<4} seed={seed}  "
-                      f"ROC={roc_str}  {elapsed/60:.1f}min", flush=True)
+                    print(f"[{run:03d}/{total}] {status} {dataset:<20} {strategy:<12} N={n:<4} seed={seed} model={model}  "
+                          f"ROC={roc_str}  {elapsed/60:.1f}min", flush=True)
 
-                if result.returncode != 0:
-                    print(f"  STDERR: {result.stderr[-400:]}", flush=True)
+                    if result.returncode != 0:
+                        print(f"  STDERR: {result.stderr[-400:]}", flush=True)
 
 print("\nDone.")
 ```
