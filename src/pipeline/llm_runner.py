@@ -149,18 +149,17 @@ TASK_CONTEXT = {
     "20_newsgroups": {
         "description": (
             "English newsgroup posts. "
-            "Your task: decide if a post belongs to the comp.graphics newsgroup (anomalous, score 1.0) "
-            "or to any other newsgroup topic (normal, score 0.0)."
+            "Your task: decide if a post belongs to the rec.sport.hockey newsgroup (normal, score 0.0) "
+            "or to any other newsgroup topic (anomalous, score 1.0)."
         ),
         "normal_description": (
-            "Posts about any topic other than computer graphics: "
-            "sports, hockey, religion, politics, science, medicine, automobiles, space, electronics, "
-            "history, philosophy, or any other non-graphics subject."
+            "Posts about ice hockey: game scores, player trades, team standings, NHL news and commentary, "
+            "hockey equipment, rules, strategy, playoff discussions, or any other ice hockey topic."
         ),
         "anomaly_criterion": (
-            "Posts about computer graphics: image formats (GIF, JPEG, PNG), 3D rendering, raytracing, "
-            "image processing, graphics software, display hardware, or related technical graphics topics. "
-            "Score 1.0 if the post is about computer graphics. Score 0.0 for any other topic."
+            "Posts about any topic other than ice hockey: computers and software, science, politics, "
+            "religion, automobiles, space, medicine, history, philosophy, sports other than hockey, "
+            "or any other non-hockey subject. Score 1.0 for any non-hockey post."
         ),
     },
     "wikinews": {
