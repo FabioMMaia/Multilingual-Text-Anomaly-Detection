@@ -129,43 +129,46 @@ def benchmark_unsupervised_models(
     dataset_name="dataset",
     results_dir="experiments_results",
     random_state=42,
+    n_rounds=1,
 ):
-    # Single run only
     run_ids = []
-    run_id = uuid.uuid4()
 
-    for model_name, model_fn in model_constructor.items():
-        print(f"→ Running {model_name} [unsupervised]")
-        model = model_fn()
+    for round_id in range(n_rounds):
+        seed = random_state + round_id
+        run_id = uuid.uuid4()
 
-        try:
-            metrics, scores = evaluate_model(
-                model,
-                x_train,
-                y_train,
-                np.zeros_like(y_train),  # no labels
-                x_test,
-                y_test,
-                use_labels=False,
-                uncertainty_model=False
-            )
+        for model_name, model_fn in model_constructor.items():
+            print(f"→ Running {model_name} [unsupervised] round={round_id} seed={seed}")
+            model = model_fn(seed)
 
-            save_benchmark_result(
-                metrics=metrics,
-                model_name=model_name,
-                dataset_name=dataset_name,
-                contamination=None,
-                round_id=0,
-                known_indices=[],
-                run_id=run_id,
-                results_dir=results_dir
-            )
+            try:
+                metrics, scores = evaluate_model(
+                    model,
+                    x_train,
+                    y_train,
+                    np.zeros_like(y_train),  # no labels
+                    x_test,
+                    y_test,
+                    use_labels=False,
+                    uncertainty_model=False
+                )
 
-            run_ids.append(str(run_id))
+                save_benchmark_result(
+                    metrics=metrics,
+                    model_name=model_name,
+                    dataset_name=dataset_name,
+                    contamination=None,
+                    round_id=round_id,
+                    known_indices=[],
+                    run_id=run_id,
+                    results_dir=results_dir
+                )
 
-        except Exception as e:
-            print(f"[ERROR] {model_name} failed: {e}")
-            continue
+                run_ids.append(str(run_id))
+
+            except Exception as e:
+                print(f"[ERROR] {model_name} failed: {e}")
+                continue
 
     return run_ids
 
@@ -197,7 +200,7 @@ def benchmark_semisupervised_models(
 
             for model_name, (model_fn, uncertainty) in model_constructor.items():
                 print(f"→ Running {model_name} (uncertainty_model={uncertainty})")
-                model = model_fn()
+                model = model_fn(seed)
 
                 try:
                     metrics, scores = evaluate_model(

@@ -1,14 +1,8 @@
-﻿import pandas as pd
-
-labels = pd.read_csv('data/llm_results/v5/random/N_50/tweets_hs_llm_labels.csv')
-metrics = pd.read_csv('data/llm_results/v5/random/N_50/tweets_hs.csv')
-
-print('=== _llm_labels.csv ===')
-print('Total linhas:', len(labels))
-print('run_ids únicos:', labels['run_id'].nunique())
-print('linhas por run_id:')
-print(labels.groupby('run_id').size())
-
-print()
-print('=== metrics.csv (run_id -> seed -> llm_model) ===')
-print(metrics[['run_id','seed','llm_model']].to_string())
+﻿import pandas as pd, glob, os
+df_meta = pd.read_csv('data/llm_results/consolidated_results.csv')
+runs_7b  = df_meta[(df_meta['model_short']=='7b') & (df_meta['strategy']=='random') & (df_meta['n_llm_calls']==200) & (df_meta['role']=='deepsad_sf')]
+runs_14b = df_meta[(df_meta['model_short']=='14b') & (df_meta['strategy']=='random') & (df_meta['n_llm_calls']==200) & (df_meta['role']=='deepsad_sf')]
+print('7B run_ids:')
+print(runs_7b[['run_id','dataset','seed','llm_precision','llm_recall','n_anomalies_found','roc_auc']].to_string())
+print('\n14B run_ids:')
+print(runs_14b[['run_id','dataset','seed','llm_precision','llm_recall','n_anomalies_found','roc_auc']].to_string())

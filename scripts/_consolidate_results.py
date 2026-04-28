@@ -157,6 +157,9 @@ def print_main_results(all_roles: dict[str, pd.DataFrame], unsup_best: pd.Series
         df = all_roles.get(role, pd.DataFrame())
         vals = {}
         for d in DATASETS:
+            if df.empty or "dataset" not in df.columns:
+                vals[d] = ("---", 0.0)
+                continue
             sub = df[(df["dataset"] == d) & (df["model_short"] == model)]
             if sub.empty:
                 vals[d] = ("---", 0.0)
@@ -203,6 +206,8 @@ def print_2x2_ablation(all_roles: dict[str, pd.DataFrame]):
     for d in DATASETS:
         def _mean(role):
             df = all_roles.get(role, pd.DataFrame())
+            if df.empty or "dataset" not in df.columns:
+                return float("nan")
             sub = df[df["dataset"] == d]
             return sub["roc_auc"].mean() if not sub.empty else float("nan")
 
@@ -230,6 +235,13 @@ def print_setfit_effect(all_roles: dict[str, pd.DataFrame]):
         for model in ["7b", "14b"]:
             df_mlp    = all_roles.get("mlp",    pd.DataFrame())
             df_mlp_sf = all_roles.get("mlp_sf", pd.DataFrame())
+
+            if df_mlp.empty or "dataset" not in df_mlp.columns:
+                row += f"{'---':>{col_w}}{'---':>{col_w}}"
+                continue
+            if df_mlp_sf.empty or "dataset" not in df_mlp_sf.columns:
+                row += f"{'---':>{col_w}}{'---':>{col_w}}"
+                continue
 
             sub_base = df_mlp[   (df_mlp["dataset"]    == d) & (df_mlp["model_short"]    == model) & (df_mlp["n_llm_calls"]    == 200)]
             sub_sf   = df_mlp_sf[(df_mlp_sf["dataset"] == d) & (df_mlp_sf["model_short"] == model) & (df_mlp_sf["n_llm_calls"] == 200)]

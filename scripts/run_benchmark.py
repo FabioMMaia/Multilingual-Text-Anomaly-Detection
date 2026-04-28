@@ -96,10 +96,10 @@ def main():
     model_groups = {
         "semi": {
             "models": {
-                "DevNet": lambda: DevNet(device=args.device),
-                "DeepSAD": lambda: DeepSAD(epochs=100, rep_dim=128, device=args.device),
-                "XGBOD": lambda: XGBOD(estimator_list=[LOF(), IForest()]),
-                "MLP": lambda: MLP(),
+                "DevNet":  lambda seed: DevNet(device=args.device, random_state=seed),
+                "DeepSAD": lambda seed: DeepSAD(epochs=100, rep_dim=128, device=args.device, random_state=seed),
+                "XGBOD":   lambda seed: XGBOD(estimator_list=[LOF(), IForest(random_state=seed)], random_state=seed),
+                "MLP":     lambda seed: MLP(random_state=seed),
             },
             "benchmark_fn": benchmark_semisupervised_models,
             "extra_args": {
@@ -110,16 +110,16 @@ def main():
         },
         "unsupervised": {
             "models": {
-                "IForest": lambda: IForest(),
-                "LOF": lambda: LOF(),
-                "DeepSVDD": lambda: DeepSVDD(epochs=100, rep_dim=128, device=args.device),
-                "OCSVM": lambda: OCSVM(kernel="rbf", nu=0.05, gamma="scale"),
-                "AutoEncoder": lambda: AutoEncoder(),
-                "VAE": lambda: VAE(),
-                "HBOS": lambda: HBOS(),
+                "IForest":     lambda seed: IForest(random_state=seed),
+                "LOF":         lambda seed: LOF(),
+                "DeepSVDD":    lambda seed: DeepSVDD(epochs=100, rep_dim=128, device=args.device, random_state=seed),
+                "OCSVM":       lambda seed: OCSVM(kernel="rbf", nu=0.05, gamma="scale"),
+                "AutoEncoder": lambda seed: AutoEncoder(random_state=seed),
+                "VAE":         lambda seed: VAE(random_state=seed),
+                "HBOS":        lambda seed: HBOS(),
             },
             "benchmark_fn": benchmark_unsupervised_models,
-            "extra_args": {},
+            "extra_args": {"n_rounds": args.n_rounds},
             "wrap_model": lambda name, fn: {name: fn},
         },
     }
